@@ -1,0 +1,98 @@
+﻿@model RecordFCS_Alt.Models.TipoAtributo
+
+@using RecordFCS_Alt.Helpers
+
+@{
+    ViewBag.PagName = "CONFIGURACIÓN";
+    ViewBag.CtrlName = Model.Nombre;
+    ViewBag.Title = @ViewBag.PagName + " - " + @Model.Nombre;
+}
+
+
+<h2>
+    @ViewBag.PagName
+    <i class="text-muted">@ViewBag.CtrlName</i>
+    <small class="text-muted">@Model.Nombre</small>
+
+</h2>
+
+<ol class="breadcrumb">
+    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+    <li>@Html.ActionLink("Mantenimiento de catálogos", "Index", "TipoAtributo")</li>
+    <li class="active">@Model.Nombre</li>
+</ol>
+
+
+
+
+<div class="row">
+
+    <div class="col-md-6 col-sm-6 col-xs-6">
+        <dl class="dl-horizontal">
+            <dt>@Html.DisplayNameFor(model => model.Orden)</dt>
+            <dd>@Html.DisplayFor(model => model.Orden)</dd>
+
+            <dt>@Html.DisplayNameFor(model => model.Nombre)</dt>
+            <dd>@Html.DisplayFor(model => model.Nombre)</dd>
+
+            <dt> @Html.DisplayNameFor(model => model.Descripcion)</dt>
+            <dd> @Html.DisplayFor(model => model.Descripcion)</dd>
+
+            <dt> @Html.DisplayNameFor(model => model.PerteneceA)</dt>
+            <dd> @Html.DisplayFor(model => model.PerteneceA)</dd>
+
+            <dt> @Html.DisplayNameFor(model => model.TablaSQL)</dt>
+            <dd> @Html.DisplayFor(model => model.TablaSQL)</dd>
+
+            <dt> @Html.DisplayNameFor(model => model.DatoCS)</dt>
+            <dd> @Html.DisplayFor(model => model.DatoCS)</dd>
+
+            <dt> @Html.DisplayNameFor(model => model.HTMLParametros)</dt>
+            <dd> @Html.DisplayFor(model => model.HTMLParametros)</dd>
+
+        </dl>
+    </div>
+
+    <div class="col-md-6 col-sm-6 col-xs-6">
+        <dl class="dl-horizontal">
+            <dt> @Html.DisplayNameFor(model => model.EsLista)</dt>
+            <dd> @Html.DisplayFor(model => model.EsLista)</dd>
+
+            <dt> @Html.DisplayNameFor(model => model.EsMultipleValor)</dt>
+            <dd> @Html.DisplayFor(model => model.EsMultipleValor)</dd>
+
+            <dt> @Html.DisplayNameFor(model => model.EsGenerico)</dt>
+            <dd> @Html.DisplayFor(model => model.EsGenerico)</dd>
+
+            <dt> @Html.DisplayNameFor(model => model.EnBuscador)</dt>
+            <dd> @Html.DisplayFor(model => model.EnBuscador)</dd>
+
+            <dt> @Html.DisplayNameFor(model => model.Status)</dt>
+            <dd> @Html.DisplayFor(model => model.Status)</dd>
+
+            <dt>Acciones</dt>
+            <dd> @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar", "Editar", "TipoAtributo", routeValues: new { id = Model.TipoAtributoID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-default btn-xs openModal_TipoAtributo" }) </dd>
+
+        </dl>
+    </div>
+</div>
+
+
+
+<h4 class="text-center"><b>Valores para @Html.DisplayFor(model => model.Nombre)</b></h4>
+<!-- Campo que se reemplaza-->
+
+<div id="renderListaListaValor">
+    @{ Html.RenderAction("Lista", "ListaValor", new { id = Model.TipoAtributoID }); }
+</div>
+
+
+
+<script src="~/Scripts/add.toolTip.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/Scripts/tipoAtributoLista.js"></script>
+
+
+
+

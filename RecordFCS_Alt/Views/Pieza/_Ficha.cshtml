@@ -1,0 +1,174 @@
+﻿@model RecordFCS_Alt.Models.Pieza
+@using RecordFCS_Alt.Helpers
+
+@{
+
+    bool principal = Model.TipoPieza.EsPrincipal;
+    int Nuimagenes = Model.ImagenPiezas.Count;
+    int Nuautores = Model.AutorPiezas.Count;
+    int NuMedidas = Model.MedidaPiezas.Count;
+    int NuTecnicas = Model.TecnicaPiezas.Count;
+    
+    string subFolio = Model.SubFolio;
+}
+
+
+<li class="media">
+
+    <div class="media-left media-middle">
+        <div class="thumbnail">
+            <img class="media-object img-responsive" src="~/Content/img/pieza/thumb/e0dbc2e2-dddc-42b0-b0f0-819d35530bbe.jpg" />
+        </div>
+    </div>
+
+
+    <div class="media-body">
+        <h4 class="media-heading pull-right">@subFolio</h4>
+
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th class="col-lg-3 col-md-5 col-sm-5"></th>
+                    <th>Acciones excusivas de la pieza</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                @foreach (var att in Model.TipoPieza.Atributos)
+                {
+                    var tipoAtt = att.TipoAtributo;
+
+                    if (tipoAtt.EsGenerico)
+                    {
+                        var lista_AttPieza = Model.AtributoPiezas.Where(a => a.AtributoID == att.AtributoID).ToList();
+                        
+                        if (tipoAtt.EsLista)
+                        {
+                                                        
+                            <tr>
+                                <td>
+                                    <p>
+                                        @att.NombreAlterno
+
+                                        @*@if (tipoAtt.EsMultipleValor)
+                                    {
+                                            @Html.NoEncodeActionLink("<i class='fa fa-plus'><i/>", "Agregar " + , "Crear", "AtributoValor", new { id = att.AtributoID, PiezaID = Model.PiezaID }, new { data_modal = "", data_toggle = "tooltip", @class = "link link-success btn-xs Editar" + att.TipoAtributo.DatoCS })
+                                    }*@
+                                    </p>
+                                </td>
+                                
+                                <td>
+                            <p class="hover-dorado">
+                                Titulo descripcion
+                            </p>
+                        </td>
+                    </tr>
+                        }
+                        else
+                        {
+                            if (tipoAtt.EsMultipleValor) { }
+
+                        }
+                    }
+                    else
+                    {
+                        switch (tipoAtt.TablaSQL)
+                        {
+                            case "Autor":
+                            case "Ubicacion":
+                            case "TipoTecnica":
+                            case "TipoMedida":
+                            case "ImagenPieza":
+                            default:
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                break;
+                        }
+
+                    }
+                }
+
+
+
+
+        </tbody>
+                    
+
+                    <tr>
+                        <td>
+                            Autor
+                        </td>
+                        <td>
+                            <a href="#" class="pull-right text-muted"><i class="fa fa-pencil"></i></a>
+                            <p class="hover-dorado">
+                                Nombre Autor 1
+                            </p>
+                            <p class="hover-dorado">
+                                Nombre Autor 2
+                            </p>
+                            <p class="hover-dorado">
+                                Nombre Autor 3
+                            </p>
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td>
+                            Comentario
+                            <a href="#" class="pull-right text-muted"><i class="fa fa-pencil"></i></a>
+                        </td>
+                        <td>
+                            <p class="hover-dorado">
+
+                                Comentario Descripcion
+                            </p>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            Ubicacion
+                            <a href="#" class="pull-right text-muted"><i class="fa fa-pencil"></i></a>
+                        </td>
+                        <td>
+                            <p class="hover-dorado">
+                                Ubicacion Descripcion
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Estado de conservación
+                            <a href="#" class="pull-right text-muted"><i class="fa fa-pencil"></i></a>
+                        </td>
+                        <td>
+                            <p class="hover-dorado">
+                                Estado de conservacion Descripcion
+                            </p>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            Propietario
+                            <a href="#" class="pull-right text-muted"><i class="fa fa-pencil"></i></a>
+                        </td>
+                        <td>
+                            <p class="hover-dorado">
+                                Propietario Descripcion
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+
+
+
+
+        </li>

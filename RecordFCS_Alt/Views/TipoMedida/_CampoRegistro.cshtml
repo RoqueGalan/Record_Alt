@@ -1,0 +1,44 @@
+﻿@using RecordFCS_Alt.Helpers
+
+@using RecordFCS_Alt.Models
+@{
+    bool EsMultipleValor = ViewBag.EsMultipleValor;
+    Guid AtributoID = ViewBag.AtributoID;
+    string ParametrosHTML = ViewBag.ParametrosHTML;
+    Guid TipoAtributoID = ViewBag.TipoAtributoID;
+    string TipoInput = ViewBag.TipoInput;
+    string NombreAtt = ViewBag.NombreAtt;
+}
+
+
+<div class="well well-sm">
+    <div class="input-group">
+        @Html.DropDownList("TipoMedidaID", null, "- Elije una opción -", htmlAttributes: new { id = "id_" + AtributoID, name = "id_" + AtributoID , @class = "form-control", required = "required" })
+        <span class="input-group-addon"></span>
+        @Html.DropDownList("id_" + @AtributoID + "_UML", null, "- Elije una opción  -", htmlAttributes: new { id = "id_" + @AtributoID + "UML", name = "id_" + @AtributoID + "UML", @class = "form-control", required = "required" })
+        
+    </div>
+
+    @Html.ValidationMessage("TipoMedidaID", new { @class = "text-danger" })
+
+
+    <br />
+    <div class="input-group">
+
+        @Html.TextBox("id_" + @AtributoID + "_Altura", null, new { type = "number", step = "any", @class = "form-control", required = "required", placeholder = "Altura" })
+        <span class="input-group-addon"><i class="fa fa-arrows-v"></i></span>
+        @Html.TextBox("id_" + @AtributoID + "_Anchura", null, new { type = "number", step = "any", @class = "form-control", required = "required", placeholder = "Anchura" })
+        <span class="input-group-addon"><i class="fa fa-arrows-h"></i></span>
+        @Html.TextBox("id_" + @AtributoID + "_Profundidad", null, new { type = "number", step = "any", @class = "form-control", placeholder = "Profundid" })
+        <span class="input-group-addon"><i class="fa fa-arrows-alt"></i></span>
+        @Html.TextBox("id_" + @AtributoID + "_Diametro", null, new { type = "number", step = "any", @class = "form-control", placeholder = "Diam" })
+        <span class="input-group-addon"><i class="fa fa-adjust"></i></span>
+        @Html.TextBox("id_" + @AtributoID + "_Diametro2", null, new { type = "number", step = "any", @class = "form-control", placeholder = "Diam2" })
+        <span class="input-group-addon"><i class="fa fa-adjust"></i></span>
+    </div>
+    @Html.ValidationMessage("id_" + AtributoID + "_Altura", new { @class = "text-danger" })
+    @Html.ValidationMessage("id_" + AtributoID + "_Anchura", new { @class = "text-danger" })
+    @Html.ValidationMessage("id_" + AtributoID + "_UML", new { @class = "text-danger" })
+
+</div>
+

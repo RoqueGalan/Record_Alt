@@ -1,0 +1,94 @@
+﻿@model PagedList.IPagedList<RecordFCS_Alt.Models.Autor>
+@using PagedList.Mvc;
+@using RecordFCS_Alt.Helpers
+
+<div class="col-lg-4 col-md-5 col-sm-7">
+    @using (Html.BeginForm("Lista", "Autor", FormMethod.Get, new { id = "FormBusqueda" }))
+    {
+        <div class="form-group">
+            <div class="input-group input-group-sm">
+                @Html.TextBox("Busqueda", ViewBag.FiltroActual as string, new { @Class = "form-control", placeholder = "Buscar por..." })
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="submit"><span class="fa fa-search"></span></button>
+                </span>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="pull-right">
+    Total de Registros:
+    <span class="badge" data-toggle="tooltip" title="Total de registros">@Model.TotalItemCount</span>
+</div>
+
+<table class="table table-hover table-condensed">
+
+    <tr>
+        <th class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+          @Html.DisplayNameFor(model => model.FirstOrDefault().Nombre) |
+        @Html.DisplayNameFor(model => model.FirstOrDefault().Apellido)
+
+        </th>
+
+        <th class="col-lg-3 col-md-3 col-sm-3 col-xs-2">
+            @Html.DisplayNameFor(model => model.FirstOrDefault().LugarNacimiento) |
+                        @Html.DisplayNameFor(model => model.FirstOrDefault().AnoNacimiento)
+        </th>
+
+        <th class="col-lg-3 col-md-3 col-sm-3 col-xs-2">
+            @Html.DisplayNameFor(model => model.FirstOrDefault().LugarMuerte) |
+            @Html.DisplayNameFor(model => model.FirstOrDefault().AnoMuerte)
+        </th>
+        <th class="col-lg-1 col-md-1 col-sm-1 col-xs-2">
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Status)
+        </th>
+
+        <th class="col-lg-1 col-md-1 col-sm-1 col-xs-2">
+            @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Crear Autor", "Crear", "Autor", null, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-success btn-xs pull-right openModal_Autor" })
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nombre)
+                @Html.DisplayFor(modelItem => item.Apellido)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.LugarNacimiento)
+                @Html.DisplayFor(modelItem => item.AnoNacimiento)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.LugarMuerte)
+                @Html.DisplayFor(modelItem => item.AnoMuerte)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+
+            <td>
+                <div class="pull-right">
+                    @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar " + item.Nombre, "Editar", "Autor", routeValues: new { id = item.AutorID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-default btn-xs openModal_Autor" })
+                    @Html.NoEncodeActionLink("<span class='fa fa-trash'></span>", "Eliminar " + item.Nombre, "Eliminar", "Autor", routeValues: new { id = item.AutorID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-danger btn-xs openModal_Autor" })
+                </div>
+            </td>
+        </tr>
+    }
+
+</table>
+
+
+<div id="contentPager" class="text-center center-block">
+    @Html.PagedListPager(Model, pagina => Url.Action("Lista", new { pagina = pagina, FiltroActual = ViewBag.FiltroActual }), new PagedListRenderOptions { LinkToFirstPageFormat = "<< Inicio", LinkToPreviousPageFormat = "< Anterior", LinkToNextPageFormat = "Siguiente >", LinkToLastPageFormat = "Final >>", UlElementClasses = new[] { "pagination", "pagination-sm" } })
+</div>
+
+
+<script src="~/Scripts/add.toolTip.js"></script>
+
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/Scripts/autorLista.js"></script>

@@ -1,0 +1,38 @@
+﻿
+/* ALERTAS */
+.alert-inverse {
+    background-color: #808080;
+    border-color: #808080;
+    color: #ffffff;
+}
+
+    .alert-inverse hr {
+        border-top-color: #000000;
+    }
+
+    .alert-inverse .alert-link {
+        color: #e6e6e6;
+    }
+
+.alert-default {
+    background-color: #808080;
+    border-color: #808080;
+    color: #ffffff;
+}
+
+    .alert-default hr {
+        border-top-color: #676666;
+    }
+
+    .alert-default .alert-link {
+        color: #e6e6e6;
+    }
+
+.notificacion {
+    position: fixed;
+    right: 0;
+    top: 4em;
+    left: 60%;
+    padding-right: 1em;
+    z-index: 100;
+}

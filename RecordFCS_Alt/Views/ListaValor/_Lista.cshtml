@@ -1,0 +1,81 @@
+﻿@model PagedList.IPagedList<RecordFCS_Alt.Models.ListaValor>
+@using PagedList.Mvc;
+@using RecordFCS_Alt.Helpers
+
+@{
+    Guid TipoAtributoID = ViewBag.TipoAtributoID;
+    string nombre = ViewBag.Nombre;
+
+}
+
+<div class="col-lg-4 col-md-5 col-sm-7">
+    @using (Html.BeginForm("Lista", "ListaValor", FormMethod.Get, new { id = "FormBusqueda" }))
+    {
+        @Html.Hidden("id", TipoAtributoID)
+
+        <div class="form-group">
+            <div class="input-group input-group-sm">
+                @Html.TextBox("Busqueda", ViewBag.FiltroActual as string, new { @Class = "form-control", placeholder = "Buscar por..." })
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="submit"><span class="fa fa-search"></span></button>
+                </span>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="pull-right">
+    Total de Registros:
+    <span class="badge" data-toggle="tooltip" title="Total de registros">@Model.TotalItemCount</span>
+</div>
+
+
+
+
+
+
+<table class="table table-hover table-condensed">
+    <tr>
+
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Valor)
+        </th>
+        <th class="col-lg-1 col-md-1 col-sm-1 col-xs-2">
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Status)
+        </th>
+        <th class="col-lg-1 col-md-1 col-sm-1 col-xs-2">
+            @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Crear Valor para " + nombre, "Crear", "ListaValor", new { id = TipoAtributoID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-success btn-xs pull-right openModal_ListaValor" })
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Valor)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                <div class="pull-right">
+                    @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar " + item.Valor, "Editar", "ListaValor", routeValues: new { id = item.ListaValorID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-default btn-xs openModal_ListaValor" })
+                    @Html.NoEncodeActionLink("<span class='fa fa-trash'></span>", "Eliminar " + item.Valor, "Eliminar", "ListaValor", routeValues: new { id = item.ListaValorID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-danger btn-xs openModal_ListaValor" })
+                </div>
+             </td>
+        </tr>
+    }
+
+</table>
+
+
+
+<div id="contentPager" class="text-center center-block">
+    @Html.PagedListPager(Model, pagina => Url.Action("Lista", new { id = TipoAtributoID, pagina = pagina, FiltroActual = ViewBag.FiltroActual }), new PagedListRenderOptions { LinkToFirstPageFormat = "<< Inicio", LinkToPreviousPageFormat = "< Anterior", LinkToNextPageFormat = "Siguiente >", LinkToLastPageFormat = "Final >>", UlElementClasses = new[] { "pagination", "pagination-sm" } })
+</div>
+
+<script src="~/Scripts/add.toolTip.js"></script>
+
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/Scripts/ListaValorLista.js"></script>

@@ -1,0 +1,17 @@
+﻿.hover-dorado{
+
+}
+.hover-dorado:hover{
+  background-color: #c0a87e !important;
+  color: black;
+}
+   
+
+td
+{
+padding: 1px !important;
+}
+
+p {
+    margin:1px;
+}

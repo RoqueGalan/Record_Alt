@@ -1,0 +1,55 @@
+﻿@model IEnumerable<RecordFCS_Alt.Models.Atributo>
+
+
+<h3 class="text-center">Registrar: <b>@ViewBag.Nombre</b></h3>
+
+
+    <ul class="media-list">
+        @foreach (var item in Model)
+        {
+            <li class="media">
+                <div class="media-body">
+                    <label class="media-heading" for="@item.AtributoID">@item.NombreAlterno</label>
+                    
+                        @{Html.RenderAction("GenerarCampoRegistro", "Atributo", new { id = item.TipoAtributoID, AtributoID = item.AtributoID });}
+                    
+                </div>
+            </li>
+
+        }
+    </ul>
+
+    <div id="renderEspera"></div>
+
+    <div class="text-center">
+        <input class="btn btn-primary" type="submit" value="Registrar Obra" id="btnSubmit" />
+
+    </div>
+
+
+
+
+<script type="text/javascript">
+
+    //$("#formObraRegistro").submit(function (e) {
+    //    e.preventDefault();
+
+    //    $('#renderEspera').html('' +
+    //       '<div class="text-center">' +
+    //           '<p>' +
+    //               '<span class="text-muted">' +
+    //                   'Por favor espere' +
+    //               '</span>' +
+    //           '</p>' +
+    //           '<i class="fa fa-spinner fa-pulse fa-2x text-muted"></i>' +
+    //           '<p>' +
+    //           'Se esta procesando la Obra...' +
+    //       '</div>');
+    //});
+
+
+</script>
+
+
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>

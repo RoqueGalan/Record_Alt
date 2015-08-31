@@ -1,0 +1,189 @@
+﻿@model RecordFCS_Alt.Models.Obra
+
+
+@{
+    string FolioCompleto = ViewBag.FolioCompleto;
+
+    ViewBag.PaginaTitulo = "Ficha Completa";
+    ViewBag.PaginaSubtitulo = FolioCompleto;
+
+    ViewBag.Title = ViewBag.PaginaTitulo + " - " + ViewBag.PaginaSubtitulo;
+}
+
+
+<h1>
+    @ViewBag.PaginaTitulo
+    <b class="text-primary pull-right">@ViewBag.PaginaSubtitulo</b>
+</h1>
+
+<ol class="breadcrumb">
+    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+    <li>Obra</li>
+    <li class="active">@ViewBag.PaginaSubtitulo</li>
+</ol>
+
+<!--<div class="row">
+
+    <dl class="dl-horizontal">
+
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TipoObra.Nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TipoObra.Nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FechaRegistro)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FechaRegistro)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+
+
+    </dl>
+</div>
+    -->
+
+
+<div class="">
+    <p>Menu de acciónes para toda la Obra en general</p>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.ObraID }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+</div>
+
+<hr />
+
+
+
+<ul class="media-list">
+
+    @foreach (var piezaPrincipal in Model.Piezas)
+    {
+        @{Html.RenderAction("Ficha", "Pieza", new { id = "Completa", pieza = piezaPrincipal });}
+    }
+</ul>
+
+
+
+
+<ul class="media-list">
+
+    <li class="media">
+
+        <div class="media-left media-middle">
+            <div class="thumbnail">
+                <img class="media-object img-responsive" src="~/Content/img/pieza/thumb/e0dbc2e2-dddc-42b0-b0f0-819d35530bbe.jpg" />
+            </div>
+        </div>
+
+        <div class="media-body">
+            <h4 class="media-heading pull-right">##</h4>
+
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th class="col-lg-3 col-md-5 col-sm-5"></th>
+                        <th>Acciones excusivas de la pieza</th>
+                    </tr>
+
+                </thead>
+
+                <tr>
+                    <td>
+                        Titulo
+                    </td>
+                    <td>
+                        <p class="hover-dorado">
+                            Titulo descripcion
+                        </p>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Autor
+                    </td>
+                    <td>
+                        <a href="#" class="pull-right text-muted"><i class="fa fa-pencil"></i></a>
+                        <p class="hover-dorado">
+                            Nombre Autor 1
+                        </p>
+                        <p class="hover-dorado">
+                            Nombre Autor 2
+                        </p>
+                        <p class="hover-dorado">
+                            Nombre Autor 3
+                        </p>
+                    </td>
+
+                </tr>
+
+                <tr>
+                    <td>
+                        Comentario
+                        <a href="#" class="pull-right text-muted"><i class="fa fa-pencil"></i></a>
+                    </td>
+                    <td>
+                        <p class="hover-dorado">
+
+                            Comentario Descripcion
+                        </p>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Ubicacion
+                        <a href="#" class="pull-right text-muted"><i class="fa fa-pencil"></i></a>
+                    </td>
+                    <td>
+                        <p class="hover-dorado">
+                            Ubicacion Descripcion
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Estado de conservación
+                        <a href="#" class="pull-right text-muted"><i class="fa fa-pencil"></i></a>
+                    </td>
+                    <td>
+                        <p class="hover-dorado">
+                            Estado de conservacion Descripcion
+                        </p>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Propietario
+                        <a href="#" class="pull-right text-muted"><i class="fa fa-pencil"></i></a>
+                    </td>
+                    <td>
+                        <p class="hover-dorado">
+                            Propietario Descripcion
+                        </p>
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+
+    </li>
+
+
+</ul>

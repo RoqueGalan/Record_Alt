@@ -1,0 +1,47 @@
+﻿@model IEnumerable<RecordFCS_Alt.Models.TipoObra>
+@using RecordFCS_Alt.Helpers
+
+
+<table class="table table-hover table-condensed">
+    <tr>
+        <th class="col-lg-10 col-md-10 col-sm-10 col-xs-8">
+            @Html.DisplayNameFor(model => model.Nombre)
+            <span class="badge" data-toggle="tooltip" title="Total de registros">@ViewBag.totalRegistros</span>
+        </th>
+        <th class="col-lg-1 col-md-1 col-sm-1 col-xs-2">
+            @Html.DisplayNameFor(model => model.Status)
+        </th>
+        <th class="col-lg-1 col-md-1 col-sm-1 col-xs-2">
+            @*TipoObraCrear*@
+            @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Crear Tipo de Obra", "Crear", "TipoObra", null, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-success btn-xs pull-right openModal_TipoObra" })
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nombre)
+                <small class="text-muted">@Html.DisplayFor(modelItem => item.Descripcion)</small>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+
+            <td>
+                @Html.NoEncodeActionLink("<span class='fa fa-gear'></span>", "Configurar Tipo de Obra " + item.Nombre, "Detalles", "TipoObra", routeValues: new { id = item.TipoObraID}, htmlAttributes: new { data_toggle = "tooltip", @class = "btn btn-primary btn-xs" })
+                @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar " + item.Nombre, "Editar", "TipoObra", routeValues: new { id = item.TipoObraID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-default btn-xs openModal_TipoObra" })
+                @Html.NoEncodeActionLink("<span class='fa fa-trash'></span>", "Eliminar " + item.Nombre, "Eliminar", "TipoObra", routeValues: new { id = item.TipoObraID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-danger btn-xs openModal_TipoObra" })
+            </td>
+        </tr>
+    }
+
+</table>
+
+
+
+<script src="~/Scripts/add.toolTip.js"></script>
+
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/Scripts/tipoObraLista.js"></script>

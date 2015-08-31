@@ -1,0 +1,24 @@
+﻿@model bool?
+
+@if (Model.HasValue)
+{
+    if (Model.Value)
+    {
+        <span class="text-success"><i class="fa fa-check"></i></span>
+
+    }
+    else
+    {
+        <span class="text-gray"><i class="fa fa-times"></i></span>
+
+    }
+}
+        @*else
+            {
+                <span class="badge badge-default">Sin definir</span>
+            }*@
+
+
+
+
+

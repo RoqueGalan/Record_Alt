@@ -1,0 +1,72 @@
+﻿@model RecordFCS_Alt.Models.TipoObra
+@using RecordFCS_Alt.Helpers
+
+@{
+    ViewBag.PagName = "CONFIGURACIÓN";
+    ViewBag.CtrlName = "Tipo de Obra";
+    ViewBag.Title = @ViewBag.PagName + " - " + @Model.Nombre;
+}
+
+
+<h2>
+    @ViewBag.PagName
+    <i class="text-muted">@ViewBag.CtrlName</i>
+    <small class="text-danger">@Model.Nombre</small>
+
+</h2>
+
+<ol class="breadcrumb">
+    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+    <li>@Html.ActionLink("Mantenimiento de catálogos", "Index", "TipoAtributo")</li>
+    <li>@Html.ActionLink("Tipos de Obra", "Index", "TipoObra")</li>
+    <li class="active">@Model.Nombre</li>
+</ol>
+
+
+<div>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Descripcion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Descripcion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+        <dt>Acciones</dt>
+        <dd>
+            @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar", "Editar", "TipoObra", routeValues: new { id = Model.TipoObraID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-default btn-xs openModal_TipoObra" })
+        </dd>
+    </dl>
+</div>
+
+<h4 class="text-center"><b>Tipos de Piezas Principales para @Html.DisplayFor(model => model.Nombre)</b></h4>
+<!-- Campo que se reemplaza-->
+
+<div id="renderListaTipoPiezas">
+    @{ Html.RenderAction("Lista", "TipoPieza", new { id = Model.TipoObraID, esRoot = true }); }
+</div>
+
+
+
+<script src="~/Scripts/add.toolTip.js"></script>
+
+<script src="~/Scripts/tipoObraLista.js"></script>
+
+
+

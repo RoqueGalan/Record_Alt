@@ -1,0 +1,27 @@
+﻿@{
+    ViewBag.Title = "Catálogos";
+}
+
+<h2>
+    Mantenimiento
+    <i>@ViewBag.Title</i>
+</h2>
+
+
+<ol class="breadcrumb">
+    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+    <li class="active">Mantenimiento @ViewBag.Title</li>
+</ol>
+
+
+<!-- Campo que se reemplaza-->
+<div id="renderListaTipoAtributo">
+    @{ Html.RenderAction("Lista", "TipoAtributo"); }
+</div>
+
+
+
+<script src="~/Scripts/add.toolTip.js"></script>
+
+
+

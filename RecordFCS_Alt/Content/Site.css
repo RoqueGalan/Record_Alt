@@ -1,0 +1,147 @@
+﻿body {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 25px;
+    padding-right: 25px;
+    padding-top: 25px;
+    background-color: #ffffff;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+/*input,
+select,
+textarea {
+    max-width: 280px;
+}*/
+
+.container.body-content {
+    padding-bottom: 1em;
+}
+
+
+
+
+
+.progress-bar {
+    -webkit-transition: width 1.5s ease-in-out;
+    transition: width 1.5s ease-in-out;
+}
+
+
+
+
+/* ALERTAS */
+
+.fondo-danger {
+    background-color: #ef4327;
+}
+
+    .fondo-danger:hover {
+        background-color: #ca2b10;
+    }
+
+.fondo-warning {
+    background-color: #e5921b;
+}
+
+    .fondo-warning:hover {
+        background-color: #be7307;
+    }
+
+.fondo-success {
+    background-color: #46ba71;
+}
+
+    .fondo-success :hover {
+        background-color: #2ba559;
+    }
+
+.fondo-info {
+    background-color: #149ac6;
+}
+
+    .fondo-info:hover {
+        background-color: #02779d;
+    }
+
+.fondo-inverse {
+    background-color: #3d3d3d;
+}
+
+    .fondo-inverse:hover {
+        background-color: #000000;
+    }
+
+.fondo {
+    background-color: #e6e5e5 !important;
+}
+
+.fondo-default {
+    background-color: #969696;
+}
+
+    .fondo-default:hover {
+        background-color: #636363;
+    }
+
+
+.fondo-muted {
+    background-color: #e6e5e5;
+}
+
+    .fondo-muted:hover {
+        background-color: #b0adad;
+    }
+
+
+
+
+
+.text-gray {
+    color: #dddcdc;
+}
+
+a .text-gray:hover {
+    color: #b0adad;
+}
+
+a .text-success:hover {
+    color: #2ba559;
+}
+
+
+
+
+
+
+/* BTN FILE */
+.btn-file {
+    position: relative;
+    overflow: hidden;
+}
+.btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
+}

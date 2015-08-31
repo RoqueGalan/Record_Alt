@@ -1,0 +1,251 @@
+﻿@using RecordFCS_Alt.Helpers
+
+@using RecordFCS_Alt.Models
+@{
+    bool EsMultipleValor = ViewBag.EsMultipleValor;
+    Guid AtributoID = ViewBag.AtributoID;
+    string ParametrosHTML = ViewBag.ParametrosHTML;
+    Guid TipoAtributoID = ViewBag.TipoAtributoID;
+    string TipoInput = ViewBag.TipoInput;
+    string NombreAtt = ViewBag.NombreAtt;
+}
+
+
+<div class="well well-sm">
+    <div>
+        @Html.DropDownList("TipoTecnicaID", null, "- Elije una opción -", htmlAttributes: new { @class = "form-control", required = "required" })
+    </div>
+    @Html.ValidationMessage("TipoTecnicaID", new { @class = "text-danger" })
+
+
+    <br />
+    <div class="input-group">
+
+        <select id="id_@AtributoID" name="id_@AtributoID" class="form-control" required="required">
+            <option value="">- Elije una opción -</option>
+        </select>
+
+
+        <span class="input-group-addon"></span>
+
+        <input id="buscar_@AtributoID" name="buscar_@AtributoID" type="text" placeholder="Buscar @NombreAtt" class="form-control" />
+
+        <span class="input-group-addon">
+            <input type="checkbox" id="checkAdd_@AtributoID" name="checkAdd_@AtributoID" class="btnCheckAdd" data-toggle="tooltip" data-title="Buscar/Guardar">
+        </span>
+
+
+        <span id="btnAccion_@AtributoID" name="Buscar" class="input-group-addon btn btn-default">
+            <span class="fa fa-search"></span>
+        </span>
+    </div>
+    @Html.ValidationMessage("id_" + AtributoID, new { @class = "text-danger" })
+
+
+</div>
+
+
+<script type="text/javascript">
+
+    $('#TipoTecnicaID').on('change', function (e) {
+
+        var attID = '@AtributoID';
+
+        var $inputBuscar = $('#buscar_' + attID);
+
+        var $inputSelectPadre = $('#TipoTecnicaID');
+        var $itemSelectedPadre = $inputSelectPadre.find('option:selected');
+
+        $inputBuscar.val('');
+
+
+        if ($itemSelectedPadre.val() == "") {
+            $('#id_' + attID).html('<option value = ""> - Elije una opción -</option>');
+
+        } else {
+
+            //extraer los valores de tipo tecnica
+            if ($('#checkAdd_' + attID).is(':checked')) {
+
+                $('#checkAdd_' + attID).trigger("click");
+            }
+
+
+            $('#btnAccion_' + attID).trigger("click");
+        }
+
+
+    });
+
+
+
+    $('#btnAccion_@AtributoID').on("click", function (e) {
+        var attID = '@AtributoID';
+        var tipoAttID = '@TipoAtributoID';
+        var $inputSelect = $('#id_' + attID);
+        var $itemSelected = $inputSelect.find('option:selected');
+        var $btnCheck = $('#checkAdd_' + attID);
+        var $inputBuscar = $('#buscar_' + attID);
+
+        var $btn = $('#btnAccion_@AtributoID');
+
+
+        var $inputSelectPadre = $('#TipoTecnicaID');
+        var $itemSelectedPadre = $inputSelectPadre.find('option:selected');
+
+
+        /*
+        Elemento Seleccionado:
+            Texto = $itemSelected.text()
+            Valor o id = $itemSelected.val()
+
+        Input Buscador
+            Valor = $inputBuscar.val()
+
+        Boton Checked
+            Valor = $btnCheck.is(':checked')
+
+        Atributos
+            Mostrar: $btn.attr("name")
+            Cambiar Valor :  $btn.attr("name","prueba")
+        */
+
+        if ($btn.attr("name") == "Agregar") {
+            //alert("entro a agregar");
+
+            if ($itemSelectedPadre.val() != "") {
+
+                var myUrl = '@Url.Action("Crear", "Tecnica", null)';
+
+                myUrl += '/' + $inputSelectPadre.val() + '?EsRegistroObra=true';
+
+                $.ajaxSetup({ cache: false });
+
+                $('#miModalContenido').load(myUrl, function () {
+                    $('#Descripcion').val($inputBuscar.val());
+
+                    $('#miModal').modal({
+                        backdrop: 'static',
+                        keyboard: true
+                    }, 'show');
+
+                    bindForm_ListaTecnica(this);
+
+                });
+
+            };
+
+            function bindForm_ListaTecnica(dialog) {
+                var attID = '@AtributoID';
+
+                $('form', dialog).submit(function (e) {
+
+                    var validarOK = false;
+
+
+                    validarOK = $(this).validate().valid();
+
+                    if (validarOK) {
+                        $.ajax({
+                            url: this.action,
+                            type: this.method,
+                            data: $(this).serialize(),
+                            success: function (result) {
+                                if (result.success) {
+                                    $('#miModal').modal('hide');
+
+                                    $('#buscar_' + attID).val(result.descripcion);
+
+                                    $('#checkAdd_' + attID).trigger("click");
+                                    $('#btnAccion_' + attID).trigger("click");
+
+                                    $('#alertasDiv').load('/Base/_Alertas');
+
+                                } else {
+                                    $('#miModalContenido').html(result);
+                                    bindForm_ListaTecnica(dialog);
+                                }
+                            }
+                        });
+                    }
+                    return false;
+                });
+
+            }
+
+            //mostrar modal para confirmar el campo que se va agregar
+
+        }
+        else {
+
+            $.ajaxSetup({ cache: false });
+
+            var myUrl = '@Url.Action("GenerarLista","Tecnica",null)';
+
+            $inputSelect.html('<option value = ""> Cargando... </option>');
+            $.ajax({
+                url: myUrl,
+                type: 'POST',
+                data: { id: $inputSelectPadre.val(), Filtro: $inputBuscar.val() },
+                dataType: 'json',
+                success: function (result) {
+
+                    if (result.length) {
+                        $inputSelect.val('');
+                        $itemSelected.val('');
+                        $itemSelected.text('');
+                        $inputSelect.html('<option value = ""> - Elije un resultado - </option>');
+
+                        for (var i = 0; i < result.length; i++) {
+                            $inputSelect.append('<option value = "' + result[i].TecnicaID + '">' + result[i].Descripcion + '</option>');
+                        }
+                    }
+                    else {
+                        $inputSelect.html('<option value = ""> - Sin resultados - </option>');
+                    }
+
+
+                }
+            });
+
+
+        }
+
+        $itemSelected.val('');
+        $inputSelect.val('');
+
+        $inputSelect.focus();
+    });
+
+    $('#checkAdd_@AtributoID').on("click", function (e) {
+        var attID = '@AtributoID';
+        var $btnCheck = $('#checkAdd_' + attID);
+        var $btn = $('#btnAccion_@AtributoID');
+        var $inputBuscar = $('#buscar_' + attID);
+
+
+        if ($btnCheck.is(':checked')) {
+            $btn.attr("name", "Agregar");
+            $btn.html('<span class="fa fa-floppy-o"></span>');
+            $btn.removeClass("btn-default");
+            $btn.addClass("btn-success");
+
+            $inputBuscar.attr("placeholder", "Guardar valor");
+
+        }
+        else {
+            $btn.attr("name", "Buscar");
+            $btn.html('<span class="fa fa-search"></span>');
+            $btn.removeClass("btn-success");
+            $btn.addClass("btn-default");
+
+            $inputBuscar.attr("placeholder", "Buscar valor");
+
+        }
+    });
+
+
+
+
+
+</script>

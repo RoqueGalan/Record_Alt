@@ -1,0 +1,94 @@
+﻿@model RecordFCS_Alt.Models.Obra
+
+@{
+    ViewBag.PagName = "Registrar";
+    ViewBag.CtrlName = "Obra";
+    ViewBag.Title = @ViewBag.PagName + ViewBag.CtrlName;
+}
+
+<h3>
+    @ViewBag.PagName
+    <i class="text-muted">@ViewBag.CtrlName</i>
+</h3>
+
+<ol class="breadcrumb">
+    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+    <li>@ViewBag.CtrlName</li>
+    <li class="active">@ViewBag.PagName</li>
+</ol>
+
+
+@using (Html.BeginForm("Registrar", "Obra", FormMethod.Post, new { id = "formObraRegistro", enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="row">
+
+        <div class="col-lg-4 col-md-4 col-sm-6">
+
+            <ul class="media-list">
+
+                <li class="media">
+                    <div class="media-left"> <h3><span class="label label-primary">1</span></h3> </div>
+                    <div class="media-body">
+                        <label class="media-heading" for="LetraFolioID">Letra del inventario</label>
+                        @Html.DropDownList("LetraFolioID", null, htmlAttributes: new { @class = "form-control", required = "required" })
+                        @Html.ValidationMessageFor(model => model.LetraFolioID, "", new { @class = "text-danger" })
+                    </div>
+                </li>
+
+                <li class="media">
+                    <div class="media-left"> <h3><span class="label label-primary">2</span></h3> </div>
+                    <div class="media-body">
+                        <label class="media-heading" for="TipoObraID">Tipo de Obra</label>
+                        @Html.DropDownList("TipoObraID", null, "- Selecciona una opción -", htmlAttributes: new { @class = "form-control", required = "required" })
+                        @Html.ValidationMessageFor(model => model.TipoObraID, "", new { @class = "text-danger" })
+                    </div>
+                </li>
+
+                <li class="media">
+                    <div class="media-left"> <h3><span class="label label-primary">3</span></h3> </div>
+                    <div class="media-body">
+                        <label class="media-heading" for="TipoPiezaID">Tipo de Pieza ó Plantilla</label>
+                        <div id="renderSelectTipoPieza">
+                            <select class="form-control" required>
+                                <option>- Selecciona un tipo de obra -</option>
+                            </select>
+                        </div>
+
+                    </div>
+                </li>
+
+            </ul>
+
+        </div>
+
+
+
+        <div class="col-lg-8 col-md-8 col-sm-6">
+
+            <div id="renderAtributosRequeridos">
+                Campos o atributos configurados de la plantilla
+                <div id="renderIconoLoading">
+
+
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+}
+
+
+<script src="~/Scripts/add.toolTip.js"></script>
+
+<script src="~/Scripts/reg.tipoObraSelect.js"></script>
+
+@*<script src="~/Scripts/reg.tipoPiezaSelect.js"></script>*@
+
+
+
+
+

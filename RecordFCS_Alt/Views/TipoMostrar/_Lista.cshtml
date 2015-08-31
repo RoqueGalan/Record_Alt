@@ -1,0 +1,42 @@
+﻿@model IEnumerable<RecordFCS_Alt.Models.TipoMostrar>
+@using RecordFCS_Alt.Helpers
+
+
+<table class="table table-hover table-condensed">
+    <tr>
+        <th class="col-lg-10 col-md-10 col-sm-10 col-xs-9">
+            @Html.DisplayNameFor(model => model.Nombre)
+        </th>
+        <th class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+            @Html.DisplayNameFor(model => model.Status)
+        </th>
+        <th class="col-lg-1 col-md-1 col-sm-1 col-xs-2">
+            @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Crear Tipo de Mostar", "Crear", "TipoMostrar", null, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-success btn-xs pull-right openModal_TipoMostrar" })
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar " + item.Nombre, "Editar", "TipoMostrar", routeValues: new { id = item.TipoMostrarID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-default btn-xs openModal_TipoMostrar" })
+                @Html.NoEncodeActionLink("<span class='fa fa-trash'></span>", "Eliminar " + item.Nombre, "Eliminar", "TipoMostrar", routeValues: new { id = item.TipoMostrarID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-danger btn-xs openModal_TipoMostrar" })
+            </td>
+        </tr>
+    }
+
+</table>
+
+
+
+<script src="~/Scripts/add.toolTip.js"></script>
+
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/Scripts/tipoTipoMostrarLista.js"></script>

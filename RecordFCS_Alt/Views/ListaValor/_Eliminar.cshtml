@@ -1,0 +1,58 @@
+﻿@model RecordFCS_Alt.Models.ListaValor
+
+@{
+    ViewBag.PagName = "Eliminar " + Model.TipoAtributo.Nombre;
+    ViewBag.CtrlName = Model.Valor;
+}
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" data-toggle="tooltip" title="Cerrar">&times;</button>
+    <h4 class="modal-title" id="myModalLabel">
+        <b>@ViewBag.PagName</b>
+        <i class="text-muted">@ViewBag.CtrlName</i>
+    </h4>
+</div>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="modal-body">
+        <div class="text-center">
+            <h3>
+                ¿Quieres
+                <b class="text-danger">
+                    ELIMINAR
+                </b>
+                @Model.TipoAtributo.Nombre ?
+            </h3>
+
+            <p>
+                @Html.DisplayFor(model => model.Valor)
+            </p>
+            <p>---</p>
+            <p>Por favor confirma la acción a realizar:</p>
+            <label class="text-muted">
+                Deshabilitar
+            </label>
+            <input type="radio" name="accionx" value="deshabilitar" class="form-control" checked="checked" />
+
+            <label class="text-danger">
+                Eliminar
+            </label>
+            <input type="radio" name="accionx" value="eliminar" class="form-control" />
+
+
+        </div>
+    </div>
+
+    <div class="modal-footer">
+
+        <button class="btn" type="button" data-dismiss="modal">Cancelar</button>
+        <input class="btn btn-danger" type="submit" value="Confirmar" />
+
+    </div>
+
+}
+
+<script src="~/Scripts/add.toolTip.js"></script>

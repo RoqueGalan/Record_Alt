@@ -1,0 +1,129 @@
+﻿@{
+    bool EsMultipleValor = ViewBag.EsMultipleValor;
+    Guid AtributoID = ViewBag.AtributoID;
+    string ParametrosHTML = ViewBag.ParametrosHTML;
+    Guid TipoAtributoID = ViewBag.TipoAtributoID;
+    string TipoInput = ViewBag.TipoInput;
+    string NombreAtt = ViewBag.NombreAtt;
+}
+
+@if (!EsMultipleValor)
+{
+
+    <input type="@TipoInput" @ParametrosHTML
+           id="id_@AtributoID" name="id_@AtributoID" class="form-control" required />
+    @Html.ValidationMessage("id_" + AtributoID, new { @class = "text-danger" })
+
+
+}
+else
+{
+    <div class="well" id="contenedor_@AtributoID">
+
+        <div class="input-group">
+            <input type="@TipoInput" @ParametrosHTML
+                   id="id_@AtributoID" name="id_@AtributoID" class="form-control inputLimpiar"
+                   placeholder="Agregar mas valores @NombreAtt"
+                   required />
+
+            <span class="input-group-addon btn btn-success" id="btnAdd_@AtributoID" data-toggle="tooltip" title="Agregar @NombreAtt">
+                <span class="fa fa-plus"></span>
+            </span>
+        </div>
+        @Html.ValidationMessage("id_" + AtributoID, new { @class = "text-danger" })
+        <p>Lista de valores:</p>
+        <ul id="listaValores_@AtributoID" class="media-list"></ul>
+
+    </div>
+
+
+
+    <script type="text/javascript">
+
+        $(function () {
+
+            $('#btnAdd_@AtributoID').on("click", function (e) {
+
+                var attID = '@AtributoID';
+                var input = $('#id_' + attID);
+                var ul = $('#listaValores_' + attID);
+
+                //validar no espacios en blanco
+                input.val($.trim(input.val()));
+
+                if (input.val() == "") {
+                    input.focus();
+                }
+                else {
+
+                    var i = ul.children().length;
+                    //id = id_AtributoID-#
+
+                    var id_temp = 'id_' + attID + '_';
+
+                    while ($('#li_' + id_temp + i).length) {
+                        i++;
+                    }
+
+                    id_temp += i;
+
+                    var stringHTML = '' +
+                        '<li class="media" id = "li_' + id_temp + '">' +
+                        '   <div class="media-body">' +
+                                '<input type="hidden" ' + 'id="' + id_temp + '" name="' + id_temp +'" value = "' + input.val() + '"/>' +
+                        input.val() +
+                        '   </div>' +
+                        '   <span id="quitar_' + id_temp + '" class="btn btn-xs btn-danger media-right" data-toggle="tooltip" title="Quitar valor"><span class="fa fa-times"></span></span>' +
+                        '</li>'
+                    ;
+
+                    ul.append($(stringHTML));
+
+                    var btnDel = $('#quitar_' + id_temp);
+
+                    btnDel.addClass("quitarLiCampGen_" + attID);
+                    btnDel.tooltip();
+
+                    input.attr('required', false);
+
+                    input.val('');
+                }
+
+                if (ul.html() == "") {
+                    input.attr('required', true);
+                }
+                else {
+                    input.attr('required', false);
+                }
+
+            });
+        });
+
+
+        $(document.body).on("click", '.quitarLiCampGen_' + '@AtributoID', function (e) {
+
+            var attID = '@AtributoID';
+            var ul = $('#listaValores_' + attID);
+            var input = $('#id_' + attID);
+
+            $(this).parent().remove()
+
+
+            if (ul.html() == "") {
+                input.attr('required', true);
+            }
+            else {
+                input.attr('required', false);
+            }
+
+        });
+
+
+    </script>
+
+}
+
+
+
+<script src="~/Scripts/add.toolTip.js"></script>
+

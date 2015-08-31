@@ -1,0 +1,105 @@
+﻿@model IEnumerable<RecordFCS_Alt.Models.MedidaPieza>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Pieza.SubFolio)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TipoMedida.Nombre)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Altura)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Anchura)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Profundidad)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Diametro)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Diametro2)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UMLongitud)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Peso)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UMMasa)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Otra)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Status)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Temp)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Pieza.SubFolio)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TipoMedida.Nombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Altura)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Anchura)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Profundidad)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Diametro)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Diametro2)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UMLongitud)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Peso)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UMMasa)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Otra)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Status)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Temp)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+        </td>
+    </tr>
+}
+
+</table>

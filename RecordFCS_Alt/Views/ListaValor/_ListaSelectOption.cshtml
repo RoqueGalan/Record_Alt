@@ -1,0 +1,8 @@
+﻿@model List<RecordFCS_Alt.Models.ListaValor>
+
+<option> - Elije una opción - </option>
+
+@foreach (var item in Model)
+{
+    <option value="@item.ListaValorID">@item.Valor</option>
+}

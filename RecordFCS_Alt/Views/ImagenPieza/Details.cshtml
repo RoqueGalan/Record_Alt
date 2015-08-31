@@ -1,0 +1,82 @@
+﻿@model RecordFCS_Alt.Models.ImagenPieza
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>ImagenPieza</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Pieza.SubFolio)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Pieza.SubFolio)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Orden)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Orden)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Titulo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Titulo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Descripcion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Descripcion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EsPrincipal)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EsPrincipal)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RutaParcial)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RutaParcial)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NombreImagen)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NombreImagen)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ImagenPiezaID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

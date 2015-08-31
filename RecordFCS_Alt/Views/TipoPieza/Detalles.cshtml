@@ -1,0 +1,103 @@
+﻿@model RecordFCS_Alt.Models.TipoPieza
+@using RecordFCS_Alt.Helpers
+
+
+@{
+    ViewBag.PagName = "CONFIGURACIÓN";
+    ViewBag.CtrlName = "Tipo de Pieza";
+    ViewBag.Title = @ViewBag.PagName + " - " + @Model.Nombre;
+}
+<h2>
+    @ViewBag.PagName
+    <i class="text-muted">@ViewBag.CtrlName</i>
+    <small class="text-danger">@Model.Nombre</small>
+
+</h2>
+
+<ol class="breadcrumb">
+    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+    <li>@Html.ActionLink("Mantenimiento de catálogos", "Index", "TipoAtributo")</li>
+    <li>@Html.ActionLink("Tipos de Obra", "Index", "TipoObra")</li>
+    <li>@Html.ActionLink(Model.TipoObra.Nombre, "Detalles", "TipoObra", new { id = Model.TipoObraID }, null)</li>
+
+    @{
+        var siguiente = Model.TipoPiezaPadre;
+        var listaLink = new List<RecordFCS_Alt.Models.TipoPieza>();
+
+        while (siguiente != null)
+        {
+            listaLink.Add(siguiente);
+            siguiente = siguiente.TipoPiezaPadre;
+        }
+
+        listaLink = listaLink.Reverse<RecordFCS_Alt.Models.TipoPieza>().ToList();
+    }
+
+    @foreach (var item in listaLink)
+    {
+        <li>@Html.ActionLink(item.Nombre, "Detalles", "TipoPieza", new { id = item.TipoPiezaID }, null)</li>
+    }
+
+    <li class="active">@Model.Nombre</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+<div>
+    <dl class="dl-horizontal">
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Descripcion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Descripcion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+
+        @*<dt>Acciones</dt>
+        <dd>
+            @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar", "Editar", "TipoPieza", routeValues: new { id = Model.TipoPiezaID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-default btn-xs openModal_TipoPieza" })
+        </dd>*@
+    </dl>
+</div>
+
+<h4 class="text-center"><b>Atributos para @Html.DisplayFor(model => model.Nombre)</b></h4>
+<div id="renderListaAtributos">
+    @{ Html.RenderAction("Lista", "Atributo", new { id = Model.TipoPiezaID }); }
+</div>
+
+<hr />
+<h4 class="text-center"><b>Tipos de Piezas adicionales para @Html.DisplayFor(model => model.Nombre)</b></h4>
+
+<div id="renderListaTipoPiezas">
+    @{ Html.RenderAction("Lista", "TipoPieza", new { id = Model.TipoPiezaID }); }
+</div>
+
+
+
+<script src="~/Scripts/add.toolTip.js"></script>

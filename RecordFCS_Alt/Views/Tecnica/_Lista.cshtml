@@ -1,0 +1,110 @@
+﻿@model PagedList.IPagedList<RecordFCS_Alt.Models.Tecnica>
+@using PagedList.Mvc;
+@using RecordFCS_Alt.Helpers
+
+@{
+    Guid TipoTecnicaID = ViewBag.TipoTecnicaID;
+    string nombre = ViewBag.Nombre;
+
+
+}
+
+
+<div class="col-lg-4 col-md-5 col-sm-7">
+    @using (Html.BeginForm("Lista", "Tecnica", FormMethod.Get, new { id = "FormBusqueda" }))
+    {
+        @Html.Hidden("id", TipoTecnicaID)
+
+        <div class="form-group">
+            <div class="input-group input-group-sm">
+                @Html.TextBox("Busqueda", ViewBag.FiltroActual as string, new { @Class = "form-control", placeholder = "Buscar por..." })
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="submit"><span class="fa fa-search"></span></button>
+                </span>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="pull-right">
+    Total de Registros:
+    <span class="badge" data-toggle="tooltip" title="Total de registros">@Model.TotalItemCount</span>
+</div>
+
+
+
+
+
+
+<table class="table table-hover table-condensed">
+    <tr>
+        <th class="col-lg-1 col-md-1 col-sm-2 col-xs-2">
+            Tec.Padre
+        </th>
+
+        <th class="col-lg-1 col-md-1 col-sm-2 col-xs-2">
+            @Html.DisplayNameFor(model => model.FirstOrDefault().ClaveSigla)
+        </th>
+
+        <th class="col-lg-1 col-md-1 col-sm-2 col-xs-2">
+            @Html.DisplayNameFor(model => model.FirstOrDefault().MatriculaSigla)
+        </th>
+        <th class="col-lg-7 col-md-7 col-sm-4 col-xs-2">
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Descripcion)
+        </th>
+        <th class="col-lg-1 col-md-1 col-sm-1 col-xs-2">
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Status)
+        </th>
+
+        <th class="col-lg-1 col-md-1 col-sm-1 col-xs-2">
+            @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Crear Técnica para " + nombre, "Crear", "Tecnica", new { id = TipoTecnicaID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-success btn-xs pull-right openModal_Tecnica" })
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TecnicaPadre.ClaveSigla)
+                <small class="text-muted">@Html.DisplayFor(modelItem => item.TecnicaPadre.ClaveTexto)</small>
+
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.ClaveSigla)
+                <small class="text-muted">@Html.DisplayFor(modelItem => item.ClaveTexto)</small>
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.MatriculaSigla)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Descripcion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+
+            <td>
+                <div class="pull-right">
+                    @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar " + item.Descripcion, "Editar", "Tecnica", routeValues: new { id = item.TecnicaID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-default btn-xs openModal_Tecnica" })
+                    @Html.NoEncodeActionLink("<span class='fa fa-trash'></span>", "Eliminar " + item.Descripcion, "Eliminar", "Tecnica", routeValues: new { id = item.TecnicaID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-danger btn-xs openModal_Tecnica" })
+                </div>
+            </td>
+        </tr>
+    }
+
+</table>
+
+
+<div id="contentPager" class="text-center center-block">
+    @Html.PagedListPager(Model, pagina => Url.Action("Lista", new { id = TipoTecnicaID, pagina = pagina, FiltroActual = ViewBag.FiltroActual }), new PagedListRenderOptions { LinkToFirstPageFormat = "<< Inicio", LinkToPreviousPageFormat = "< Anterior", LinkToNextPageFormat = "Siguiente >", LinkToLastPageFormat = "Final >>", UlElementClasses = new[] { "pagination", "pagination-sm" } })
+</div>
+
+<script src="~/Scripts/add.toolTip.js"></script>
+
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/Scripts/TecnicaLista.js"></script>
+
+

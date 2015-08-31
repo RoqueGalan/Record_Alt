@@ -1,0 +1,73 @@
+﻿@model RecordFCS_Alt.Models.TipoTecnica
+@using RecordFCS_Alt.Helpers
+
+@{
+    ViewBag.PagName = "CONFIGURACIÓN";
+    ViewBag.CtrlName = "Tipo de Técnica";
+    ViewBag.Title = @ViewBag.PagName + " - " + @Model.Nombre;
+}
+
+
+<h2>
+    @ViewBag.PagName
+    <i class="text-muted">@ViewBag.CtrlName</i>
+    <small class="text-muted">@Model.Nombre</small>
+
+</h2>
+
+<ol class="breadcrumb">
+    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+    <li>@Html.ActionLink("Mantenimiento de catálogos", "Index", "TipoAtributo")</li>
+    <li>@Html.ActionLink("Tipos de Técnicas", "Index", "TipoTecnica")</li>
+    <li class="active">@Model.Nombre</li>
+</ol>
+
+
+<div>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Descripcion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Descripcion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+        <dt>Acciones</dt>
+        <dd>
+            @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar", "Editar", "TipoTecnica", routeValues: new { id = Model.TipoTecnicaID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-default btn-xs openModal_TipoTecnica" })
+        </dd>
+    </dl>
+</div>
+
+<h4 class="text-center"><b>Técnicas para @Html.DisplayFor(model => model.Nombre)</b></h4>
+<!-- Campo que se reemplaza-->
+
+<div id="renderListaTecnica">
+    @{ Html.RenderAction("Lista", "Tecnica", new { id = Model.TipoTecnicaID}); }
+</div>
+
+
+
+<script src="~/Scripts/add.toolTip.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/Scripts/TipoTecnicaLista.js"></script>
+
+
+

@@ -1,0 +1,95 @@
+﻿@model IEnumerable<RecordFCS_Alt.Models.Atributo>
+@using RecordFCS_Alt.Helpers
+
+@{
+    Guid id = ViewBag.id;
+    string nombre = ViewBag.nombre;
+
+}
+
+<table class="table table-hover table-condensed">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Orden)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.TipoAtributo.Nombre)
+        </th>
+
+        @* GENERAR UN LIST DE MOSTRAR EN *@
+
+        @foreach (var itemTM in (List<string>)ViewBag.listaTM)
+        {
+            <th>
+                @itemTM
+            </th>
+        }
+
+        <th>
+            @Html.DisplayNameFor(model => model.Status)
+        </th>
+        <th>
+            @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Agregar Tipo de Atributo para " + nombre, "Crear", "Atributo", new { id = id }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-success btn-xs openModal_atributo" })
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Orden)
+            </td>
+
+            <td>
+                @{string nombreAtt = "";}
+                @if (string.IsNullOrWhiteSpace(item.NombreAlterno))
+                {
+                    @Html.DisplayFor(modelItem => item.TipoAtributo.Nombre)
+
+                    nombreAtt = item.TipoAtributo.Nombre;
+                }
+                else
+                {
+                    @Html.DisplayFor(modelItem => item.NombreAlterno)
+
+                    nombreAtt = item.NombreAlterno;
+
+                }
+            </td>
+            @* GENERAR UN LIST DE MOSTRAR EN *@
+            @foreach (var itemTM in item.MostrarAtributos)
+            {
+                <td>
+                    <a href="@Url.Action("Editar", "MostrarAtributo", new { id = itemTM.TipoMostrarID, AtributoID = itemTM.AtributoID })" title="Editar @itemTM.TipoMostrar.Nombre en @item.NombreAlterno" data-modal="" data-toggle="tooltip" class="openModal_MostrarAtributo">
+                        @Html.DisplayFor(modelItemTM => itemTM.Status)
+                    </a>
+
+                </td>
+
+            }
+
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+
+                @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar " + nombreAtt, "Editar", "Atributo", routeValues: new { id = item.AtributoID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-default btn-xs openModal_atributo" })
+                @Html.NoEncodeActionLink("<span class='fa fa-trash'></span>", "Eliminar " + nombreAtt + "del tipo de pieza", "Eliminar", "Atributo", routeValues: new { id = item.AtributoID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-danger btn-xs openModal_atributo" })
+
+
+            </td>
+        </tr>
+    }
+
+</table>
+
+
+
+<script src="~/Scripts/add.toolTip.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+<script src="~/Scripts/atributoLista.js"></script>
+<script src="~/Scripts/mostrarAtributoLista.js"></script>

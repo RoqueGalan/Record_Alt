@@ -1,0 +1,77 @@
+﻿@model IEnumerable<RecordFCS_Alt.Models.TipoPieza>
+@using RecordFCS_Alt.Helpers
+
+@{
+    bool root = Convert.ToBoolean(ViewBag.root);
+    Guid id = ViewBag.id;
+    string nombre = ViewBag.nombre;
+
+
+}
+
+<table class="table table-hover table-condensed">
+    <tr>
+        <th class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+            @Html.DisplayNameFor(model => model.Orden)
+        </th>
+        <th class="col-lg-7 col-md-7 col-sm-7 col-xs-4">
+            @Html.DisplayNameFor(model => model.Nombre)
+        </th>
+        <th class="col-lg-1 col-md-1 col-sm-1 col-xs-2">
+            @Html.DisplayNameFor(model => model.Prefijo)
+        </th>
+        <th class="col-lg-1 col-md-1 col-sm-1 col-xs-2">
+            @Html.DisplayNameFor(model => model.Status)
+        </th>
+        <th class="col-lg-2 col-md-2 col-sm-2 col-xs-3">
+            @if (ViewBag.root)
+            {
+                @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Crear un Tipo de Pieza PRINCIPAL para el Tipo de Obra", "Crear", "TipoPieza", new { id = id, principal = true }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-success btn-xs pull-right openModal_TipoPieza" })
+            }
+            else
+            {
+                string titulo = "Crear un Tipo de Pieza para " + ViewBag.nombre;
+                @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Crear Tipo de Pieza para " + nombre, "Crear", "TipoPieza", new { id = id }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-success btn-xs openModal_TipoPieza" })
+
+            }
+
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Orden)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nombre)
+                <small class="text-muted">@Html.DisplayFor(modelItem => item.Descripcion)</small>
+
+
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Prefijo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.NoEncodeActionLink("<span class='fa fa-gear'></span>", "Configurar Tipo de Pieza " + item.Nombre, "Detalles", "TipoPieza", routeValues: new { id = item.TipoPiezaID }, htmlAttributes: new { data_toggle = "tooltip", @class = "btn btn-primary btn-xs" })
+                @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar " + item.Nombre, "Editar", "TipoPieza", routeValues: new { id = item.TipoPiezaID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-default btn-xs openModal_TipoPieza" })
+                @Html.NoEncodeActionLink("<span class='fa fa-trash'></span>", "Eliminar " + item.Nombre, "Eliminar", "TipoPieza", routeValues: new { id = item.TipoPiezaID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-danger btn-xs openModal_TipoPieza" })
+
+            </td>
+        </tr>
+    }
+
+</table>
+
+
+
+<script src="~/Scripts/add.toolTip.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+<script src="~/Scripts/tipoPiezaLista.js"></script>

@@ -1,0 +1,15 @@
+﻿@model RecordFCS_Alt.Models.TipoObra
+
+@if (ViewBag.totalValores == 0)
+{
+            @Html.DropDownList("TipoPiezaID", null, "- Sin plantillas. Contacta al administrador -", htmlAttributes: new { @class = "form-control", required = "required" })
+}
+else
+{
+            @Html.DropDownList("TipoPiezaID", null, "- Selecciona un tipo de obra -", htmlAttributes: new { @class = "form-control SelectTipoPieza", required = "required" })
+}
+
+
+
+
+<script src="~/Scripts/reg.tipoPiezaSelect.js"></script>
