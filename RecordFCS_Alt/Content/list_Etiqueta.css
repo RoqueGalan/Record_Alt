@@ -1,0 +1,10 @@
+﻿.img-etiqueta {
+    max-width: 200px;
+    max-height: 200px;
+}
+
+
+.contenedor-etiqueta{
+    background-image:url("img/listado/bgMS_gris.png");
+
+}

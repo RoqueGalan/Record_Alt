@@ -1,0 +1,19 @@
+﻿@using RecordFCS_Alt.Helpers
+
+@{
+    var alertas = TempData.ContainsKey(Alerta.TempDataKey)
+                ? (List<Alerta>)TempData[Alerta.TempDataKey]
+                : new List<Alerta>();
+
+    foreach (var alerta in alertas)
+    {
+        var claseDescartable = alerta.Descartable ? "alert-dismissable" : null;
+        <div class="alert alert-@alerta.AlertaEstilo @claseDescartable text-center">
+            @if (alerta.Descartable)
+            {
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            }
+            @Html.Raw(alerta.Mensaje)
+        </div>
+    }
+}

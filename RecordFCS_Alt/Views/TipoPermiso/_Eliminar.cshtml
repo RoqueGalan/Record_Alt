@@ -1,0 +1,74 @@
+﻿@model RecordFCS_Alt.Models.TipoPermiso
+
+@{
+    ViewBag.PagName = "Eliminar";
+    ViewBag.CtrlName = "Tipo de Permiso";
+    ViewBag.Title = @ViewBag.PagName;
+}
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h4 class="modal-title" id="myModalLabel">
+        <b>@ViewBag.PagName</b>
+        <i class="text-muted">@ViewBag.CtrlName</i>
+    </h4>
+</div>
+
+<div class="alert alert-danger" role="alert">
+    <h3>¿Seguro que desea <strong>¡ELIMINAR!</strong> este registro?</h3>
+</div>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="modal-body">
+
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Nombre)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Nombre)
+            </dd>
+
+            <dt>NOTA</dt>
+            <dd>
+                <ul>
+                    <li class="text-danger">Tener en cuenta que la ELIMINACION del registro con lleva a la perdida total de los registros relacionados a este.</li>
+                    <li>Si no desea perder todo, solo DESHABILITE el registro.</li>
+                    <li class="text-muted">* Por seguridad el default es DESHABILITAR</li>
+                </ul>
+            </dd>
+
+            <dt>
+                Acción a Realizar
+            </dt>
+            <dd>
+
+                <div class="btn-group btn-group-sm" data-toggle="buttons">
+                    <label class="btn btn-default">
+                        <input type="radio" name="accionx" value="deshabilitar" checked="checked" /> Deshabilitar
+                    </label>
+
+                    <label class="btn btn-danger">
+                        <input type="radio" name="accionx" value="eliminar" /> Eliminar
+                    </label>
+                </div>
+            </dd>
+
+
+        </dl>
+
+    </div>
+
+    <div class="modal-footer">
+
+        <button class="btn" type="button" data-dismiss="modal">Cancelar</button>
+        <input class="btn btn-primary" type="submit" value="Confirmar" />
+
+    </div>
+
+}

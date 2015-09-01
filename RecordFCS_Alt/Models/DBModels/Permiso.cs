@@ -7,36 +7,23 @@ using System.Web;
 
 namespace RecordFCS_Alt.Models
 {
-    [MetadataType(typeof(PermisoMetadata))]
-    public partial class Permiso
+    public class Permiso
     {
-        //Llaves Primarias
         [Key]
         [Column(Order = 1)]
-        [ForeignKey("TipoPermiso")]
-        public Guid TipoPermisoID { get; set; }
+        [ForeignKey("Usuario")]
+        public Guid UsuarioID { get; set; }
 
         [Key]
         [Column(Order = 2)]
-        [ForeignKey("Usuario")]
-        public Guid UsuarioID { get; set; }
-        public bool Status { get; set; }
-
-
-        //Virtuales
-        public virtual Usuario Usuario { get; set; }
-        public virtual TipoPermiso TipoPermiso { get; set; }
-    }
-
-    public class PermisoMetadata
-    {
-
+        [ForeignKey("TipoPermiso")]
         public Guid TipoPermisoID { get; set; }
 
-        public Guid UsuarioID { get; set; }
-
-        [Display(Name = "Estado")]
+        [Display(Name = "¿Activo?")]
         public bool Status { get; set; }
 
+        /* Propiedades de navegacion*/
+        public virtual Usuario Usuario { get; set; }
+        public virtual TipoPermiso TipoPermiso { get; set; }
     }
 }

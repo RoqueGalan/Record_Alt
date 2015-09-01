@@ -1,15 +1,15 @@
-﻿
-@using RecordFCS_Alt.Helpers
+﻿@using RecordFCS_Alt.Helpers
 
 @using (Html.BeginForm("MostrarResultados", "Buscador", FormMethod.Post, new { id = "FormFiltros", name = "FormFiltros" }))
 {
-    <div class="panel panel-primary panel-collapse">
+    <div class="panel panel-inverse panel-collapse">
         <div class="panel-heading">
             <h3 class="panel-title text-center">Filtros de Busqueda</h3>
         </div>
 
         <!-- Lista de Filtros Dinamicos-->
-        <ul class="list-group" id="filtrosBusqueda"></ul>
+        <ul class="list-group" id="filtrosBusqueda">
+        </ul>
 
         <!-- Filtros Estaticos -->
         <ul class="list-group">
@@ -77,8 +77,8 @@
             // hide dropdown if any (this is used wehen invoking modal from link in bootstrap dropdown )
             //$(e.target).closest('.btn-group').children('.dropdown-toggle').dropdown('toggle');
 
-            $('#miModalContenido').load(this.href, function () {
-                $('#miModal').modal({
+            $('#myModalContent').load(this.href, function () {
+                $('#myModal').modal({
                     /*backdrop: 'static',*/
                     keyboard: true
                 }, 'show');

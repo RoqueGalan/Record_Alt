@@ -1,0 +1,214 @@
+﻿@model RecordFCS_Alt.Models.Usuario
+@using RecordFCS_Alt.Helpers
+
+@{
+    ViewBag.PagName = "Configurar";
+    ViewBag.CtrlName = "Usuario";
+    ViewBag.Title = @ViewBag.PagName;
+}
+
+<h1>
+    <b>@ViewBag.PagName</b>
+    <i class="text-muted">@Model.UserName</i>
+</h1>
+
+<ol class="breadcrumb">
+    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+    <li>@Html.ActionLink("Usuarios", "Index", "Usuario")</li>
+    <li class="active">@Model.UserName</li>
+    <li class="active">@ViewBag.PagName</li>
+</ol>
+
+<div class="well well-sm">
+
+    <div class="row">
+
+        <div class="col-md-2 col-sm-4 text-center">
+            @*<img src="holder.js/100x150" alt="No hay Imagenes" class="">*@
+            <div class="pull-right">
+                @if (User.IsInRole("UsuarioEdit"))
+                {
+                    @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar", "Editar", "Usuario", routeValues: new { id = Model.UsuarioID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-default btn-xs Usuario" })
+                }
+            </div>
+            <i class="fa fa-male fa-10x"></i>
+        </div>
+
+        <div class="col-md-10 col-sm-8">
+
+            <table class="table table-responsive">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.UserName)
+                    </th>
+                    <td>
+                        @Html.DisplayFor(model => model.UserName)
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Nombre)
+                    </th>
+                    <td>
+                        @Html.DisplayFor(model => model.Nombre)
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Apellido)
+                    </th>
+                    <td>
+                        @Html.DisplayFor(model => model.Apellido)
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Correo)
+                    </th>
+                    <td>
+                        @Html.DisplayFor(model => model.Correo)
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Status)
+                    </th>
+                    <td>
+                        @Html.DisplayFor(model => model.Status)
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="well well-sm">
+            <h4 class="link link-inverse text-center MostrarPermisos">
+                <i class="fa fa-key"></i>
+                Permisos <span class="fa fa-caret-down"></span>
+            </h4>
+            <div id="renderListaPermisos">
+                @{Html.RenderAction("Lista", "Permiso", new { id = Model.UsuarioID });}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="well well-sm">
+            <h4 class="link link-inverse text-center MostrarAcciones">
+                <i class="fa fa-leanpub"></i>
+                Historial de Acciones <span class="fa fa-caret-down"></span>
+            </h4>
+            <div id="renderListaAcciones">
+                @*@{Html.RenderAction("Lista", "Permiso", new { id = Model.UsuarioID });}*@
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+<!-- modal placeholder-->
+<div id='myModal' class='modal fade in'>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id='myModalContent'></div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+}
+
+
+
+<script type="text/javascript">
+
+    $(function () {
+        $.ajaxSetup({ cache: false });
+
+        $('#TablaPermisos').toggle();
+
+        $(".MostrarPermisos").on("click", function (e) {
+
+            $('#TablaPermisos').toggle("slow");
+
+            return false;
+        });
+    });
+</script>
+
+
+
+<!-- Editar usuario-->
+<script type="text/javascript">
+    $(function () {
+        $.ajaxSetup({ cache: false });
+
+        $("a[data-modal].Usuario").on("click", function (e) {
+
+            $('#myModalContent').load(this.href, function () {
+                $('#myModal').modal({
+                    /*backdrop: 'static',*/
+                    keyboard: true
+                }, 'show');
+                bindForm_Usuario(this);
+            });
+            return false;
+        });
+    });
+
+    function bindForm_Usuario(dialog) {
+        $('form', dialog).submit(function () {
+            $.ajax({
+                url: this.action,
+                type: this.method,
+                data: $(this).serialize(),
+                success: function (result) {
+                    if (result.success) {
+                        $('#myModal').modal('hide');
+                        location.reload();
+                        $('#alertasDiv').load('@Url.Action("_Alertas","Base")');
+
+                    } else {
+                        $('#myModalContent').html(result);
+                        $('#alertasDiv').load('@Url.Action("_Alertas","Base")');
+                        bindForm_Usuario(dialog);
+                    }
+                }
+            });
+            return false;
+        });
+    }
+
+
+    //Paginador cargar vista parcial en el div
+    $(function () {
+        $.ajaxSetup({ cache: false });
+
+        $("#contentPager a").on("click", function (e) {
+            $.ajax({
+                url: $(this).attr("href"),
+                type: 'GET',
+                success: function (result) {
+                    $('#replacetarget').html(result);
+                }
+            });
+            return false;
+        });
+    });
+</script>
+
+
+
+

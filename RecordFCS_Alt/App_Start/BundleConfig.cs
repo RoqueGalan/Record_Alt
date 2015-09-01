@@ -22,13 +22,15 @@ namespace RecordFCS_Alt
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js",
+                      "~/Scripts/holder.js",
                       "~/Scripts/respond.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                      "~/Content/theme.css",
                      "~/Content/site.css",
                      "~/Content/alertas.css",
-                     "~/Content/css/font-awesome.css"));
+                     "~/Content/css/font-awesome.css",
+                     "~/Content/bootstrap-subMenus.css"));
         }
     }
 }

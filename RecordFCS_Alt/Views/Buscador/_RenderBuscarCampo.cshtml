@@ -49,14 +49,14 @@
 @* *@
 <script type="text/javascript">
 
-    //$("[name='PalabraExacta']").bootstrapSwitch();
+    $("[name='PalabraExacta']").bootstrapSwitch();
 
-    //$('input[name="PalabraExacta"]').on('switchChange.bootstrapSwitch', function (event, state) {
-    //    if ($('#Filtro').val() != "") {
-    //        buscarDatoAjax();
-    //        $("#Filtro").focus();
-    //    }
-    //});
+    $('input[name="PalabraExacta"]').on('switchChange.bootstrapSwitch', function (event, state) {
+        if ($('#Filtro').val() != "") {
+            buscarDatoAjax();
+            $("#Filtro").focus();
+        }
+    });
 
     $("#Filtro").on("keyup", function (e) {
         buscarDatoAjax();

@@ -7,7 +7,7 @@ namespace RecordFCS_Alt.Helpers.Seguridad
 {
     interface ICustomPrincipal : IPrincipal
     {
-        Int64 UsuarioID { get; set; }
+        Guid UsuarioID { get; set; }
         string Nombre { get; set; }
         string Apellido { get; set; }
         string[] ListaRoles { get; set; }
@@ -40,7 +40,7 @@ namespace RecordFCS_Alt.Helpers.Seguridad
             this.Identity = new GenericIdentity(userName);
         }
 
-        public Int64 UsuarioID { get; set; }
+        public Guid UsuarioID { get; set; }
         public string Nombre { get; set; }
         public string Apellido { get; set; }
         public string[] ListaRoles { get; set; }
@@ -50,7 +50,7 @@ namespace RecordFCS_Alt.Helpers.Seguridad
 
     public class CustomPrincipalSerializeModel
     {
-        public Int64 UsuarioID { get; set; }
+        public Guid UsuarioID { get; set; }
         public string Nombre { get; set; }
         public string Apellido { get; set; }
         public string[] ListaRoles { get; set; }

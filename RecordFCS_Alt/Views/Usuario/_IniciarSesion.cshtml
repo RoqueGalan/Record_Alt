@@ -1,0 +1,162 @@
+﻿@model RecordFCS_Alt.Models.Usuario
+
+<div id="formIniciarSesion">
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3 class="modal-title text-muted text-center" id="myModalLabel">
+            <b>Iniciar Sesión</b>
+        </h3>
+    </div>
+
+    <div class="modal-body">
+
+        <div id="formSesionIn" class="text-center clearfix">
+
+            <span class="fa-stack fa-4x text-muted">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-user fa-stack-1x fa-inverse"></i>
+            </span>
+            <br />
+
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <span class="fa fa-user"></span>
+                        </span>
+                        @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control", placeholder = "Nombre de usuario" } })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+                </div>
+
+
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <span class="fa fa-lock"></span>
+                        </span>
+                        @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", placeholder = "Contraseña"} })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    <button class="btn btn-primary">Iniciar</button>
+                </div>
+            }
+
+        </div>
+        <div class="pull-right">
+            <span id="btnAccionResetPass" class="link link-info">¿Olvidaste tu contraseña?</span>
+        </div>
+
+    </div>
+</div>
+
+
+<div id="ResetPassword">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3 class="modal-title text-muted text-center" id="myModalLabel">
+            <b>Restablecer Contraseña</b>
+        </h3>
+    </div>
+
+    <div class="modal-body text-center clearfix">
+        <div id="formSesionIn" class="text-center">
+            @using (Html.BeginForm("ResetPassword", "Usuario"))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <span class="fa-stack fa-4x text-muted">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-lock fa-stack-1x fa-inverse"></i>
+                </span>
+                <br />
+
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <span class="fa fa-user"></span>
+                        </span>
+                        @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control ResetText", placeholder = "Nombre de usuario" } })
+                    </div>
+                </div>
+
+                <p>ó</p>
+
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <span class="fa fa-envelope-o"></span>
+                        </span>
+                        @Html.EditorFor(model => model.Correo, new { htmlAttributes = new { @class = "form-control ResetText", placeholder = "Correo eléctronico" } })
+                        @Html.ValidationMessageFor(model => model.Correo, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <button class="btn btn-warning">Restablecer</button>
+                </div>
+            }
+        </div>
+
+        <div class="pull-right">
+            <span id="btnFormIniciarSesion" class="link link-info">
+                <span class="fa fa-arrow-circle-left"></span>
+                Regresar
+            </span>
+        </div>
+    </div>
+
+</div>
+
+<div class="modal-footer center-block">
+    <button class="btn" type="button" data-dismiss="modal">Cancelar</button>
+</div>
+
+
+
+<script type="text/javascript">
+    
+    $(function () {
+
+
+        $.ajaxSetup({ cache: false });
+
+        $('#ResetPassword').toggle();
+
+
+        $("#btnAccionResetPass").on("click", function (e) {
+
+            $('#formIniciarSesion').toggle("slow");
+            $('#ResetPassword').toggle("slow");
+            $("#UserName.ResetText").val($("#UserName").val());
+            return false;
+        });
+
+        $('#btnFormIniciarSesion').on("click", function (e) {
+
+            $('#ResetPassword').toggle("slow");
+            $('#formIniciarSesion').toggle("slow");
+            $("#UserName").val($("#UserName.ResetText").val());
+            return false;
+        });
+
+
+        $('#UserName.ResetText').on("click", function (e) {
+            $("#Correo.ResetText").val("");
+        });
+        $('#Correo.ResetText').on("click", function (e) {
+            $("#UserName.ResetText").val("");
+        });
+
+
+    });
+</script>

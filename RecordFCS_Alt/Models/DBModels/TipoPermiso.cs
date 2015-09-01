@@ -7,37 +7,21 @@ using System.Web.Mvc;
 
 namespace RecordFCS_Alt.Models
 {
-    [MetadataType(typeof(TipoPermisoMetadata))]
-    public partial class TipoPermiso
+    public class TipoPermiso
     {
         [Key]
         public Guid TipoPermisoID { get; set; }
+
+        [Remote("validarRegistroUnicoClave", "TipoPermiso", HttpMethod = "POST", ErrorMessage = "Ya existe un registro con esta clave. Intenta con otro.")]
         public string Clave { get; set; }
+
         public string Nombre { get; set; }
         public string Descripcion { get; set; }
+
+        [Display(Name = "¿Activo?")]
         public bool Status { get; set; }
 
-        //virtual
+        /* Propiedades de navegacion*/
         public virtual ICollection<Permiso> Permisos { get; set; }
-    }
-
-    public class TipoPermisoMetadata
-    {
-        public Guid TipoPermisoID { get; set; }
-
-        [Required(AllowEmptyStrings = false, ErrorMessage = "Requerido.")]
-        [StringLength(127)]
-        [Display(Name = "Clave")]
-        [Remote("EsUnico", "TipoPermiso", HttpMethod = "POST", AdditionalFields = "TipoPermisoID", ErrorMessage = "Ya existe, intenta otro nombre.")]
-        public string Clave { get; set; }
-        
-        public string Nombre { get; set; }
-
-        [Display(Name = "Descripción")]
-        public string Descripcion { get; set; }
-
-        [Display(Name = "Estado")]
-        public bool Status { get; set; }
-
     }
 }

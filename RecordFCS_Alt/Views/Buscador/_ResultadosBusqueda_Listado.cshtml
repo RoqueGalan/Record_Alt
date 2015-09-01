@@ -1,0 +1,131 @@
+﻿@using RecordFCS_Alt.Models.ViewsModel
+@using RecordFCS_Alt.Helpers
+@model  PagedList.IPagedList<IGrouping<long, PiezaEnCarrito>>
+@using PagedList.Mvc;
+
+@if (ViewBag.totalRegistros > 0)
+{
+    <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+    <ul class="media-list" id="ULLR">
+        @foreach (var grupo in Model)
+        {
+
+            <li class="media LRPadre" id="gLR_@grupo.Key">
+                <div class="media-left">
+                    <a href="@Url.Action("Detalles", "Obra", new { id = grupo.Key })" data-toggle="tooltip" title="Abrir Ficha" target="_blank"><b>@grupo.FirstOrDefault().ClaveObra</b></a>
+
+                </div>
+
+                <div class="media-body">
+                    <ul class="media-list">
+                        @foreach (var item in grupo)
+                        {
+                            <li class="media LRHijo" id="itemLR_@item.PiezaID">
+                                <div class="media-left"><img src="@item.RutaImagen" alt="@item.ClavePieza" class="media-object img-mini" /></div>
+                                <div class="media-body">
+                                    <small class="media-heading">
+                                        <b>
+                                            @item.ClavePieza
+                                        @*@Html.ActionLink(@item.ClavePieza, "PiezaAdd", "Listado", new { PiezaID = item.PiezaID }, new { @Class = "llamarRenderLTAdd", data_toggle = "tooltip", title = "Agregar a Lista" })*@
+                                    </b>
+                                </small>
+                                <small class="center-block">@item.Titulo</small>
+                                <small class="center-block"><b>@item.Autor</b></small>
+                            </div>
+
+                            <a href="@Url.Action("PiezaAdd", "Listado", new { PiezaID = item.PiezaID })" class="media-right LRHijo llamarRenderLTAdd" data-toggle="tooltip" title="Agregar a Lista Temporal"><i class="fa fa-arrow-right" id="contVertical"></i></a>
+                        </li>
+                        }
+                    </ul>
+
+                </div>
+            </li>
+        }
+    </ul>
+
+    <div id="contentPager" class="text-center">
+        @Html.PagedListPager(Model, pagina => Url.Action("MostrarResultadosListado", new { pagina = pagina }))
+        Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) de @Model.PageCount
+    </div>
+}
+else
+{
+    <div class="text-center">
+        <p>
+            <i class="text-muted">
+                No se encontraron coincidencias, intenta utilizar los filtros para una busqueda óptima.
+            </i>
+        </p>
+
+        <span class="fa fa-exclamation-triangle fa-5x text-warning"></span>
+
+    </div>
+}
+
+
+
+
+
+
+
+<script type="text/javascript">
+
+    $("a.llamarRenderLTAdd").on("click", function (e) {
+        $.ajaxSetup({ cache: false });
+        e.preventDefault();
+
+        enviarInfoAjaxyRecargaLT($(this).attr('href'));
+        return false;
+    });
+
+
+    //Paginador cargar vista parcial en el div
+
+    $("#contentPager a").on("click", function (e) {
+
+        $('#render_resultadoPiezas').html('' +
+            '<div class="text-center">' +
+                '<p>' +
+                    '<span class="text-muted">' +
+                        'Por favor espere' +
+                    '</span>' +
+                '</p>' +
+                '<i class="fa fa-spinner fa-pulse fa-12x text-muted"></i>' +
+                '<p>' +
+                    'Se estan procedando los resultados...' +
+                '</p>' +
+            '</div>');
+
+        var liga = $(this).attr("href").split('?');
+        var pag = liga[1].split('=');
+
+        $('#pag').val(pag[1]);
+
+
+        var form = $('#FormFiltros');
+
+
+        $.ajax({
+            url: liga[0],
+            type: 'POST',
+            data: form.serialize(),
+            success: function (result) {
+                //alert("okokok");
+                $('#render_resultadoPiezas').html(result); //  Campo que actualizara
+            }
+        });
+
+        return false;
+    });
+
+</script>
+
+
+<script src="~/Scripts/holder.js"></script>
+
+<script type="text/javascript">
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+</script>

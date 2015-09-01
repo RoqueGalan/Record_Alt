@@ -1,0 +1,60 @@
+﻿@{
+    ViewBag.Title = "RECORD - Inicio";
+}
+
+<div class="well well-sm text-center">
+    <h1>Hola <span><b>@User.Nombre</b></span>, bienvenido a RECORD!</h1>
+</div>
+
+<div class="text-center">
+    <h4>Acciones Rápidas</h4>
+</div>
+
+<div class="row">
+    <div class="col-md-4 text-center">
+        @if (User.IsInRole("ObraRegistrar"))
+        {
+            <a href="@Url.Action("Registro","Obra")" class="link link-success">
+                <span class="fa-stack fa-7x">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-edit fa-stack-1x fa-inverse"></i>
+                </span>
+                <h3 class="">Registrar Obra</h3>
+            </a>
+        }
+    </div>
+
+    <div class="col-md-4 text-center">
+        <a href="@Url.Action("Index","Buscador")" class="link link-info">
+            <span class="fa-stack fa-7x">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-search fa-stack-1x fa-inverse"></i>
+            </span>
+            <h3 class="">Buscador</h3>
+        </a>
+    </div>
+
+    <div class="col-md-4 text-center">
+        @if (User.IsInRole("UsuarioVer"))
+        {
+            <a href="@Url.Action("Index", "Usuario")" class="link link-inverse">
+                <span class="fa-stack fa-7x">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-users fa-stack-1x fa-inverse"></i>
+                </span>
+                <h3 class="">Usuarios</h3>
+            </a>
+        }
+        else
+        {
+            <a href="@Url.Action("Detalles", "Usuario", new { id = User.UsuarioID })" class="link link-inverse">
+                <span class="fa-stack fa-7x">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-street-view fa-stack-1x fa-inverse"></i>
+                </span>
+                <h3 class="">Mis Datos</h3>
+            </a>
+        }
+        
+    </div>
+</div>

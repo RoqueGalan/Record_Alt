@@ -2,6 +2,8 @@
 using RecordFCS_Alt.Helpers.Seguridad;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 
 namespace RecordFCS_Alt.Controllers

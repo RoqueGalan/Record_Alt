@@ -1,33 +1,188 @@
-﻿@{
-    ViewBag.Title = "Home Page";
+﻿@using RecordFCS_Alt.Helpers
+
+@{
+    ViewBag.Title = "RECORD - Inicio";
 }
 
-<div>
-    <span class="fa fa-edit"></span> prueba
-</div>
 
-kkkkkk
-<li class="media" id="li_id_xxxx_xxxx">
 
-    <div class="media-body">
-        <input type="hidden" id="id_xxxx_xxxx" name="id_xxxx_xxxx" value="xxxx" />
-
-        <div class="form-group">
-            <label class="control-label" for="id_xxxx_xxxx_prefijo">Prefijo</label>
-
-            <div class="col-md-2 col-sm-2 col-xs-3">
-                <input type="text" id="id_xxxx_xxxx_prefijo" name="id_xxxx_xxxx_prefijo" value="Principal" class="form-control input-sm" />
-             </div>
-            
-            <label class="control-label" for="id_xxxx_xxxx_prefijo">texto_div_xxxx_xxxx</label>
+@*<div id="saludoContent">
+        <div class="saludo">
+            <h1 class="myh1">
+                <i>
+                    ¡B<span class="minusculaM">ienvenido a</span>
+                    <span>R<span class="minusculaM">ECORD</span></span>!
+                </i>
+            </h1>
+            <p class="myh1"><b>R</b>egistro, <b>C</b>ontrol y <b>D</b>ocumentación de <b>O</b>bra</p>
         </div>
+    </div>*@
+
+<body>
+    <header class="cont-slider">
+        <link href="~/Content/Homes.css" rel="stylesheet" />
+        <section class="slider">
+            <article class="slide uno"><span></span></article>
+            <!--
+            -->
+            <article class="slide dos"><span></span></article>
+            <!--
+            -->
+            <article class="slide tres"><span></span></article>
+            <!--
+            -->
+            <article class="slide cuatro"><span></span></article>
+            <!--
+            -->
+        </section>
+       
+        </header>
+    <section class="galeria">
+        <div><img src="../Content/img/home/carrusel/logo_cehm.png" alt="imagen"></div>
+        <div><img src="../Content/img/home/carrusel/logo_fcs.png" alt="imagen"></div>
+        <div><img src="../Content/img/home/carrusel/logo_soumaya.png" alt="imagen"></div>
+
+    </section>
+    
+</body>
+
+
+
+
+
+@* CARRUSEL
+    <div id="carrusel_home" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+
+            <div class="item active">
+                <img src="~/Content/img/home/carrusel/logoFundacionCarlosSlim.png">
+            </div>
+
+            <div class="item">
+                <img src="~/Content/img/home/carrusel/img-1.jpg" />
+            </div>
+
+            <div class="item">
+                <img src="~/Content/img/home/carrusel/img-2.jpg" />
+            </div>
+
+            <div class="item">
+                <img src="~/Content/img/home/carrusel/logoFundacionCarlosSlim.png" />
+            </div>
+
     </div>
 
-    <span id="quitar_id_xxxx_xxxx" class="btn btn-xs btn-danger media-right" data-toggle="tooltip" title="Quitar valor"><span class="fa fa-times"></span></span>
-</li>
+    <div class="logoFundacion">
+        <img src="~/Content/img/logoFundacionCarlosSlim.png" alt="Fundación Carlos Slim" class="imgSaludo" />
+    </div>
 
 
 
+    @*<div class="row descHome">
+
+        <div class="col-lg-4 text-center">
+            <span class="fa-stack fa-4x iconoHome">
+                <i class="fa fa-circle fa-stack-2x text-info"></i>
+                <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+            </span>
+            <h1><i class="text-muted"><b>Registro</b></i></h1>
+            <small class="text-muted">
+                Registro de todo tipo de objeto artístico.
+                Para mayor información da click
+                @Html.ActionLink("aqui.", "IniciarSesion", "Usuario", null, new { data_modal = "", @class = " link link-info IniciarSesion" })
+            </small>
+        </div>
+
+        <div class="col-lg-4 text-center">
+            <span class="fa-stack fa-4x iconoHome">
+                <i class="fa fa-circle fa-stack-2x text-danger"></i>
+                <i class="fa fa-exchange fa-stack-1x fa-inverse"></i>
+            </span>
+            <h2><i class="text-muted"><b>Control</b></i></h2>
+            <small class="text-muted">
+                Lograr una mejor trazabilidad de cada
+                tipo de objeto artístico previamente registrado
+                en <i><b>RECORD</b></i>.
+                Para mayor información da click
+                @Html.ActionLink("aqui.", "IniciarSesion", "Usuario", null, new { data_modal = "", @class = " link link-info IniciarSesion" })
+            </small>
+        </div>
+
+        <div class="col-lg-4 text-center">
+            <span class="fa-stack fa-4x iconoHome">
+                <i class="fa fa-circle fa-stack-2x text-success"></i>
+                <i class="fa fa-book fa-stack-1x fa-inverse"></i>
+            </span>
+            <h2><i class="text-muted"><b>Documentación</b></i></h2>
+            <small class="text-muted">
+                Cada objeto artístico contiene una ficha técnica.
+                Para mayor información da click
+                @Html.ActionLink("aqui.", "IniciarSesion", "Usuario", null, new { data_modal = "", @class = " link link-info IniciarSesion" })
+            </small>
+        </div>
+
+    </div>
+    <hr />
+    <div class="row text-center vertical-divider">
+        <div class="col-sm-6">
+            <address>
+                <strong>PLAZA CARSO</strong>
+                <br />
+                <small>
+                    <span>
+                        <abbr title="Dirección"><i class="fa fa-map-marker"></i></abbr>
+                        Blvd.Miguel de Cervantes Saavedra 303,
+                        Col. Ampliación Granada
+                        México, D.F.
+                    </span>
+                    <br />
+                    <span>
+                        <abbr title="Teléfono"><i class="fa fa-phone"></i></abbr>
+                        1103-9800
+                    </span>
+                    <br />
+                    <span>
+                        <abbr title="Horario"><i class="fa fa-clock-o"></i></abbr>
+                        Todos los días de 10:30 a 18:30 h.
+                    </span>
+                </small>
+            </address>
+        </div>*@
 
 
+   @* <div class="col-sm-6">
+                <address>
+                    <strong>PLAZA LORETO</strong>
+                    <br />
+                    <small>
+                        <span>
+                            <abbr title="Dirección"><i class="fa fa-map-marker"></i></abbr>
+                            Av.Revolución y Rio Magdalena
+                            -Eje 10 Sur- Tizapán, San Ángel,
+                            México, D.F.
+                        </span>
+                        <br />
+                        <span>
+                            <abbr title="Teléfonos"><i class="fa fa-phone"></i></abbr>
+                            5616-3731 y 5616-3761
+                        </span>
+                        <br />
+                        <span>
+                            <abbr title="Horarios"><i class="fa fa-clock-o"></i></abbr>
+                            10:30 a 18:30 h.
+                            Sábados hasta las 20:00 h.
+                            Martes cerrado.
+                        </span>
+                    </small>
+                </address>
+            </div>
+        </div>
 
+        <div class="text-center text-muted">
+            <b>Entrada gratuita</b> |  <a href="www.museosoumaya.org" class="link link-info">www.museosoumaya.org</a>
+        </div>*@
+
+    @*<script type="text/javascript">
+        $('#menuUsuario').remove();
+    </script>*@
+   

@@ -1,16 +1,22 @@
-﻿@{
-    ViewBag.Title = "Buscador Avanzado";
+﻿@model IEnumerable<RecordFCS_Alt.Models.TipoAtributo>
+@using RecordFCS_Alt.Helpers
+
+@{
+    ViewBag.PagName = "de Obras";
+    ViewBag.CtrlName = "Buscador";
+    ViewBag.Title = @ViewBag.CtrlName + ViewBag.PagName;
 }
 
-<h2>
-    Buscador
-    <i>Avanzado</i>
-</h2>
 
+<h1>
+    <b><i class="fa fa-search"></i> @ViewBag.CtrlName</b>
+    <i class="text-muted">@ViewBag.PagName</i>
+</h1>
 
 <ol class="breadcrumb">
     <li>@Html.ActionLink("Home", "Index", "Home")</li>
-    <li class="active">Mantenimiento @ViewBag.Title</li>
+    <li>@ViewBag.CtrlName</li>
+    <li class="active">@ViewBag.PagName</li>
 </ol>
 
 
@@ -18,7 +24,7 @@
 <div class="row">
     <div class="col-lg-3 col-sm-6">
         <div id="renderMenuFiltros">
-            @{ Html.RenderAction("MenuFiltros", "Buscador", new { rutaVista = "_ResultadosBusqueda" }); }
+            @{ Html.RenderAction("MenuFiltros", "Buscador", new { rutaVista = "_ResultadosBusqueda"}); }
         </div>
     </div>
 
@@ -32,6 +38,18 @@
 
             <div class="text-center">
 
+                <div class="visible-lg visible-md visible-sm">
+                    <span class="fa fa-arrow-left fa-5x text-muted"></span>
+                    <span class="fa fa-search fa-10x text-muted"></span>
+                </div>
+
+                <div class="visible-xs">
+                    <span class="fa fa-arrow-up fa-5x text-muted"></span>
+                    <br />
+                    <span class="fa fa-search fa-10x text-muted"></span>
+
+                </div>
+                <br />
                 <p>
                     <i class="text-muted">
                         Selecciona los filtros para realizar una busqueda avanzada
@@ -47,7 +65,81 @@
 </div>
 
 
-<script src="~/Scripts/add.toolTip.js"></script>
+
+<!-- modal placeholder-->
+<div id='myModal' class='modal fade in'>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id='myModalContent'></div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+}
+
+<script type="text/javascript">
+
+    $('#FormFiltros').submit(function () {
+
+        //alert(this.action);
+
+        $('#renderResultadosBusqueda').html('' +
+            '<div class="text-center">' +
+                '<p>' +
+                    '<span class="text-muted">' +
+                        'Por favor espere' +
+                    '</span>' +
+                '</p>' +
+                '<i class="fa fa-spinner fa-pulse fa-12x text-muted"></i>' +
+                '<p>' +
+                    'Se estan procedando los resultados...' +
+                '</p>' +
+            '</div>');
+
+        //alert(this.action);
+
+        $('#pag').val(1);
+
+        $.ajax({
+            url: this.action,
+            type: this.method,
+            data: $(this).serialize(),
+            success: function (result) {
+                $('#renderResultadosBusqueda').html(result); //  Campo que actualizara
+            }
+        });
+        return false;
+    });
+
+</script>
+
+
+
+@*<script type="text/javascript">
+
+        $('#FormFiltros').submit(function () {
+            $.ajax({
+                url: this.action,
+                type: this.method,
+                data: $(this).serialize(),
+                success: function (result) {
+                    $('#renderResultadosBusqueda').html(result); //  Campo que actualizara
+                }
+            });
+            return false;
+        });
+
+    </script>*@
 
 
 

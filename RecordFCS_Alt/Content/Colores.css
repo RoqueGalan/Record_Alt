@@ -15,3 +15,11 @@ padding: 1px !important;
 p {
     margin:1px;
 }
+
+
+
+
+.progress-bar {
+    -webkit-transition: width 1.5s ease-in-out;
+    transition: width 1.5s ease-in-out;
+}

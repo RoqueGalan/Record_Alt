@@ -1,0 +1,149 @@
+﻿@model PagedList.IPagedList<RecordFCS_Alt.Models.Usuario>
+@using PagedList.Mvc;
+@using RecordFCS_Alt.Helpers
+
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+<div id="contentPager" class="text-center">
+    @Html.PagedListPager(Model, pagina => Url.Action("Lista", new { pagina = pagina }))
+</div>
+
+<p class="text-right">Total de Registros <span class="badge">@ViewBag.totalRegistros</span></p>
+
+
+<table class="table table-hover table-condensed">
+    <tr>
+        <th>
+            Usuario
+        </th>
+        <th>
+            Nombre(s)
+        </th>
+        <th>
+            Apellido(s)
+        </th>
+        <th>
+            Correo Electronico
+        </th>
+        <th>
+            ¿Es Activo?
+        </th>
+        <th>
+            @if (User.IsInRole("UsuarioCrear"))
+            {
+                @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Crear Nuevo Usuario", "Crear", "Usuario", null, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-success pull-right Usuario" })
+            }
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Apellido)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Correo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                <div class="pull-right">
+                    @if (User.IsInRole("UsuarioPermisosVer"))
+                    {
+                        @Html.NoEncodeActionLink("<span class='fa fa-gear'></span>", "Config. Usuario", "Detalles", "Usuario", routeValues: new { id = item.UsuarioID }, htmlAttributes: new { data_toggle = "tooltip", @class = "btn btn-primary btn-xs" })
+
+                    }
+                    @if (User.IsInRole("UsuarioEdit"))
+                    {
+                        @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar", "Editar", "Usuario", routeValues: new { id = item.UsuarioID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-default btn-xs Usuario" })
+
+                    }
+                    @if (User.IsInRole("UsuarioEliminar"))
+                    {
+                        @Html.NoEncodeActionLink("<span class='fa fa-trash'></span>", "Eliminar", "Eliminar", "Usuario", routeValues: new { id = item.UsuarioID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-danger btn-xs Usuario" })
+
+                    }
+                </div>
+            </td>
+        </tr>
+    }
+
+</table>
+
+<div id="contentPager" class="text-center">
+    @Html.PagedListPager(Model, pagina => Url.Action("Lista", new { pagina = pagina }))
+    Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) de @Model.PageCount
+</div>
+
+
+@* ! @Script.Render is not supported in partials - for extensions see: http://stackoverflow.com/a/13765578/209259
+
+    @Scripts.Render("~/bundles/modalform")
+
+*@
+
+<script type="text/javascript">
+    $(function () {
+        $.ajaxSetup({ cache: false });
+
+        $("a[data-modal].Usuario").on("click", function (e) {
+
+            $('#myModalContent').load(this.href, function () {
+                $('#myModal').modal({
+                    /*backdrop: 'static',*/
+                    keyboard: true
+                }, 'show');
+                bindForm_Usuario(this);
+            });
+            return false;
+        });
+    });
+
+    function bindForm_Usuario(dialog) {
+        $('form', dialog).submit(function () {
+            $.ajax({
+                url: this.action,
+                type: this.method,
+                data: $(this).serialize(),
+                success: function (result) {
+                    if (result.success) {
+                        $('#myModal').modal('hide');
+                        $('#replacetarget').load(result.url); //  Campo que actualizara
+                        $('#alertasDiv').load('@Url.Action("_Alertas","Base")');
+
+                    } else {
+                        $('#myModalContent').html(result);
+                        $('#alertasDiv').load('@Url.Action("_Alertas","Base")');
+                        bindForm_Usuario(dialog);
+                    }
+                }
+            });
+            return false;
+        });
+    }
+
+
+    //Paginador cargar vista parcial en el div
+    $(function () {
+        $.ajaxSetup({ cache: false });
+
+        $("#contentPager a").on("click", function (e) {
+            $.ajax({
+                url: $(this).attr("href"),
+                type: 'GET',
+                success: function (result) {
+                    $('#replacetarget').html(result);
+                }
+            });
+            return false;
+        });
+    });
+</script>
