@@ -1,0 +1,92 @@
+﻿@model RecordFCS_Alt.Models.TipoAtributo
+
+<!-- Input BUSCAR -->
+<div class="form-group">
+    <label class="control-label col-md-2" for="Filtro">Filtrar Valores</label>
+    <div class="col-md-10">
+        <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-search"></i></span>
+            <textarea class="form-control" id="Filtro" name="Filtro" type="text" value="" placeholder="Filtrar Valores" autofocus></textarea>
+        </div>
+    </div>
+</div>
+
+
+<!-- Switch PALABRA EXACTA -->
+<div class="form-group">
+    <label for="PalabraExacta" class="control-label col-md-2">Palabra ó Frase Exacta</label>
+    <div class="col-md-10">
+        <input type="checkbox" name="PalabraExacta" id="PalabraExacta" data-size="small" data-on-text="Exacta" data-off-text="No">
+
+        @*@Html.DropDownList("TipoAtributoID", null, htmlAttributes: new { @class = "form-control SelectTipoAtributo" })*@
+    </div>
+</div>
+
+
+<!-- Lista de Posibles Coincidencias -->
+
+<div class="form-group">
+    <label class="control-label col-md-2" for="Coincidencia">Posibles Coincidencias</label>
+    <div class="col-md-10">
+
+        <div id="renderListaCoincidencias">
+            <p class="text-right">Coincidencias<span class="badge">0</span></p>
+            <ul style="height: 150px; overflow: auto">
+                <li>
+                    <small>
+                        Al buscar si aparece el mensaje
+                        "NO SE ENCONTRARON COINCIDENCIAS",
+                        no arrojara resultados en la busqueda.
+                    </small>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+</div>
+
+
+@* *@
+<script type="text/javascript">
+
+    //$("[name='PalabraExacta']").bootstrapSwitch();
+
+    //$('input[name="PalabraExacta"]').on('switchChange.bootstrapSwitch', function (event, state) {
+    //    if ($('#Filtro').val() != "") {
+    //        buscarDatoAjax();
+    //        $("#Filtro").focus();
+    //    }
+    //});
+
+    $("#Filtro").on("keyup", function (e) {
+        buscarDatoAjax();
+    });
+
+
+    function buscarDatoAjax(text_busqueda, check_exacta) {
+        //logica para llamar la respectiva funcion:
+
+        $.ajaxSetup({ cache: false });
+
+        var myUrl = '@ViewBag.rutaAccion';
+
+
+        $.ajax({
+            url: myUrl,
+            type: 'POST',
+            data: { busqueda: $("#Filtro").val(), exacta: $('input[name="PalabraExacta"]').bootstrapSwitch('state') },
+            success: function (result) {
+                $('#renderListaCoincidencias').html(result);
+            }
+        });
+
+    }
+
+</script>
+
+
+
+
+
+
+

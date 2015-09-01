@@ -24,12 +24,12 @@ namespace RecordFCS_Alt.Controllers
             return View(db.Obras.ToList());
         }
 
-         //GET: Obra/Detalles/5
+        //GET: Obra/Detalles/5
         public ActionResult Detalles(Guid? id)
         {
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            
+
             Obra obra = db.Obras.Find(id);
 
             if (obra == null)
@@ -534,7 +534,7 @@ namespace RecordFCS_Alt.Controllers
 
                 db.SaveChanges();
 
-                return RedirectToAction("Detalles", "Obra", new { id = obra.ObraID});
+                return RedirectToAction("Detalles", "Obra", new { id = obra.ObraID });
 
             }
 

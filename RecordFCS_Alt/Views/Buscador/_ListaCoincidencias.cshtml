@@ -1,0 +1,21 @@
+﻿@model List<string>
+
+<p class="text-right">Coincidencias<span class="badge">@ViewBag.totalValores</span></p>
+
+@if (ViewBag.totalValores == 0)
+{
+    <ul style="height: 150px; overflow: auto">
+        <li><small><b class="text-warning">NO SE ENCONTRARON COINCIDENCIAS</b></small></li>
+    </ul>
+}
+else
+{
+    <ul style="height: 150px; overflow: auto">
+        @foreach (var item in Model)
+        {
+            <li><small>@item</small></li>
+        }
+    </ul>
+}
+
+

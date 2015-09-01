@@ -1,0 +1,32 @@
+﻿<li class="list-group-item" id="filtro_@ViewBag.id">
+
+    <div class="form-group-sm">
+        <input type="hidden" id="id_@ViewBag.id" name="id_@ViewBag.id" value="@ViewBag.id" class="form-control">
+
+        <div class="text-center">
+            <b>@ViewBag.nombre</b>
+            <a class="link link-danger pull-right quitarCampo" id="quitar_@ViewBag.id" data-toggle="tooltip" data-original-title="Eliminar el filtro"><i class="fa fa-times"></i> Quitar</a>
+        </div>
+
+        <div class="input-group">
+            <input type="text" id="valor_@ViewBag.id" name="valor_@ViewBag.id" value="@ViewBag.valor" class="form-control" />
+            <span class="input-group-addon">
+                <input type="checkbox" id="exacto_@ViewBag.id" name="exacto_@ViewBag.id" @ViewBag.exacto data-toggle="tooltip" data-original-title="Palabra Exacta">
+            </span>
+
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $("#quitar_@ViewBag.id").on("click", function (e) {
+            var filtro = '#filtro_@ViewBag.id';
+            $(filtro).remove();
+            return false;
+        });
+
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+
+</li>

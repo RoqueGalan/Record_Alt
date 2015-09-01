@@ -1,4 +1,5 @@
-﻿@model RecordFCS_Alt.Models.Pieza
+﻿@using RecordFCS_Alt.Models
+@model RecordFCS_Alt.Models.Pieza
 @using RecordFCS_Alt.Helpers
 
 @{
@@ -8,7 +9,7 @@
     int Nuautores = Model.AutorPiezas.Count;
     int NuMedidas = Model.MedidaPiezas.Count;
     int NuTecnicas = Model.TecnicaPiezas.Count;
-    
+
     string subFolio = Model.SubFolio;
 }
 
@@ -36,56 +37,122 @@
 
             <tbody>
 
-                @foreach (var att in Model.TipoPieza.Atributos)
+                @foreach (var att in (List<Atributo>)ViewBag.listaAttributosFichaCompleta)
                 {
                     var tipoAtt = att.TipoAtributo;
 
                     if (tipoAtt.EsGenerico)
                     {
-                        var lista_AttPieza = Model.AtributoPiezas.Where(a => a.AtributoID == att.AtributoID).ToList();
-                        
-                        if (tipoAtt.EsLista)
-                        {
-                                                        
-                            <tr>
-                                <td>
-                                    <p>
-                                        @att.NombreAlterno
+                        var lista_AttPieza = Model.AtributoPiezas.Where(a => a.Atributo == att).ToList();
+                        var color = lista_AttPieza.Count > 0 ? "default" : "warning";
 
-                                        @*@if (tipoAtt.EsMultipleValor)
+                        <tr class="@color">
+                            <td>
+                                <p>
+                                    @att.NombreAlterno
+
+                                    @if (tipoAtt.EsMultipleValor)
                                     {
-                                            @Html.NoEncodeActionLink("<i class='fa fa-plus'><i/>", "Agregar " + , "Crear", "AtributoValor", new { id = att.AtributoID, PiezaID = Model.PiezaID }, new { data_modal = "", data_toggle = "tooltip", @class = "link link-success btn-xs Editar" + att.TipoAtributo.DatoCS })
-                                    }*@
-                                    </p>
-                                </td>
-                                
-                                <td>
-                            <p class="hover-dorado">
-                                Titulo descripcion
-                            </p>
-                        </td>
-                    </tr>
-                        }
-                        else
-                        {
-                            if (tipoAtt.EsMultipleValor) { }
+                                        @Html.NoEncodeActionLink("<span class='fa fa-plus'><span/>", "Agregar otr@ " + att.NombreAlterno, "Crear", "AtributoPieza", new { id = att.AtributoID }, new { data_modal = "", data_toggle = "tooltip", @class = "link link-success btn-xs  pull-right CrearValor" })
+                                    }
+                                </p>
+                            </td>
 
-                        }
+                            <td id="td_@att.AtributoID">
+                                @if (color == "default")
+                                {
+                                    foreach (var item in lista_AttPieza)
+                                    {
+                                        <p id="valor_@item.AtributoPiezaID" class="hover-dorado">
+                                            @Html.NoEncodeActionLink("<span class='fa fa-pencil'><span/>", "Editar", "Editar", "AtributoPieza", new { id = item.AtributoPiezaID }, new { data_modal = "", data_toggle = "tooltip", @class = "link link-success btn-xs  pull-right EditarValor" })
+
+                                            @if (tipoAtt.EsLista)
+                                            {
+                                                @item.ListaValor.Valor
+                                            }
+                                            else
+                                            {
+                                                @item.Valor
+                                            }
+
+                                        </p>
+                                    }
+                                }
+                                else
+                                {
+                                    if (!tipoAtt.EsMultipleValor)
+                                    {
+                                        <p>
+                                            @Html.NoEncodeActionLink("<span class='fa fa-plus'><span/>", "Agregar " + att.NombreAlterno, "Crear", "AtributoPieza", new { id = att.AtributoID }, new { data_modal = "", data_toggle = "tooltip", @class = "link link-success btn-xs pull-right CrearValor" })
+                                        </p>
+                                    }
+                                }
+                            </td>
+                        </tr>
+
                     }
                     else
                     {
+                        string color = "";
                         switch (tipoAtt.TablaSQL)
                         {
                             case "Autor":
+                                {
+                                    //multiple
+                                    var lista_AttAutor = Model.AutorPiezas.Where(a => a.Status).OrderBy(a => a.Autor.Nombre).ToList();
+                                    color = lista_AttAutor.Count > 0 ? "default" : "warning";
+                                    <tr class="@color">
+                                        <td>
+                                            @att.NombreAlterno
+                                            @Html.NoEncodeActionLink("<span class='fa fa-plus'><span/>", "Agregar otr@ " + att.NombreAlterno, "Crear", "AtributoPieza", new { id = att.AtributoID }, new { data_modal = "", data_toggle = "tooltip", @class = "link link-success btn-xs  pull-right CrearValor" })
+
+                                        </td>
+                                        <td id="td_@att.AtributoID">
+                                            @if (color == "default")
+                                            {
+                                                foreach (var item in lista_AttAutor)
+                                                {
+                                                    <p id="autor_@(item.PiezaID)_@(item.AutorID)" class="hover-dorado">
+                                                        @Html.NoEncodeActionLink("<span class='fa fa-pencil'><span/>", "Editar", "Editar", "AtributoPieza", new { id = item.PiezaID, autorID = item.AutorID }, new { data_modal = "", data_toggle = "tooltip", @class = "link link-success btn-xs  pull-right EditarAutor" })
+                                                        @(item.Autor.Nombre + " " + item.Autor.Apellido)
+                                                    </p>
+                                                }
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                                break;
                             case "Ubicacion":
+                                {
+                                    color = Model.UbicacionID != null ? "default" : "warning";
+                                    <tr class="@color">
+                                        <td>
+                                            @att.NombreAlterno
+                                            @*@Html.NoEncodeActionLink("<span class='fa fa-plus'><span/>", "Agregar otr@ " + att.NombreAlterno, "Crear", "AtributoPieza", new { id = att.AtributoID }, new { data_modal = "", data_toggle = "tooltip", @class = "link link-success btn-xs  pull-right CrearValor" })*@
+                                        </td>
+                                        <td id="td_@att.AtributoID">
+                                            @if (color == "default")
+                                            {
+                                                <p id="ubicacion_@(Model.UbicacionID)" class="hover-dorado">
+                                                    @*@Html.NoEncodeActionLink("<span class='fa fa-pencil'><span/>", "Editar", "Editar", "AtributoPieza", new { id = item.PiezaID, autorID = item.AutorID }, new { data_modal = "", data_toggle = "tooltip", @class = "link link-success btn-xs  pull-right EditarAutor" })*@
+                                                    @Model.Ubicacion.Nombre
+                                                </p>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+
+                                break;
                             case "TipoTecnica":
+                            //multiple
                             case "TipoMedida":
+                            //multimple
                             case "ImagenPieza":
                             default:
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
+                            <tr>
+                                <td>@att.NombreAlterno</td>
+                                <td>Sin implementar</td>
+                            </tr>
                                 break;
                         }
 
@@ -95,80 +162,80 @@
 
 
 
-        </tbody>
-                    
-
-                    <tr>
-                        <td>
-                            Autor
-                        </td>
-                        <td>
-                            <a href="#" class="pull-right text-muted"><i class="fa fa-pencil"></i></a>
-                            <p class="hover-dorado">
-                                Nombre Autor 1
-                            </p>
-                            <p class="hover-dorado">
-                                Nombre Autor 2
-                            </p>
-                            <p class="hover-dorado">
-                                Nombre Autor 3
-                            </p>
-                        </td>
-
-                    </tr>
-
-                    <tr>
-                        <td>
-                            Comentario
-                            <a href="#" class="pull-right text-muted"><i class="fa fa-pencil"></i></a>
-                        </td>
-                        <td>
-                            <p class="hover-dorado">
-
-                                Comentario Descripcion
-                            </p>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            Ubicacion
-                            <a href="#" class="pull-right text-muted"><i class="fa fa-pencil"></i></a>
-                        </td>
-                        <td>
-                            <p class="hover-dorado">
-                                Ubicacion Descripcion
-                            </p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Estado de conservación
-                            <a href="#" class="pull-right text-muted"><i class="fa fa-pencil"></i></a>
-                        </td>
-                        <td>
-                            <p class="hover-dorado">
-                                Estado de conservacion Descripcion
-                            </p>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            Propietario
-                            <a href="#" class="pull-right text-muted"><i class="fa fa-pencil"></i></a>
-                        </td>
-                        <td>
-                            <p class="hover-dorado">
-                                Propietario Descripcion
-                            </p>
-                        </td>
-                    </tr>
-                </table>
-
-            </div>
+            </tbody>
 
 
+            @*<tr>
+                    <td>
+                        Autor
+                    </td>
+                    <td>
+                        <a href="#" class="pull-right text-muted"><i class="fa fa-pencil"></i></a>
+                        <p class="hover-dorado">
+                            Nombre Autor 1
+                        </p>
+                        <p class="hover-dorado">
+                            Nombre Autor 2
+                        </p>
+                        <p class="hover-dorado">
+                            Nombre Autor 3
+                        </p>
+                    </td>
+
+                </tr>
+
+                <tr>
+                    <td>
+                        Comentario
+                        <a href="#" class="pull-right text-muted"><i class="fa fa-pencil"></i></a>
+                    </td>
+                    <td>
+                        <p class="hover-dorado">
+
+                            Comentario Descripcion
+                        </p>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Ubicacion
+                        <a href="#" class="pull-right text-muted"><i class="fa fa-pencil"></i></a>
+                    </td>
+                    <td>
+                        <p class="hover-dorado">
+                            Ubicacion Descripcion
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Estado de conservación
+                        <a href="#" class="pull-right text-muted"><i class="fa fa-pencil"></i></a>
+                    </td>
+                    <td>
+                        <p class="hover-dorado">
+                            Estado de conservacion Descripcion
+                        </p>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Propietario
+                        <a href="#" class="pull-right text-muted"><i class="fa fa-pencil"></i></a>
+                    </td>
+                    <td>
+                        <p class="hover-dorado">
+                            Propietario Descripcion
+                        </p>
+                    </td>
+                </tr>*@
+        </table>
+
+    </div>
 
 
-        </li>
+
+
+</li>

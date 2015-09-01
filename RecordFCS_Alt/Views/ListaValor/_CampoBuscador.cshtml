@@ -1,0 +1,117 @@
+﻿@using RecordFCS_Alt.Models
+@{
+
+    Guid TipoAtributoID = ViewBag.TipoAtributoID;
+
+}
+
+@Html.Hidden("TipoAtributoID", TipoAtributoID)
+
+<div class="input-group">
+
+    <input id="buscar_@TipoAtributoID" type="text" placeholder="Buscar" class="form-control" />
+
+    <span class="input-group-addon">
+        <input type="checkbox" id="checkAdd_@TipoAtributoID" class="btnCheckAdd" data-toggle="tooltip" data-title="Palabra exacta">
+    </span>
+
+
+    <span id="btnAccion_@TipoAtributoID" name="Buscar" class="input-group-addon btn btn-default">
+        <span class="fa fa-search"></span>
+    </span>
+
+
+
+</div>
+
+
+<div class="form-group">
+    <label class="control-label col-md-2" for="Coincidencia">Posibles Coincidencias</label>
+    <div class="col-md-10">
+        <ul style="height: 150px; overflow: auto" id="renderListaCoincidencias">
+            <li>
+                <small>
+                    Al buscar si aparece el mensaje
+                    "NO SE ENCONTRARON COINCIDENCIAS",
+                    no arrojara resultados en la busqueda.
+                </small>
+            </li>
+        </ul>
+    </div>
+
+</div>
+
+
+
+<script type="text/javascript">
+
+    $('#btnAccion_@TipoAtributoID').on("click", function (e) {
+
+        var tipoAttID = '@TipoAtributoID';
+        var $btnCheck = $('#checkAdd_' + tipoAttID);
+        var $inputBuscar = $('#buscar_' + tipoAttID);
+        var $ul = $('#renderListaCoincidencias');
+
+        var $btn = $('#btnAccion_' + tipoAttID);
+
+        $.ajaxSetup({ cache: false });
+
+        var myUrl = '@Url.Action("GenerarLista","Ubicacion",null)';
+
+        $ul.html('');
+
+        $.ajax({
+            url: myUrl,
+            type: 'POST',
+            data: { id: tipoAttID ,Filtro: $inputBuscar.val(), palabraExacta : $btnCheck.is(':checked')  },
+            dataType: 'json',
+            success: function (result) {
+
+                if (result.length) {
+
+                    for (var i = 0; i < result.length; i++) {
+                        $ul.append('<option value = "' + result[i].UbicacionID + '">' + result[i].Nombre + '</option>');
+                    }
+                }
+                else {
+                    $inputSelect.html('<option> - Sin resultados - </option>');
+                }
+
+
+            }
+        });
+
+        $inputSelect.focus();
+
+
+    });
+
+    @*$('#checkAdd_@AtributoID').on("click", function (e) {
+        var attID = '@AtributoID';
+        var $btnCheck = $('#checkAdd_' + attID);
+        var $btn = $('#btnAccion_@AtributoID');
+        var $inputBuscar = $('#buscar_' + attID);
+
+
+        if ($btnCheck.is(':checked')) {
+            $btn.attr("name", "Agregar");
+            $btn.html('<span class="fa fa-floppy-o"></span>');
+            $btn.removeClass("btn-default");
+            $btn.addClass("btn-success");
+
+            $inputBuscar.attr("placeholder", "Guardar valor");
+
+        }
+        else {
+            $btn.attr("name", "Buscar");
+            $btn.html('<span class="fa fa-search"></span>');
+            $btn.removeClass("btn-success");
+            $btn.addClass("btn-default");
+
+            $inputBuscar.attr("placeholder", "Buscar valor");
+
+        }
+    });*@
+
+
+</script>

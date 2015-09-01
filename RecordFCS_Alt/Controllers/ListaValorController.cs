@@ -266,6 +266,109 @@ namespace RecordFCS_Alt.Controllers
             return Json(x);
         }
 
+
+
+        public ActionResult ListaString(Guid idTipoAtributo, string busqueda, bool exacta)
+        {
+            TempData["listaValores"] = null;
+
+            IQueryable<Object> listaTabla;
+            List<string> lista = new List<string>();
+
+            TipoAtributo tipoAtt = db.TipoAtributos.Find(idTipoAtributo);
+
+
+            if (String.IsNullOrWhiteSpace(busqueda))
+            {
+                listaTabla = null;
+            }
+            else
+            {
+                if (tipoAtt.EsLista)
+                {
+                    //los valores estan en ListaValor
+                    if (exacta)
+                    {
+                        listaTabla = db.ListaValores.Where(a => a.TipoAtributoID == tipoAtt.TipoAtributoID && a.Valor.StartsWith(busqueda)).OrderBy(a => a.Valor);
+                    }
+                    else
+                    {
+                        busqueda = busqueda.ToLower();
+                        listaTabla = db.ListaValores.Where(a => a.TipoAtributoID == tipoAtt.TipoAtributoID && a.Valor.ToLower().Contains(busqueda)).OrderBy(a => a.Valor).Take(10);
+                    }
+
+                    if (listaTabla != null)
+                    {
+                        int i = 0;
+                        foreach (var item in listaTabla as IQueryable<ListaValor>)
+                        {
+                            i++;
+                            if (i > 10)
+                                break;
+
+                            lista.Add(item.Valor);
+                        }
+                    }
+                }
+                else
+                {
+                    //los valores estan en AtributoPieza
+                    if (exacta)
+                    {
+                        listaTabla = db.AtributoPiezas.Where(a => a.Atributo.TipoAtributoID == tipoAtt.TipoAtributoID && a.Valor.StartsWith(busqueda)).OrderBy(a => a.Valor);
+                    }
+                    else
+                    {
+                        busqueda = busqueda.ToLower();
+                        listaTabla = db.AtributoPiezas.Where(a => a.Atributo.TipoAtributoID == tipoAtt.TipoAtributoID && a.Valor.ToLower().Contains(busqueda)).OrderBy(a => a.Valor);
+                    }
+
+                    if (listaTabla != null)
+                    {
+                        int i = 0;
+                        foreach (var item in listaTabla as IQueryable<AtributoPieza>)
+                        {
+                            i++;
+                            if (i > 10)
+                                break;
+
+                            lista.Add(item.Valor);
+                        }
+                    }
+                }
+
+            }
+
+            TempData["listaValores"] = lista.ToList();
+
+            return RedirectToAction("RenderListaCoincidencias", "Buscador");
+        }
+
+        //POST: Buscador/AgregarFiltro
+        public ActionResult GenerarFiltro(Guid TipoAtributoID, string Filtro, string PalabraExacta)
+        {
+            var tipoAtt = db.TipoAtributos.Find(TipoAtributoID);
+
+            if (tipoAtt != null || !String.IsNullOrEmpty(Filtro))
+            {
+                //extraer nombre para el LABEL
+                ViewBag.nombre = tipoAtt.Nombre;
+                ViewBag.id = tipoAtt.TipoAtributoID;
+                ViewBag.valor = Filtro;
+
+                if (PalabraExacta == "true")
+                {
+                    ViewBag.exacto = "checked";
+                }
+
+                return PartialView("_CampoMenuFiltro");
+            }
+
+            return PartialView("_CampoMenuFiltroError");
+        }
+
+
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

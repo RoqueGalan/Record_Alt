@@ -1,0 +1,112 @@
+﻿
+@{
+    ViewBag.PagName = "Agregar";
+    ViewBag.CtrlName = "Filtro";
+}
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" data-toggle="tooltip" title="Cerrar">&times;</button>
+    <h4 class="modal-title" id="myModalLabel">
+        <b>@ViewBag.PagName</b>
+        <i class="text-muted">@ViewBag.CtrlName</i>
+    </h4>
+</div>
+
+
+@using (Html.BeginForm())
+{
+    <div class="modal-body">
+
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+
+            <div class="text-center">
+                <p>
+                    <i class="text-muted">
+                        Selecciona el filtro a utilizar
+                    </i>
+                </p>
+                <span class="fa fa-filter fa-3x text-muted"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="TipoAtributoID" class="control-label col-md-2">Filtro</label>
+                <div class="col-md-10">
+                    @Html.DropDownList("TipoAtributoID", null, "- SIN SELECCIONAR -", htmlAttributes: new { @class = "form-control SelectTipoAtributo" })
+                </div>
+            </div>
+
+            <div id="renderCampoTipoAtributo"></div>
+
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+        <button class="btn" type="button" data-dismiss="modal">Cancelar</button>
+        <input class="btn btn-primary" type="button" value="Agregar" id="GenerarCampo" name="GenerarCampo" />
+    </div>
+}
+
+<script src="~/Scripts/add.toolTip.js"></script>
+
+
+@*@{Html.RenderAction("GenerarCampoRegistro", "Atributo", new { id = item.TipoAtributoID, AtributoID = item.AtributoID });}*@
+
+
+
+
+<script type="text/javascript">
+    //logica para renderizar el los campos para el TIPO ATRIBUTO
+    $(function () {
+        $.ajaxSetup({ cache: false });
+
+        $("#TipoAtributoID").change(function () {
+
+            var strSelecto = "";
+
+            $("#TipoAtributoID option:selected").each(function () {
+                strSelecto += $(this)[0].value;
+            });
+
+            var myUrl = '@Url.Action("RenderBuscarCampo", "Buscador")';
+            $.ajax({
+                url: myUrl,
+                type: "POST",
+                data: { idTipoAtributo: strSelecto },
+                success: function (result) {
+                    $("#renderCampoTipoAtributo").html(result);
+                    $("#Filtro").focus();
+                }
+            });
+        });
+        return false;
+    });
+
+
+
+    @*$("#GenerarCampo").on("click", function (e) {
+
+        var tipoAtributoID = "";
+        var filtro = $("#Filtro").val();
+        var palabraExacta = $('input[name="PalabraExacta"]').bootstrapSwitch('state');
+
+        $("#TipoAtributoID option:selected").each(function () {
+            tipoAtributoID += $(this)[0].value;
+        });
+        $.ajax({
+            url: '@Url.Action("GenerarFiltro", "Buscador")',
+            type: 'GET',
+            data: { TipoAtributoID: tipoAtributoID, Filtro: filtro, PalabraExacta: palabraExacta },
+            success: function (result) {
+
+                $('#myModal').modal('hide');
+
+                $("#filtrosBusqueda").append(result);
+
+            }
+        });
+    });*@
+
+</script>

@@ -135,34 +135,31 @@ namespace RecordFCS_Alt.Controllers
 
 
 
-        public ActionResult Ficha(string id ,Guid? PiezaID) {
+        public ActionResult Ficha(Guid? id, string tipo = "basica")
+        {
 
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
             Pieza pieza = db.Piezas.Find(id);
-            
+
             if (pieza == null)
                 return HttpNotFound();
 
-
-            return RedirectToAction("Ficha", new {id = id, pieza = pieza });
-        }
-
-        public ActionResult Ficha(string id, Pieza pieza) {
-
             //extraer los campos del tipo de obra
+            tipo = tipo.ToLower();
+            tipo = tipo == "completa" ? "Ficha Completa" : tipo == "basica" ? "Ficha Básica" : "Ficha Básica";
 
-            id = id == "completa"? "Ficha Completa": id == "basica"? "Ficha Básica" : "Ficha Básica";
-            
-            var listaAttributosFichaCompleta = pieza.TipoPieza.Atributos.Where(a => a.Status && a.MostrarAtributos.Any(b => b.TipoMostrar.Nombre == id && b.Status) && a.TipoAtributo.Status).OrderBy(a => a.Orden).ToList();
-            pieza.TipoPieza.Atributos = listaAttributosFichaCompleta.OrderBy(a => a.MostrarAtributos.Where(c => c.TipoMostrar.Nombre == id && c.Status).OrderBy(b => b.Orden)).ToList();
+            var listaAttributosFichaCompleta = pieza.TipoPieza.Atributos.Where(a => a.Status && a.MostrarAtributos.Any(b => b.TipoMostrar.Nombre == tipo && b.Status) && a.TipoAtributo.Status).OrderBy(a => a.Orden).ToList();
+
+            ViewBag.listaAttributosFichaCompleta = listaAttributosFichaCompleta;
 
 
-            ViewBag.TipoFicha = id;
+            ViewBag.TipoFicha = tipo;
 
             return PartialView("_Ficha", pieza);
         }
+
 
 
 

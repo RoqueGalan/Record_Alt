@@ -42,6 +42,11 @@ namespace RecordFCS_Alt.Models
         public DbSet<AtributoPieza> AtributoPiezas { get; set; }
 
 
+        //usuario
+        public DbSet<TipoPermiso> TipoPermisos { get; set; }
+        public DbSet<Permiso> Permisos { get; set; }
+        public DbSet<Usuario> Usuarios { get; set; }
+
 
 
 

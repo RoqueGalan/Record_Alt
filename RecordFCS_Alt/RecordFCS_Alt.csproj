@@ -130,6 +130,7 @@
     <Compile Include="Controllers\AutorController.cs" />
     <Compile Include="Controllers\AutorPiezaController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\BuscadorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ImagenPiezaController.cs" />
     <Compile Include="Controllers\LetraFolioController.cs" />
@@ -152,6 +153,9 @@
     </Compile>
     <Compile Include="Helpers\Alerta.cs" />
     <Compile Include="Helpers\HTMLHelpers.cs" />
+    <Compile Include="Helpers\Seguridad\BaseViewPage.cs" />
+    <Compile Include="Helpers\Seguridad\CustomAuthorizeAttribute.cs" />
+    <Compile Include="Helpers\Seguridad\ICustomPrincipal.cs" />
     <Compile Include="Helpers\Thumbnail.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\DBModels\Atributos\AtributoPieza.cs" />
@@ -165,6 +169,7 @@
     <Compile Include="Models\DBModels\Atributos\MedidaPieza.cs" />
     <Compile Include="Models\DBModels\MostrarAtributo.cs" />
     <Compile Include="Models\DBModels\Obra.cs" />
+    <Compile Include="Models\DBModels\Permiso.cs" />
     <Compile Include="Models\DBModels\Pieza.cs" />
     <Compile Include="Models\DBModels\RecordFCSContext.cs" />
     <Compile Include="Models\DBModels\Atributos\Catalogos\Tecnica.cs" />
@@ -172,9 +177,11 @@
     <Compile Include="Models\DBModels\Atributos\Catalogos\SubCatalogos\TipoMedida.cs" />
     <Compile Include="Models\DBModels\TipoMostrar.cs" />
     <Compile Include="Models\DBModels\TipoObra.cs" />
+    <Compile Include="Models\DBModels\TipoPermiso.cs" />
     <Compile Include="Models\DBModels\TipoPieza.cs" />
     <Compile Include="Models\DBModels\Atributos\Catalogos\Ubicacion.cs" />
     <Compile Include="Models\DBModels\Atributos\Catalogos\SubCatalogos\TipoTecnica.cs" />
+    <Compile Include="Models\DBModels\Usuario.cs" />
     <Compile Include="Models\Migraciones\RowArchivo.cs" />
     <Compile Include="Models\ViewModels\Item_Ficha.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -189,6 +196,8 @@
     <Content Include="Content\css\font-awesome.css" />
     <Content Include="Content\css\font-awesome.min.css" />
     <Content Include="Content\PagedList.css" />
+    <Content Include="Content\theme.css" />
+    <Content Include="Content\theme.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -362,6 +371,13 @@
     <Content Include="Views\Pieza\Edit.cshtml" />
     <Content Include="Views\Pieza\Index.cshtml" />
     <Content Include="Views\Pieza\_Ficha.cshtml" />
+    <Content Include="Views\Buscador\Index.cshtml" />
+    <Content Include="Views\Buscador\_MenuFiltros.cshtml" />
+    <Content Include="Views\Buscador\_AgregarFiltro.cshtml" />
+    <Content Include="Views\Buscador\_ListaCoincidencias.cshtml" />
+    <Content Include="Views\Buscador\_CampoMenuFiltro.cshtml" />
+    <Content Include="Views\Buscador\_RenderBuscarCampo.cshtml" />
+    <Content Include="Views\ListaValor\_CampoBuscador.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

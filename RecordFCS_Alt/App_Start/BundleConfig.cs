@@ -25,10 +25,10 @@ namespace RecordFCS_Alt
                       "~/Scripts/respond.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
-                      "~/Content/site.css",
-                      "~/Content/alertas.css",
-                      "~/Content/css/font-awesome.css"));
+                     "~/Content/theme.css",
+                     "~/Content/site.css",
+                     "~/Content/alertas.css",
+                     "~/Content/css/font-awesome.css"));
         }
     }
 }

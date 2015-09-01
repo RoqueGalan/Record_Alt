@@ -1,4 +1,5 @@
 ﻿using RecordFCS_Alt.Helpers;
+using RecordFCS_Alt.Helpers.Seguridad;
 using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
@@ -7,6 +8,22 @@ namespace RecordFCS_Alt.Controllers
 {
     public class BaseController : Controller
     {
+        protected virtual new CustomPrincipal User
+        {
+            get { return HttpContext.User as CustomPrincipal; }
+        }
+
+        protected virtual Boolean IsAuthenticated
+        {
+            get
+            {
+                if (HttpContext.User.Identity.IsAuthenticated)
+                { return true; }
+                else
+                { return false; }
+
+            }
+        }
 
         /* ALERTAS */
         public void AlertaSuccess(string mensaje, bool descartable = false)

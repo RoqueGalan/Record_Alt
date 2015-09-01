@@ -1,0 +1,96 @@
+﻿
+@using RecordFCS_Alt.Helpers
+
+@using (Html.BeginForm("MostrarResultados", "Buscador", FormMethod.Post, new { id = "FormFiltros", name = "FormFiltros" }))
+{
+    <div class="panel panel-primary panel-collapse">
+        <div class="panel-heading">
+            <h3 class="panel-title text-center">Filtros de Busqueda</h3>
+        </div>
+
+        <!-- Lista de Filtros Dinamicos-->
+        <ul class="list-group" id="filtrosBusqueda"></ul>
+
+        <!-- Filtros Estaticos -->
+        <ul class="list-group">
+
+            <li class="list-group-item  badge-muted">
+                <div class="form-group-sm">
+                    <div class="text-center">
+                        <small>
+                            <b>Filtrar No. de Inventarios</b>
+                            <i class="fa fa-question text-muted" data-toggle="tooltip" data-original-title="Busqueda Unica EJEM: Folio1"></i>
+                            <i class="fa fa-question text-muted" data-toggle="tooltip" data-original-title="Separar por coma ',' cada folio EJEM: Folio1, Folio2"></i>
+                            <i class="fa fa-question text-muted" data-toggle="tooltip" data-original-title="Separar por guión '-' para rangos de folios EJEM: Folio1-Folio9"></i>
+                            <i class="fa fa-question text-muted" data-toggle="tooltip" data-original-title="Combinación de coma y guión EJEM: Folio1, Folio2-Folio9"></i>
+                        </small>
+                    </div>
+
+                    <input type="text" id="claves" name="claves" value="" class="form-control" />
+                </div>
+            </li>
+
+            <li class="list-group-item  badge-muted">
+                <div class="form-group-sm">
+                    <div class="text-center">
+                        <small>
+                            <b>Número de resultados por página</b>
+                            <i class="fa fa-question text-muted" data-toggle="tooltip" data-original-title="Mientras mayor sea el número, el sistema valida la información en un tiempo prolongado."></i>
+                        </small>
+
+                    </div>
+                    <select id="NoResultPag" name="NoResultPag" class="form-control">
+                        <option value="5" selected>5</option>
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                        <option value="200">200</option>
+                        <option value="9999999">TODAS</option>
+                    </select>
+                </div>
+            </li>
+        </ul>
+
+
+
+
+        <div class="panel-footer text-center">
+            <input type="hidden" id="pag" name="pag" value="1" />
+            <input type="hidden" id="rutaVista" name="rutaVista" value="@ViewBag.rutaVista" />
+            @Html.NoEncodeActionLink("<span class='fa fa-plus'></span> Filtro", "Agrega un Filtro de busqueda", "AgregarFiltro", "Buscador", null, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-success filtroAgregar" })
+            <button type="submit" class="btn btn-primary" data-toggle="tooltip" data-original-title="Comenzar la busqueda"><i class="fa fa-search"></i> Buscar</button>
+        </div>
+
+    </div>
+
+
+}
+
+
+<script type="text/javascript">
+
+    $(function () {
+        $.ajaxSetup({ cache: false });
+
+        $("a[data-modal].filtroAgregar").on("click", function (e) {
+            // hide dropdown if any (this is used wehen invoking modal from link in bootstrap dropdown )
+            //$(e.target).closest('.btn-group').children('.dropdown-toggle').dropdown('toggle');
+
+            $('#miModalContenido').load(this.href, function () {
+                $('#miModal').modal({
+                    /*backdrop: 'static',*/
+                    keyboard: true
+                }, 'show');
+            });
+            return false;
+        });
+
+    });
+
+
+
+</script>
+
+
+
