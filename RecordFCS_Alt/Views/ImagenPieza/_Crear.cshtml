@@ -1,0 +1,113 @@
+﻿@model RecordFCS_Alt.Models.ImagenPieza
+
+@{
+    ViewBag.PagName = "Crear";
+    ViewBag.CtrlName = "Imagen";
+    ViewBag.Title = @ViewBag.PagName;
+}
+
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h4 class="modal-title" id="myModalLabel">
+        <b>@ViewBag.PagName</b>
+        <i class="text-muted">@ViewBag.CtrlName</i>
+    </h4>
+</div>
+
+@using (Html.BeginForm("Crear", "ImagenPieza", FormMethod.Post, new { id = "formCrearImagen", enctype = "multipart/form-data" }))
+{
+    <div class="modal-body">
+
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.PiezaID)
+            @Html.HiddenFor(model => model.Orden)
+            @Html.HiddenFor(model => model.EsPrincipal)
+            @Html.HiddenFor(model => model.NombreImagen)
+            @Html.HiddenFor(model => model.Status)
+
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Titulo, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Titulo, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Titulo, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Descripcion, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Descripcion, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Descripcion, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="FileImagen" class="control-label col-md-2">Archivo</label>
+
+                <div class="col-md-10">
+                    <input type="file" id="FileImagen" name="FileImagen" class="form-control" required />
+                </div>
+            </div>
+
+
+
+
+        </div>
+    </div>
+
+                <div class="modal-footer">
+            <button class="btn" type="button" data-dismiss="modal">Cancelar</button>
+            <input class="btn btn-primary" type="submit" value="Agregar" />
+        </div>
+
+}
+
+
+
+
+        <script type='text/javascript'>
+            $('#formCrearImagen').submit(function (event) {
+                event.preventDefault();
+
+                var formData = new FormData($(this)[0]);
+
+                $.ajax({
+                    url: '/ImagenPieza/Crear',
+                    type: 'POST',
+                    data: formData,
+                    async: false,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function (result) {
+                        if (result.success) {
+                            var renderID = '';
+                            if (result.lista == "lista") {
+                                renderID = '#renderCarrusel_' + result.idPieza
+                            } else {
+                                renderID = '#imagen_' + result.idImagenPieza;
+                            }
+
+                            $(renderID).load(result.url); // campo que reemplazara + accion
+                            $('#alertasDiv').load('@Url.Action("_Alertas","Base")');
+
+                            $('#myModal').modal('hide');
+                        }
+                        else {
+                            $('#myModalContent').html(result);
+                            $('#alertasDiv').load('@Url.Action("_Alertas","Base")');
+                        }
+                    },
+                    error: function () {
+                        alert("Ocurrio un error en el envio");
+                    }
+                });
+                return false;
+            });
+
+        </script>

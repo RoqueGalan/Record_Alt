@@ -1,0 +1,58 @@
+﻿@model RecordFCS_Alt.Models.AtributoPieza
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>AtributoPieza</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Atributo.NombreAlterno)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Atributo.NombreAlterno)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ListaValor.Valor)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ListaValor.Valor)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Pieza.SubFolio)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Pieza.SubFolio)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Valor)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Valor)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.AtributoPiezaID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

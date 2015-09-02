@@ -21,6 +21,38 @@ namespace RecordFCS_Alt.Controllers
             return View();
         }
 
+
+        public ActionResult ListaString(string busqueda, bool exacta)
+        {
+            TempData["listaValores"] = null;
+            List<string> lista = new List<string>();
+
+
+
+                List<Autor> listado;
+
+                if (exacta)
+                {
+                    listado = db.Autores.Where(a => a.Apellido == busqueda || a.Nombre == busqueda).OrderBy(b => b.Nombre).Take(10).ToList();
+                }
+                else
+                {
+                    listado = db.Autores.Where(a => a.Apellido.Contains(busqueda) || a.Nombre.Contains(busqueda)).OrderBy(b => b.Nombre).Take(10).ToList();
+                }
+
+                foreach (var item in listado)
+                {
+                    lista.Add(item.Nombre + " " + item.Apellido);
+                }
+          
+            
+
+            TempData["listaValores"] = lista.ToList();
+
+            return RedirectToAction("RenderListaCoincidencias", "Buscador");
+        }
+
+
         public ActionResult Lista(string FiltroActual, string Busqueda, int? Pagina)
         {
 

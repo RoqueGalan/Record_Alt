@@ -18,19 +18,24 @@
 
     <div class="media-left media-middle">
         <div class="thumbnail">
-            <img class="media-object img-responsive" src="~/Content/img/pieza/thumb/e0dbc2e2-dddc-42b0-b0f0-819d35530bbe.jpg" />
+            @*<img class="media-object img-responsive" src="~/Content/img/pieza/thumb/e0dbc2e2-dddc-42b0-b0f0-819d35530bbe.jpg" />*@
+
+            <div id="renderCarrusel_@Model.PiezaID" class="text-center">
+                @{ Html.RenderAction("Carrusel", "ImagenPieza", new { id = Model.PiezaID, status = false, tipo = "thumb" }); }
+            </div>
         </div>
     </div>
 
 
-    <div class="media-body">
-        <h4 class="media-heading pull-right">@subFolio</h4>
+    <div class="media-body clearfix">
+        <h4 class="media-heading pull-right">@(Model.Obra.LetraFolio.Nombre + Model.Obra.NumeroFolio + "-" + subFolio)</h4>
 
         <table class="table table-hover">
             <thead>
                 <tr>
                     <th class="col-lg-3 col-md-5 col-sm-5"></th>
-                    <th>Acciones excusivas de la pieza</th>
+                    <th>
+                        <a href="@Url.Action("Detalles", "Obra", new  {id = Model.ObraID })" class="btn btn-primary btn-xs pull-right" data-toggle="tooltip" title="Abrir Ficha Completa" target="_blank"><span class='fa fa-pencil'></span></a>
                 </tr>
 
             </thead>
@@ -44,7 +49,7 @@
                     if (tipoAtt.EsGenerico)
                     {
                         var lista_AttPieza = Model.AtributoPiezas.Where(a => a.Atributo == att).ToList();
-                        var color = lista_AttPieza.Count > 0 ? "default" : "warning";
+                        var color = lista_AttPieza.Count > 0 ? "default" : "";
 
                         <tr class="@color">
                             <td>
@@ -53,7 +58,7 @@
 
                                     @if (tipoAtt.EsMultipleValor)
                                     {
-                                        @Html.NoEncodeActionLink("<span class='fa fa-plus'><span/>", "Agregar otr@ " + att.NombreAlterno, "Crear", "AtributoPieza", new { id = att.AtributoID }, new { data_modal = "", data_toggle = "tooltip", @class = "link link-success btn-xs  pull-right CrearValor" })
+                                        @*@Html.NoEncodeActionLink("<span class='fa fa-plus'><span/>", "Agregar otr@ " + att.NombreAlterno, "Crear", "AtributoPieza", new { id = att.AtributoID }, new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-primary btn-xs  pull-right CrearValor" })*@
                                     }
                                 </p>
                             </td>
@@ -64,7 +69,7 @@
                                     foreach (var item in lista_AttPieza)
                                     {
                                         <p id="valor_@item.AtributoPiezaID" class="hover-dorado">
-                                            @Html.NoEncodeActionLink("<span class='fa fa-pencil'><span/>", "Editar", "Editar", "AtributoPieza", new { id = item.AtributoPiezaID }, new { data_modal = "", data_toggle = "tooltip", @class = "link link-success btn-xs  pull-right EditarValor" })
+                                            @*@Html.NoEncodeActionLink("<span class='fa fa-pencil'><span/>", "Editar", "Editar", "AtributoPieza", new { id = item.AtributoPiezaID }, new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-default btn-xs  pull-right EditarValor" })*@
 
                                             @if (tipoAtt.EsLista)
                                             {
@@ -72,7 +77,17 @@
                                             }
                                             else
                                             {
-                                                @item.Valor
+
+
+                                                if (tipoAtt.DatoCS == "link")
+                                                {
+                                                    <a href="@item.Valor" class="btn btn-primary btn-sm" data-toggle="tooltip" title="Abrir enlace" target="_blank">Abrir @att.NombreAlterno <i class="fa fa-external-link-square"></i></a>
+
+                                                }
+                                                else
+                                                {
+                                                    @item.Valor
+                                                }
                                             }
 
                                         </p>
@@ -83,7 +98,7 @@
                                     if (!tipoAtt.EsMultipleValor)
                                     {
                                         <p>
-                                            @Html.NoEncodeActionLink("<span class='fa fa-plus'><span/>", "Agregar " + att.NombreAlterno, "Crear", "AtributoPieza", new { id = att.AtributoID }, new { data_modal = "", data_toggle = "tooltip", @class = "link link-success btn-xs pull-right CrearValor" })
+                                            @*@Html.NoEncodeActionLink("<span class='fa fa-plus'><span/>", "Agregar " + att.NombreAlterno, "Crear", "AtributoPieza", new { id = att.AtributoID }, new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-primary btn-xs pull-right CrearValor" })*@
                                         </p>
                                     }
                                 }
@@ -100,11 +115,11 @@
                                 {
                                     //multiple
                                     var lista_AttAutor = Model.AutorPiezas.Where(a => a.Status).OrderBy(a => a.Autor.Nombre).ToList();
-                                    color = lista_AttAutor.Count > 0 ? "default" : "warning";
+                                    color = lista_AttAutor.Count > 0 ? "default" : "";
                                     <tr class="@color">
                                         <td>
                                             @att.NombreAlterno
-                                            @Html.NoEncodeActionLink("<span class='fa fa-plus'><span/>", "Agregar otr@ " + att.NombreAlterno, "Crear", "AtributoPieza", new { id = att.AtributoID }, new { data_modal = "", data_toggle = "tooltip", @class = "link link-success btn-xs  pull-right CrearValor" })
+                                            @*@Html.NoEncodeActionLink("<span class='fa fa-plus'><span/>", "Agregar otr@ " + att.NombreAlterno, "Crear", "AtributoPieza", new { id = att.AtributoID, piezaID = Model.PiezaID }, new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-primary btn-xs  pull-right CrearValor" })*@
 
                                         </td>
                                         <td id="td_@att.AtributoID">
@@ -113,7 +128,7 @@
                                                 foreach (var item in lista_AttAutor)
                                                 {
                                                     <p id="autor_@(item.PiezaID)_@(item.AutorID)" class="hover-dorado">
-                                                        @Html.NoEncodeActionLink("<span class='fa fa-pencil'><span/>", "Editar", "Editar", "AtributoPieza", new { id = item.PiezaID, autorID = item.AutorID }, new { data_modal = "", data_toggle = "tooltip", @class = "link link-success btn-xs  pull-right EditarAutor" })
+                                                        @*@Html.NoEncodeActionLink("<span class='fa fa-pencil'><span/>", "Editar", "Editar", "AtributoPieza", new { id = item.PiezaID, autorID = item.AutorID }, new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-default btn-xs  pull-right EditarAutor" })*@
                                                         @(item.Autor.Nombre + " " + item.Autor.Apellido)
                                                     </p>
                                                 }
@@ -124,7 +139,7 @@
                                 break;
                             case "Ubicacion":
                                 {
-                                    color = Model.UbicacionID != null ? "default" : "warning";
+                                    color = Model.UbicacionID != null ? "default" : "";
                                     <tr class="@color">
                                         <td>
                                             @att.NombreAlterno
@@ -149,10 +164,10 @@
                             //multimple
                             case "ImagenPieza":
                             default:
-                            <tr>
+                            @*<tr>
                                 <td>@att.NombreAlterno</td>
                                 <td>Sin implementar</td>
-                            </tr>
+                            </tr>*@
                                 break;
                         }
 
@@ -239,3 +254,7 @@
 
 
 </li>
+
+
+
+<script src="~/Scripts/add.toolTip.js"></script>

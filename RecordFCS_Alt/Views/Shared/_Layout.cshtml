@@ -7,24 +7,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Record</title>
     @Styles.Render("~/Content/css")
-    <link href="~/Content/font-awesome.css" rel="stylesheet" />
+
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
 </head>
 <body style="background-color: #ffffff;">
-        @*<div id="loadingAjax">
-        <div class="text-center">
-            <span class="fa fa-spin fa-spinner fa-4x"></span>
-            <br />
-            <span>Procesando solicitud</span>
-            <br />
-            <small>Por favor espere...</small>
-        </div>
-    </div>*@
+    @*<div id="loadingAjax">
+            <div class="text-center">
+                <span class="fa fa-spin fa-spinner fa-4x"></span>
+                <br />
+                <span>Procesando solicitud</span>
+                <br />
+                <small>Por favor espere...</small>
+            </div>
+        </div>*@
 
 
-            @Html.Partial("_Menu")
-     
+    @Html.Partial("_Menu")
+
 
 
     <div id="alertasDiv" class="notificacion clearfix">
@@ -33,13 +33,37 @@
 
     <div class="container body-content">
         @RenderBody()
+
+        <!-- MODALES -->
+        <!-- modal placeholder-->
+        <div id='miModal' class='modal fade in'>
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div id='miModalContenido'></div>
+                </div>
+            </div>
+        </div>
+        <div id='miModalLG' class='modal fade in'>
+            <div class="modal-dialog">
+                <div class="modal-content modal-lg">
+                    <div id='miModalContenidoLG'></div>
+                </div>
+            </div>
+        </div>
+        <div id='miModalSM' class='modal fade in'>
+            <div class="modal-dialog">
+                <div class="modal-content modal-sm">
+                    <div id='miModalContenidoSM'></div>
+                </div>
+            </div>
+        </div>
     </div>
 
 
-    <footer> 
+    <footer>
         <p class="text-center">
             <small class="pie">
-               &copy; @DateTime.Now.Year - <b>Record</b> - <i>Registro, Control y Documentación de Obra</i>
+                &copy; @DateTime.Now.Year - <b>Record</b> - <i>Registro, Control y Documentación de Obra</i>
             </small>
         </p>
     </footer>
@@ -56,6 +80,8 @@
 
 
     @Scripts.Render("~/bundles/bootstrap")
+
+
     @RenderSection("scripts", required: false)
 
 </body>

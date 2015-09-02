@@ -30,8 +30,8 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class='fa fa-search'></i> Consulta <span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
                             @Html.MenuItemIcon("<i class='fa fa-search'></i> Buscador Avanzado", "Buscador Avanzado", "Index", "Buscador")
-                            @Html.MenuItemIcon("<i class='fa fa-list'></i> Listados", "Listados", "Index", "Listado")
-                            @Html.MenuItemIcon("<i class='fa fa-list-alt'></i> Reportes", "Reportes", "Index", "Reporte")
+                            @*@Html.MenuItemIcon("<i class='fa fa-list'></i> Listados", "Listados", "Index", "Listado")*@
+                            @*@Html.MenuItemIcon("<i class='fa fa-list-alt'></i> Reportes", "Reportes", "Index", "Reporte")*@
                         </ul>
                     </li>
 
@@ -42,7 +42,7 @@
                         <ul class="dropdown-menu" role="menu">
                             @if (User.IsInRole("ObraRegistrar"))
                             {
-                                @Html.MenuItemIcon("<i class='fa fa-edit'></i> Registro de Obra", "Registro de Obra", "Registro", "Obra")
+                                @Html.MenuItemIcon("<i class='fa fa-edit'></i> Registro de Obra", "Registro de Obra", "Registrar", "Obra")
                             }
 
                         </ul>

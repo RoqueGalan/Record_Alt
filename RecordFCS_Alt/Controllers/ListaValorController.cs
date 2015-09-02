@@ -271,72 +271,50 @@ namespace RecordFCS_Alt.Controllers
         public ActionResult ListaString(Guid idTipoAtributo, string busqueda, bool exacta)
         {
             TempData["listaValores"] = null;
-
-            IQueryable<Object> listaTabla;
             List<string> lista = new List<string>();
 
-            TipoAtributo tipoAtt = db.TipoAtributos.Find(idTipoAtributo);
+            if (idTipoAtributo == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            TipoAtributo tipoatt = db.TipoAtributos.Find(idTipoAtributo);
+
+            if (tipoatt == null) return HttpNotFound();
 
 
-            if (String.IsNullOrWhiteSpace(busqueda))
+            if (tipoatt.EsLista)
             {
-                listaTabla = null;
+                List<ListaValor> listado;
+
+                if (exacta)
+                {
+                    listado = tipoatt.ListaValores.Where(a => a.Valor == busqueda).OrderBy(b => b.Valor).Take(10).ToList();
+                }else
+                {
+                    listado = tipoatt.ListaValores.Where(a => a.Valor.Contains(busqueda)).OrderBy(b => b.Valor).Take(10).ToList();
+                }
+
+                foreach (var item in listado)
+                {
+                    lista.Add(item.Valor);
+                }
             }
             else
             {
-                if (tipoAtt.EsLista)
+                List<AtributoPieza> campos;
+
+                if (exacta)
                 {
-                    //los valores estan en ListaValor
-                    if (exacta)
-                    {
-                        listaTabla = db.ListaValores.Where(a => a.TipoAtributoID == tipoAtt.TipoAtributoID && a.Valor.StartsWith(busqueda)).OrderBy(a => a.Valor);
-                    }
-                    else
-                    {
-                        busqueda = busqueda.ToLower();
-                        listaTabla = db.ListaValores.Where(a => a.TipoAtributoID == tipoAtt.TipoAtributoID && a.Valor.ToLower().Contains(busqueda)).OrderBy(a => a.Valor).Take(10);
-                    }
-
-                    if (listaTabla != null)
-                    {
-                        int i = 0;
-                        foreach (var item in listaTabla as IQueryable<ListaValor>)
-                        {
-                            i++;
-                            if (i > 10)
-                                break;
-
-                            lista.Add(item.Valor);
-                        }
-                    }
+                    campos = db.AtributoPiezas.Where(a => a.Valor == busqueda && a.Atributo.TipoAtributoID == tipoatt.TipoAtributoID).OrderBy(b=> b.Valor).Take(10).ToList();
                 }
                 else
                 {
-                    //los valores estan en AtributoPieza
-                    if (exacta)
-                    {
-                        listaTabla = db.AtributoPiezas.Where(a => a.Atributo.TipoAtributoID == tipoAtt.TipoAtributoID && a.Valor.StartsWith(busqueda)).OrderBy(a => a.Valor);
-                    }
-                    else
-                    {
-                        busqueda = busqueda.ToLower();
-                        listaTabla = db.AtributoPiezas.Where(a => a.Atributo.TipoAtributoID == tipoAtt.TipoAtributoID && a.Valor.ToLower().Contains(busqueda)).OrderBy(a => a.Valor);
-                    }
+                    campos = db.AtributoPiezas.Where(a => a.Valor.Contains(busqueda) && a.Atributo.TipoAtributoID == tipoatt.TipoAtributoID).OrderBy(b => b.Valor).Take(10).ToList();
 
-                    if (listaTabla != null)
-                    {
-                        int i = 0;
-                        foreach (var item in listaTabla as IQueryable<AtributoPieza>)
-                        {
-                            i++;
-                            if (i > 10)
-                                break;
-
-                            lista.Add(item.Valor);
-                        }
-                    }
                 }
 
+                foreach (var item in campos)
+                {
+                    lista.Add(item.Valor);
+                }
             }
 
             TempData["listaValores"] = lista.ToList();

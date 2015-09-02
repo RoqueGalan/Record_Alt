@@ -127,6 +127,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AtributoController.cs" />
+    <Compile Include="Controllers\AtributoPiezaController.cs" />
     <Compile Include="Controllers\AutorController.cs" />
     <Compile Include="Controllers\AutorPiezaController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
@@ -156,11 +157,13 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\Alerta.cs" />
+    <Compile Include="Helpers\CampoPieza.cs" />
     <Compile Include="Helpers\HTMLHelpers.cs" />
     <Compile Include="Helpers\MultiButtonAttribute.cs" />
     <Compile Include="Helpers\Seguridad\BaseViewPage.cs" />
     <Compile Include="Helpers\Seguridad\CustomAuthorizeAttribute.cs" />
     <Compile Include="Helpers\Seguridad\ICustomPrincipal.cs" />
+    <Compile Include="Helpers\Structs.cs" />
     <Compile Include="Helpers\Thumbnail.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\DBModels\Atributos\AtributoPieza.cs" />
@@ -188,7 +191,14 @@
     <Compile Include="Models\DBModels\Atributos\Catalogos\SubCatalogos\TipoTecnica.cs" />
     <Compile Include="Models\DBModels\Usuario.cs" />
     <Compile Include="Models\Migraciones\RowArchivo.cs" />
+    <Compile Include="Models\ViewModels\itemListaBasicaDefault.cs" />
+    <Compile Include="Models\ViewModels\itemPiezaGenerica.cs" />
+    <Compile Include="Models\ViewModels\itemPiezaGenericaCampo.cs" />
+    <Compile Include="Models\ViewModels\ItemReporteBasico.cs" />
     <Compile Include="Models\ViewModels\Item_Ficha.cs" />
+    <Compile Include="Models\ViewModels\ObraReporteBasico.cs" />
+    <Compile Include="Models\ViewModels\OpcionesImprimir.cs" />
+    <Compile Include="Models\ViewModels\PiezaEnCarrito.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -252,9 +262,12 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\bootstrap.css.map" />
+    <None Include="Properties\PublishProfiles\Record_Alt.pubxml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\atributoLista.js" />
     <Content Include="Scripts\autorLista.js" />
+    <Content Include="Scripts\bootstrap-switch.js" />
+    <Content Include="Scripts\bootstrap-switch.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\FuncionFiltradoLista.js" />
@@ -395,10 +408,10 @@
     <Content Include="Views\MedidaPieza\Edit.cshtml" />
     <Content Include="Views\MedidaPieza\Index.cshtml" />
     <Content Include="Views\TipoMedida\_CampoRegistro.cshtml" />
-    <Content Include="Views\ImagenPieza\Create.cshtml" />
-    <Content Include="Views\ImagenPieza\Delete.cshtml" />
+    <Content Include="Views\ImagenPieza\_Crear.cshtml" />
+    <Content Include="Views\ImagenPieza\_Eliminar.cshtml" />
     <Content Include="Views\ImagenPieza\Details.cshtml" />
-    <Content Include="Views\ImagenPieza\Edit.cshtml" />
+    <Content Include="Views\ImagenPieza\_Editar.cshtml" />
     <Content Include="Views\ImagenPieza\Index.cshtml" />
     <Content Include="Views\ImagenPieza\_CampoRegistro.cshtml" />
     <Content Include="Views\Pieza\Create.cshtml" />
@@ -457,6 +470,12 @@
     <Content Include="Views\Shared\_Menu.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\ImagenPieza\_CarruselThumb.cshtml" />
+    <Content Include="Views\AtributoPieza\Create.cshtml" />
+    <Content Include="Views\AtributoPieza\Delete.cshtml" />
+    <Content Include="Views\AtributoPieza\Details.cshtml" />
+    <Content Include="Views\AtributoPieza\Edit.cshtml" />
+    <Content Include="Views\AtributoPieza\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

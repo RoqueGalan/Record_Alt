@@ -52,7 +52,7 @@ namespace RecordFCS_Alt.Models
                 }
                 else
                 {
-                    return Servidor + RutaParcial + NombreImagen;
+                    return RutaParcial + NombreImagen;
                 }
             }
         }
@@ -68,7 +68,7 @@ namespace RecordFCS_Alt.Models
                 }
                 else
                 {
-                    return Servidor + RutaParcial + "thumb/" + NombreImagen;
+                    return RutaParcial + "thumb/" + NombreImagen;
                 }
             }
         }

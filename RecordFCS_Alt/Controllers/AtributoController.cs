@@ -340,7 +340,7 @@ namespace RecordFCS_Alt.Controllers
                         var listaUML = from UMLongitud e in Enum.GetValues(typeof(UMLongitud))
                                        select new {ID = e, Nombre = e.ToString()};
 
-                        ViewBag.TipoMedidaID = new SelectList(listaTipoMedidas, "TipoMedidaID", "Nombre" );
+                       ViewBag.TipoMedidaID = new SelectList(listaTipoMedidas, "TipoMedidaID", "Nombre" );
                         ViewData["id_" + AtributoID + "_UML"] = new SelectList(listaUML, "ID", "Nombre");
 
                         _vista = PartialView("~/Views/TipoMedida/_CampoRegistro.cshtml");

@@ -6,11 +6,11 @@
 
 /* Set padding to keep content from hitting the edges */
 .body-content {
-    
+    padding-top:2em;
     left: auto;
     background-color: #ffffff;
     width:auto;
-  
+ 
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 
