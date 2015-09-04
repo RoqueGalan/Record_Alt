@@ -1,31 +1,29 @@
 ﻿body {
     padding-top: 5px;
     padding-bottom: 5px;
-    font-family: "Presidencia" !important;
-    /*font-size: 1.8em !important;*/
+    font-family:"Presidencia" !important;
+    
+    
 }
 
 
 /* Set padding to keep content from hitting the edges */
-.body-content {
-    padding-top: 2.5em;
+.body-contentd {
+    padding-top:2em;
     left: auto;
     background-color: #ffffff;
-    width: auto;
+    width:auto;
+  
 }
-
-@font-face {
-    font-family: 'Presidencial';
-    src: url('../Content/fonts/presidenciafirme-webfont.eot');
-    src: url('../Content/fonts/presidenciafirme-webfont.eot?#iefix&v=4.2.0') format('embedded-opentype'), url('../Content/fonts/presidenciafirme-webfont.woff?v=4.2.0') format('woff'), url('../Content/fonts/presidenciafirme-webfont.ttf?v=4.2.0') format('truetype'), url('../Content/fonts/presidenciafirme-webfont.svg?v=4.2.0#fontawesomeregular') format('svg');
+@font-face{
+   font-family:'Presidencial';
+   src: url('../Content/fonts/presidenciafirme-webfont.eot');
+   src: url('../Content/fonts/presidenciafirme-webfont.eot?#iefix&v=4.2.0') format('embedded-opentype'), url('../Content/fonts/presidenciafirme-webfont.woff?v=4.2.0') format('woff'), url('../Content/fonts/presidenciafirme-webfont.ttf?v=4.2.0') format('truetype'), url('../Content/fonts/presidenciafirme-webfont.svg?v=4.2.0#fontawesomeregular') format('svg');
 }
-
 @font-face {
-    font-family: 'Presidencia';
+    font-family:'Presidencia';
     src: url('../Content/fonts/presidenciafina-webfont.eot');
     src: url('../Content/fonts/presidenciafina-webfont.eot?#iefix&v=4.2.0') format('embedded-opentype'), url('../Content/fonts/presidenciafina-webfont.woff?v=4.2.0') format('woff'), url('../Content/fonts/presidenciafina-webfont.ttf?v=4.2.0') format('truetype');
-    
-    
 }
 /* Override the default bootstrap behavior where horizontal description lists 
    will truncate terms that are too long to fit in the left column 
@@ -401,10 +399,7 @@ table {
 
 
 
-.imgSaludo {
-    max-height: 2.4em;
-    margin-top: -10px;
-}
+
 
 
 #saludoContent {
@@ -454,17 +449,17 @@ table {
     border-top-left-radius: 10em;
     border-bottom-left-radius: 10em;
     top: auto;
-    bottom: auto;
+    bottom:auto;
     left: 20px;
-    opacity: 0.6;
+    opacity:0.6;
 }
 
 
 
 
-    .logoFundacion img {
+ .logoFundacion img {
         width: 7em;
-        margin-top: 0.8em;
+        margin-top:0.8em;
     }
 
 .descHome {
@@ -481,22 +476,21 @@ table {
 footer {
     position: relative;
     margin-top: auto;
-    margin-bottom: 0 !important;
-    height: 10px;
+    margin-bottom:0 !important;
+    height: 10px; 
     clear: both;
-    text-align: center;
+    text-align: center; 
     color: #000000;
 }
 
-/*Media Queries*/
-@media screen and (max-width: 400px) {
-    section.galeria div {
-        margin: 0;
-    }
-
-    section.galeria {
-        padding: 0;
-    }
+ /*Media Queries*/
+ @media screen and (max-width: 400px) {
+   section.galeria div { 
+       margin: 0; 
+   }
+   section.galeria { 
+   padding: 0; 
+   }
 }
 
 /*LINEA VERTICAL*/
@@ -689,3 +683,4 @@ tr.inverse {
     font-weight: 700;
     text-transform: uppercase;
 }
+

@@ -58,38 +58,39 @@
 
                                     @if (tipoAtt.EsMultipleValor)
                                     {
-                                        @*@Html.NoEncodeActionLink("<span class='fa fa-plus'><span/>", "Agregar otr@ " + att.NombreAlterno, "Crear", "AtributoPieza", new { id = att.AtributoID }, new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-primary btn-xs  pull-right CrearValor" })*@
+                                        @Html.NoEncodeActionLink("<span class='fa fa-plus'><span/>", "Agregar otr@ " + att.NombreAlterno, "Crear", "AtributoPieza", new { id = Model.PiezaID, AtributoId = att.AtributoID }, new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-primary btn-xs  pull-right CrearValor" })
                                     }
                                 </p>
                             </td>
 
-                            <td id="td_@att.AtributoID">
+                            <td>
                                 @if (color == "default")
                                 {
                                     foreach (var item in lista_AttPieza)
                                     {
-                                        <p id="valor_@item.AtributoPiezaID" class="hover-dorado">
-                                            @*@Html.NoEncodeActionLink("<span class='fa fa-pencil'><span/>", "Editar", "Editar", "AtributoPieza", new { id = item.AtributoPiezaID }, new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-default btn-xs  pull-right EditarValor" })*@
+                                        <p class="hover-dorado">
+                                            @Html.NoEncodeActionLink("<span class='fa fa-pencil'><span/>", "Editar", "Editar", "AtributoPieza", new { id = item.PiezaID, AtributoID = item.AtributoID, LlaveID = item.AtributoPiezaID }, new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-default btn-xs  pull-right EditarValor" })
 
-                                            @if (tipoAtt.EsLista)
-                                            {
-                                                @item.ListaValor.Valor
-                                            }
-                                            else
-                                            {
-
-
-                                                if (tipoAtt.DatoCS == "link")
+                                            <span id="valor_@item.AtributoPiezaID">
+                                                @if (tipoAtt.EsLista)
                                                 {
-                                                    <a href="@item.Valor" class="btn btn-primary btn-sm" data-toggle="tooltip" title="Abrir enlace" target="_blank">Abrir @att.NombreAlterno <i class="fa fa-external-link-square"></i></a>
-
+                                                    @item.ListaValor.Valor
                                                 }
                                                 else
                                                 {
-                                                    @item.Valor
-                                                }
-                                            }
 
+
+                                                    if (tipoAtt.DatoCS == "link")
+                                                    {
+                                                        <a href="@item.Valor" class="btn btn-primary btn-sm" data-toggle="tooltip" title="Abrir enlace" target="_blank">Abrir @att.NombreAlterno <i class="fa fa-external-link-square"></i></a>
+
+                                                    }
+                                                    else
+                                                    {
+                                                        @item.Valor
+                                                    }
+                                                }
+                                            </span>
                                         </p>
                                     }
                                 }
@@ -97,9 +98,9 @@
                                 {
                                     if (!tipoAtt.EsMultipleValor)
                                     {
-                                        <p>
-                                            @*@Html.NoEncodeActionLink("<span class='fa fa-plus'><span/>", "Agregar " + att.NombreAlterno, "Crear", "AtributoPieza", new { id = att.AtributoID }, new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-primary btn-xs pull-right CrearValor" })*@
-                                        </p>
+                                        @Html.NoEncodeActionLink("<span class='fa fa-plus'><span/>", "Agregar " + att.NombreAlterno, "Crear", "AtributoPieza", new { id = Model.PiezaID, AtributoId = att.AtributoID }, new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-primary btn-xs pull-right CrearValor" })
+                                        
+
                                     }
                                 }
                             </td>
@@ -119,17 +120,20 @@
                                     <tr class="@color">
                                         <td>
                                             @att.NombreAlterno
-                                            @*@Html.NoEncodeActionLink("<span class='fa fa-plus'><span/>", "Agregar otr@ " + att.NombreAlterno, "Crear", "AtributoPieza", new { id = att.AtributoID, piezaID = Model.PiezaID }, new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-primary btn-xs  pull-right CrearValor" })*@
+                                            @Html.NoEncodeActionLink("<span class='fa fa-plus'><span/>", "Agregar otr@ " + att.NombreAlterno, "Crear", "AtributoPieza", new { id = Model.PiezaID , AtributoID = att.AtributoID}, new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-primary btn-xs  pull-right CrearValor" })
 
                                         </td>
-                                        <td id="td_@att.AtributoID">
+                                        <td>
                                             @if (color == "default")
                                             {
                                                 foreach (var item in lista_AttAutor)
                                                 {
-                                                    <p id="autor_@(item.PiezaID)_@(item.AutorID)" class="hover-dorado">
-                                                        @*@Html.NoEncodeActionLink("<span class='fa fa-pencil'><span/>", "Editar", "Editar", "AtributoPieza", new { id = item.PiezaID, autorID = item.AutorID }, new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-default btn-xs  pull-right EditarAutor" })*@
-                                                        @(item.Autor.Nombre + " " + item.Autor.Apellido)
+                                                    <p class="hover-dorado">
+                                                        @Html.NoEncodeActionLink("<span class='fa fa-pencil'><span/>", "Editar", "Editar", "AtributoPieza", new { id = item.PiezaID, AtributoID = att.AtributoID, LlaveID = item.AutorID }, new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-default btn-xs  pull-right EditarValor" })
+
+                                                        <span id="autor_@(item.PiezaID)_@(item.AutorID)">
+                                                            @(item.Autor.Nombre + " " + item.Autor.Apellido)
+                                                        </span>
                                                     </p>
                                                 }
                                             }
@@ -145,7 +149,7 @@
                                             @att.NombreAlterno
                                             @*@Html.NoEncodeActionLink("<span class='fa fa-plus'><span/>", "Agregar otr@ " + att.NombreAlterno, "Crear", "AtributoPieza", new { id = att.AtributoID }, new { data_modal = "", data_toggle = "tooltip", @class = "link link-success btn-xs  pull-right CrearValor" })*@
                                         </td>
-                                        <td id="td_@att.AtributoID">
+                                        <td>
                                             @if (color == "default")
                                             {
                                                 <p id="ubicacion_@(Model.UbicacionID)" class="hover-dorado">
@@ -165,9 +169,9 @@
                             case "ImagenPieza":
                             default:
                             @*<tr>
-                                <td>@att.NombreAlterno</td>
-                                <td>Sin implementar</td>
-                            </tr>*@
+                                    <td>@att.NombreAlterno</td>
+                                    <td>Sin implementar</td>
+                                </tr>*@
                                 break;
                         }
 
@@ -179,73 +183,6 @@
 
             </tbody>
 
-
-            @*<tr>
-                    <td>
-                        Autor
-                    </td>
-                    <td>
-                        <a href="#" class="pull-right text-muted"><i class="fa fa-pencil"></i></a>
-                        <p class="hover-dorado">
-                            Nombre Autor 1
-                        </p>
-                        <p class="hover-dorado">
-                            Nombre Autor 2
-                        </p>
-                        <p class="hover-dorado">
-                            Nombre Autor 3
-                        </p>
-                    </td>
-
-                </tr>
-
-                <tr>
-                    <td>
-                        Comentario
-                        <a href="#" class="pull-right text-muted"><i class="fa fa-pencil"></i></a>
-                    </td>
-                    <td>
-                        <p class="hover-dorado">
-
-                            Comentario Descripcion
-                        </p>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        Ubicacion
-                        <a href="#" class="pull-right text-muted"><i class="fa fa-pencil"></i></a>
-                    </td>
-                    <td>
-                        <p class="hover-dorado">
-                            Ubicacion Descripcion
-                        </p>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Estado de conservación
-                        <a href="#" class="pull-right text-muted"><i class="fa fa-pencil"></i></a>
-                    </td>
-                    <td>
-                        <p class="hover-dorado">
-                            Estado de conservacion Descripcion
-                        </p>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        Propietario
-                        <a href="#" class="pull-right text-muted"><i class="fa fa-pencil"></i></a>
-                    </td>
-                    <td>
-                        <p class="hover-dorado">
-                            Propietario Descripcion
-                        </p>
-                    </td>
-                </tr>*@
         </table>
 
     </div>
@@ -258,3 +195,166 @@
 
 
 <script src="~/Scripts/add.toolTip.js"></script>
+
+
+<script type="text/javascript">
+
+    $(function () {
+        $.ajaxSetup({ cache: false });
+        $("a[data-modal].EditarValor").on("click", function (e) {
+
+            $('#miModalContenido').load(this.href, function () {
+                $('#miModal').modal({
+                    backdrop: 'static',
+                    keyboard: true
+                }, 'show');
+                bindForm_EditarValor(this);
+            });
+            return false;
+        });
+    });
+
+    function bindForm_EditarValor(dialog) {
+        $('form', dialog).submit(function (e) {
+
+
+            var validarok = false;
+
+
+            validarok = $(this).validate().valid();
+
+            if (validarok) {
+                $.ajax({
+                    url: this.action,
+                    type: this.method,
+                    data: $(this).serialize(),
+                    success: function (result) {
+                        if (result.success) {
+                            $('#miModal').modal('hide');
+
+                            /*
+                            renderid = el id de donde vamos a renderizar el valor
+                            valor
+                            */
+                            if (result.guardar) {
+
+                                if ($('#' + result.renderID).length) {
+                                    $('#' + result.renderID).html(result.texto); //  Campo que actualizara
+
+                                    //$('<a>', {
+                                    //    text: "<span class='fa fa-pencil'><span/>",
+                                    //    href: result.url,
+                                    //    'data-modal': "",
+                                    //    'data-toggle': "tooltip",
+                                    //    'class': 'btn btn-default btn-xs  pull-right EditarValor'
+                                    //}).appendTo('#' + result.renderID);
+
+
+
+                                }
+                                else {
+                                    window.location.reload();
+                                }
+                            }
+
+
+                            $('#alertasDiv').load('/base/_alertas');
+
+                        } else {
+                            $('#miModalContenido').html(result);
+                            bindForm_EditarValor(dialog);
+                        }
+                    }
+                });
+            }
+            return false;
+        });
+    }
+
+</script>
+
+
+
+
+
+<script type="text/javascript">
+
+    $(function () {
+        $.ajaxSetup({ cache: false });
+        $("a[data-modal].CrearValor").on("click", function (e) {
+
+            $('#miModalContenido').load(this.href, function () {
+                $('#miModal').modal({
+                    backdrop: 'static',
+                    keyboard: true
+                }, 'show');
+                bindForm_CrearValor(this);
+            });
+            return false;
+        });
+    });
+
+    function bindForm_CrearValor(dialog) {
+        $('form', dialog).submit(function (e) {
+
+
+            var validarok = false;
+
+
+            validarok = $(this).validate().valid();
+
+            if (validarok) {
+                $.ajax({
+                    url: this.action,
+                    type: this.method,
+                    data: $(this).serialize(),
+                    success: function (result) {
+                        if (result.success) {
+
+                            /*
+                            renderid = el id de donde vamos a renderizar el valor
+                            valor
+                            */
+                            if (result.guardar) {
+
+                                if ($('#' + result.renderID).length) {
+                                    $('#' + result.renderID).html(result.texto); //  Campo que actualizara
+
+                                    //$('<a>', {
+                                    //    text: "<span class='fa fa-pencil'><span/>",
+                                    //    href: result.url,
+                                    //    'data-modal': "",
+                                    //    'data-toggle': "tooltip",
+                                    //    'class': 'btn btn-default btn-xs  pull-right EditarValor'
+                                    //}).appendTo('#' + result.renderID);
+
+
+
+                                }
+                                else {
+                                    window.location.reload();
+                                    return false;
+                                }
+                            }
+
+                            $('#miModal').modal('hide');
+
+                            $('#alertasDiv').load('/base/_alertas');
+
+
+
+                        } else {
+                            $('#miModalContenido').html(result);
+                            bindForm_CrearValor(dialog);
+                        }
+                    }
+                });
+            }
+            return false;
+        });
+    }
+
+</script>
+
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>

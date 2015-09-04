@@ -5,9 +5,11 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/x-icon" href="~/favicon.ico">
+    <link href="~/Content/css/font-awesome.css" rel="stylesheet" />
     <title>@ViewBag.Title - Record</title>
     @Styles.Render("~/Content/css")
-
+    <link href="~/Content/animate.css" rel="stylesheet" />
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
 </head>
@@ -26,7 +28,7 @@
     @Html.Partial("_Menu")
 
 
-
+    
     <div id="alertasDiv" class="notificacion clearfix">
         @{ Html.RenderPartial("_Alertas"); }
     </div>
@@ -62,9 +64,7 @@
 
     <footer>
         <p class="text-center">
-            <small class="pie">
                 &copy; @DateTime.Now.Year - <b>Record</b> - <i>Registro, Control y Documentación de Obra</i>
-            </small>
         </p>
     </footer>
 

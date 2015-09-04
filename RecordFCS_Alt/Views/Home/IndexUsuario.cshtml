@@ -2,19 +2,16 @@
     ViewBag.Title = "RECORD - Inicio";
 }
 
-<div class="well well-sm text-center">
-    <h1>Hola <span><b>@User.Nombre</b></span>, bienvenido a RECORD!</h1>
+<div class="text-center">
+    <h3>Acciones Rápidas</h3>
 </div>
 
-<div class="text-center">
-    <h4>Acciones Rápidas</h4>
-</div>
 
 <div class="row">
     <div class="col-md-4 text-center">
         @if (User.IsInRole("ObraRegistrar"))
         {
-            <a href="@Url.Action("Registro","Obra")" class="link link-success">
+            <a href="@Url.Action("Registrar","Obra")" class="link link-success animated zoomInLeft">
                 <span class="fa-stack fa-7x">
                     <i class="fa fa-circle fa-stack-2x"></i>
                     <i class="fa fa-edit fa-stack-1x fa-inverse"></i>
@@ -25,7 +22,7 @@
     </div>
 
     <div class="col-md-4 text-center">
-        <a href="@Url.Action("Index","Buscador")" class="link link-info">
+        <a href="@Url.Action("Index","Buscador")" class="link link-info  animated zoomInUp">
             <span class="fa-stack fa-7x">
                 <i class="fa fa-circle fa-stack-2x"></i>
                 <i class="fa fa-search fa-stack-1x fa-inverse"></i>
@@ -37,7 +34,7 @@
     <div class="col-md-4 text-center">
         @if (User.IsInRole("UsuarioVer"))
         {
-            <a href="@Url.Action("Index", "Usuario")" class="link link-inverse">
+            <a href="@Url.Action("Index", "Usuario")" class="link link-inverse animated zoomInRight">
                 <span class="fa-stack fa-7x">
                     <i class="fa fa-circle fa-stack-2x"></i>
                     <i class="fa fa-users fa-stack-1x fa-inverse"></i>

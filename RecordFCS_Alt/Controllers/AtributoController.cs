@@ -300,7 +300,7 @@ namespace RecordFCS_Alt.Controllers
             {
                 if (tipoAtt.EsLista)
                 {
-                    var lista = tipoAtt.ListaValores.Where(a => a.Status && !String.IsNullOrWhiteSpace(a.Valor)).OrderBy(a => a.Valor).Select(a => new { a.Valor, a.ListaValorID, a.TipoAtributoID }).ToList();
+                    var lista = tipoAtt.ListaValores.Where(a => a.Status && !String.IsNullOrWhiteSpace(a.Valor)).OrderBy(a => a.Valor).Select(a => new { a.Valor, a.ListaValorID, a.TipoAtributoID }).ToList().Take(100);
 
                     ViewBag.ListaValorID = new SelectList(lista, "ListaValorID", "Valor");
                     
@@ -308,7 +308,8 @@ namespace RecordFCS_Alt.Controllers
                 }
                 else
                 {
-                    _vista = PartialView("_GenericoCampo","AutorPieza");
+                    //_vista = PartialView("_GenericoCampo","AutorPieza");
+                    _vista = PartialView("_GenericoCampo");
                 }
             }
             else
@@ -316,13 +317,13 @@ namespace RecordFCS_Alt.Controllers
                 switch (tipoAtt.TablaSQL)
                 {
                     case "Autor":
-                        var listaAutores = db.Autores.Where(a => a.Status).OrderBy(a => a.Nombre).Select(a => new { Nombre = a.Nombre + " " + a.Apellido, a.AutorID }).ToList();
+                        var listaAutores = db.Autores.Where(a => a.Status).OrderBy(a => a.Nombre).Select(a => new { Nombre = a.Nombre + " " + a.Apellido, a.AutorID }).ToList().Take(100);
                         ViewBag.AutorID = new SelectList(listaAutores, "AutorID", "Nombre");
 
                         _vista = PartialView("~/Views/AutorPieza/_CampoRegistro.cshtml");
                         break;
                     case "Ubicacion":
-                        var listaUbicaciones = db.Ubicaciones.Where(a => a.Status).OrderBy(a => a.Nombre).Select(a => new { Nombre = a.Nombre, a.UbicacionID }).ToList();
+                        var listaUbicaciones = db.Ubicaciones.Where(a => a.Status).OrderBy(a => a.Nombre).Select(a => new { Nombre = a.Nombre, a.UbicacionID }).ToList().Take(100);
                         ViewBag.UbicacionID = new SelectList(listaUbicaciones, "UbicacionID", "Nombre");
 
                         _vista = PartialView("~/Views/Ubicacion/_CampoRegistro.cshtml");
@@ -372,46 +373,21 @@ namespace RecordFCS_Alt.Controllers
                 case "float":
                 case "int32":
                 case "int64":
-                case "decimal":
-                    ViewBag.TipoInput = "number";
-                    break;
-                case "date":
-                    ViewBag.TipoInput = "date";
-                    break;
-                case "time":
-                    ViewBag.TipoInput = "time";
-                    break;
-                case "datetime":
-                    ViewBag.TipoInput = "datetime";
-                    break;
-                case "datetime-local":
-                    ViewBag.TipoInput = "datetime-local";
-                    break;
-                case "month":
-                    ViewBag.TipoInput = "month";
-                    break;
-                case "week":
-                    ViewBag.TipoInput = "week";
-                    break;
-                case "color":
-                    ViewBag.TipoInput = "color";
-                    break;
-                case "email":
-                    ViewBag.TipoInput = "email";
-                    break;
-                case "url":
-                    ViewBag.TipoInput = "url";
-                    break;
-                case "tel":
-                    ViewBag.TipoInput = "tel";
-                    break;
-                case "range":
-                    ViewBag.TipoInput = "range";
-                    break;
-                default:
-                    ViewBag.TipoInput = "text";
-                    break;
+                case "decimal": ViewBag.TipoInput = "number"; break;
+                case "date": ViewBag.TipoInput = "date"; break;
+                case "time": ViewBag.TipoInput = "time"; break;
+                case "datetime": ViewBag.TipoInput = "datetime"; break;
+                case "datetime-local": ViewBag.TipoInput = "datetime-local"; break;
+                case "month": ViewBag.TipoInput = "month"; break;
+                case "week": ViewBag.TipoInput = "week"; break;
+                case "color": ViewBag.TipoInput = "color"; break;
+                case "email": ViewBag.TipoInput = "email"; break;
+                case "url": ViewBag.TipoInput = "url"; break;
+                case "tel": ViewBag.TipoInput = "tel"; break;
+                case "range": ViewBag.TipoInput = "range"; break;
+                default: ViewBag.TipoInput = "text"; break;
             }
+
 
             return _vista;
         }

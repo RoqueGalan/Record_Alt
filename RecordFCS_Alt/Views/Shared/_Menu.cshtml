@@ -11,10 +11,11 @@
                 <span class="icon-bar"></span>
             </button>
             <div class="logoFundacion">
-                <img src="~/Content/img/home/carrusel/logo1.jpg" alt="Fundación Carlos Slim" class="imgSaludo" />
             </div>
-           @*@Html.NoEncodeActionLink("<font size='6'>R</font><font size='3'> E C O R D</font>", "Inicio de RECORD", "Index", "Home", null, htmlAttributes: new { data_toggle = "tooltip", @class = "navbar-brand" })*@
 
+            <a href="@Url.Action("Index","Home")" data-toggle="tooltip" class="navbar-brand">
+                <img src="~/Content/img/home/carrusel/logoRecordFCS.png" alt="Fundación Carlos Slim" class="imgSaludo" />
+            </a>
         </div>
       
 
@@ -144,7 +145,7 @@
                             //barra derecha
                             <ul class="nav navbar-nav navbar-right">
                                 <li class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="text-info"><i class="fa fa-male"></i> Hola, </span>@User.Nombre<span class="text-info">! <span class="caret"></span></span></a>
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="text-primary"><i class="fa fa-male"></i> Hola, </span>@User.Nombre<span class="text-primary">! <span class="caret"></span></span></a>
                                     <ul class="dropdown-menu" role="menu">
                                         @Html.MenuItemIcon("<i class='fa fa-street-view'></i> Mi Perfil", "Mi Perfil", "Detalles", "Usuario", new { id = User.UsuarioID })
                                         @Html.MenuItemIcon("<i class='fa fa-user-times'></i> Cerrar Sesión", "Cerrar Sesión", "CerrarSesion", "Usuario")

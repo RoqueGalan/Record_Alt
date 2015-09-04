@@ -203,31 +203,31 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\alertas.css" />
+    <Content Include="Content\animate.css" />
     <Content Include="Content\bootstrap-subMenus.css" />
     <Content Include="Content\bootstrap-switch.css" />
-    <Content Include="Content\bootstrap-switch.min.css" />
+    <Content Include="Content\fonts\presidenciafirme-webfont.svg" />
+    <Content Include="Content\img\home\carrusel\front_01.jpg" />
+    <Content Include="Content\img\home\carrusel\front_02.jpg" />
+    <Content Include="Content\img\home\carrusel\front_03.jpg" />
+    <Content Include="Content\img\home\carrusel\front_04.jpg" />
+    <Content Include="Content\img\home\carrusel\logo1.jpg" />
+    <Content Include="Content\img\home\carrusel\logoFundacionCarlosSlim.png" />
+    <Content Include="Content\img\home\carrusel\logoRecordFCS.png" />
+    <Content Include="Content\img\home\carrusel\logo_cehm.png" />
+    <Content Include="Content\img\home\carrusel\logo_fcs.png" />
+    <Content Include="Content\img\home\carrusel\logo_soumaya.png" />
+    <Content Include="Content\img\Site.css" />
+    <Content Include="Content\Site.css" />
+    <Content Include="Content\_bootstrap-switch.min.css" />
     <Content Include="Content\bootstrap-theme.css" />
-    <Content Include="Content\bootstrap-theme.min.css" />
+    <Content Include="Content\_bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
-    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\_bootstrap.min.css" />
     <Content Include="Content\Colores.css" />
     <Content Include="Content\css\font-awesome.css" />
     <Content Include="Content\css\font-awesome.min.css" />
     <Content Include="Content\Homes.css" />
-    <Content Include="Content\home\carrusel\front_01.jpg" />
-    <Content Include="Content\home\carrusel\front_02.jpg" />
-    <Content Include="Content\home\carrusel\front_03.jpg" />
-    <Content Include="Content\home\carrusel\front_04.jpg" />
-    <Content Include="Content\home\carrusel\img-0.jpg" />
-    <Content Include="Content\home\carrusel\img-1.jpg" />
-    <Content Include="Content\home\carrusel\img-2.jpg" />
-    <Content Include="Content\home\carrusel\img-3.jpg" />
-    <Content Include="Content\home\carrusel\img-4.jpg" />
-    <Content Include="Content\home\carrusel\logo1.jpg" />
-    <Content Include="Content\home\carrusel\logoFundacionCarlosSlim.png" />
-    <Content Include="Content\home\carrusel\logo_cehm.png" />
-    <Content Include="Content\home\carrusel\logo_fcs.png" />
-    <Content Include="Content\home\carrusel\logo_soumaya.png" />
     <Content Include="Content\img\home\carrusel\img-0.jpg" />
     <Content Include="Content\img\home\carrusel\img-1.jpg" />
     <Content Include="Content\img\home\carrusel\img-2.jpg" />
@@ -241,27 +241,30 @@
     <Content Include="Content\list_Etiqueta.css" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\theme.css" />
-    <Content Include="Content\theme.min.css" />
+    <Content Include="Content\_theme.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-    <Content Include="Content\Site.css" />
+    <Content Include="Content\_Site.css" />
     <Content Include="fonts\fontawesome-webfont.woff2" />
     <Content Include="fonts\fontawesome-webfont.woff" />
     <Content Include="fonts\fontawesome-webfont.ttf" />
     <Content Include="fonts\fontawesome-webfont.eot" />
     <Content Include="fonts\FontAwesome.otf" />
     <Content Include="Scripts\add.toolTip.js" />
-    <Content Include="Content\fonts\presidenciabase-webfont.ttf" />
-    <Content Include="Content\fonts\presidenciafina-webfont.ttf" />
-    <Content Include="Content\fonts\presidenciafirme-webfont.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Content\fonts\presidenciafina-webfont.eot" />
+    <Content Include="Content\fonts\presidenciafina-webfont.woff" />
+    <Content Include="Content\fonts\presidenciafirme-webfont.eot" />
+    <Content Include="Content\fonts\presidenciafirme-webfont.otf" />
+    <Content Include="Content\fonts\presidenciafirme-webfont.ttf" />
+    <Content Include="Content\fonts\presidenciafirme-webfont.woff" />
     <None Include="Properties\PublishProfiles\Record_Alt.pubxml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\atributoLista.js" />
@@ -270,6 +273,7 @@
     <Content Include="Scripts\bootstrap-switch.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\EditarObra_GenericoLista.js" />
     <Content Include="Scripts\FuncionFiltradoLista.js" />
     <Content Include="Scripts\holder.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
@@ -300,12 +304,15 @@
     <Content Include="Scripts\tipoTipoMostrarLista.js" />
     <Content Include="Scripts\ubicacionLista.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
@@ -387,10 +394,9 @@
     <Content Include="Views\ListaValor\_Lista.cshtml" />
     <Content Include="Views\TipoAtributo\Detalles.cshtml" />
     <Content Include="Views\Atributo\_Registro_form.cshtml" />
-    <Content Include="Views\AutorPieza\Create.cshtml" />
+    <Content Include="Views\AutorPieza\_Crear.cshtml" />
     <Content Include="Views\AutorPieza\Delete.cshtml" />
     <Content Include="Views\AutorPieza\Details.cshtml" />
-    <Content Include="Views\AutorPieza\Edit.cshtml" />
     <Content Include="Views\AutorPieza\Index.cshtml" />
     <Content Include="Views\Atributo\_ErrorCampo.cshtml" />
     <Content Include="Views\Atributo\_GenericoLista.cshtml" />
@@ -471,11 +477,14 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\ImagenPieza\_CarruselThumb.cshtml" />
-    <Content Include="Views\AtributoPieza\Create.cshtml" />
+    <Content Include="Views\AtributoPieza\_CrearGenericoLista.cshtml" />
     <Content Include="Views\AtributoPieza\Delete.cshtml" />
     <Content Include="Views\AtributoPieza\Details.cshtml" />
-    <Content Include="Views\AtributoPieza\Edit.cshtml" />
+    <Content Include="Views\AtributoPieza\_EditarGenericoLista.cshtml" />
     <Content Include="Views\AtributoPieza\Index.cshtml" />
+    <Content Include="Views\AtributoPieza\_EditarGenericoCampo.cshtml" />
+    <Content Include="Views\AutorPieza\_Editar.cshtml" />
+    <Content Include="Views\AtributoPieza\_CrearGenericoCampo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

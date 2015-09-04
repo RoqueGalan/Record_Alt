@@ -10,7 +10,7 @@ using RecordFCS_Alt.Models;
 
 namespace RecordFCS_Alt.Controllers
 {
-    public class AutorPiezaController : Controller
+    public class AutorPiezaController : BaseController
     {
         private RecordFCSContext db = new RecordFCSContext();
 
@@ -30,66 +30,135 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: AutorPieza/Create
-        public ActionResult Create()
-        {
-            ViewBag.AutorID = new SelectList(db.Autores, "AutorID", "Nombre");
-            ViewBag.PiezaID = new SelectList(db.Piezas, "PiezaID", "SubFolio");
-            return View();
-        }
+        //public ActionResult Create()
+        //{
+        //    ViewBag.AutorID = new SelectList(db.Autores, "AutorID", "Nombre");
+        //    ViewBag.PiezaID = new SelectList(db.Piezas, "PiezaID", "SubFolio");
+        //    return View();
+        //}
 
         // POST: AutorPieza/Create
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que desea enlazarse. Para obtener 
         // más información vea http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "PiezaID,AutorID,Status")] AutorPieza autorPieza)
+        public ActionResult Crear([Bind(Include = "PiezaID,AutorID,Status")] AutorPieza autorPieza, Guid AtributoID)
         {
-            if (ModelState.IsValid)
+
+            string renderID = "autor_" + autorPieza.PiezaID + "_";
+
+            string texto = "";
+            bool guardar = false;
+
+                string valor = Request.Form["id_" + AtributoID].ToString();
+
+                autorPieza.AutorID = new Guid(valor);
+
+                //no existe el ListaValorID entonces actualizar el AtributoPiezaID con el ListaValorID
+                if (db.AutorPiezas.Where(a => a.PiezaID == autorPieza.PiezaID && a.AutorID == autorPieza.AutorID).Count() == 0)
+                {
+                    guardar = true;
+
+                    var autor = db.Autores.Find(autorPieza.AutorID);
+
+                    texto = autor.Nombre + " " + autor.Apellido;
+
+                    AlertaSuccess(string.Format("Autor: <b>{0}</b> se agregó.", autor.Nombre + "" + autor.Apellido), true);
+                    autorPieza.AutorID = autor.AutorID;
+
+                }
+                else
+                {
+                    guardar = false;
+                    //alerta ya existe
+                }
+            
+
+            if (guardar)
             {
-                autorPieza.PiezaID = Guid.NewGuid();
                 db.AutorPiezas.Add(autorPieza);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                renderID += autorPieza.AutorID;
             }
 
-            ViewBag.AutorID = new SelectList(db.Autores, "AutorID", "Nombre", autorPieza.AutorID);
-            ViewBag.PiezaID = new SelectList(db.Piezas, "PiezaID", "SubFolio", autorPieza.PiezaID);
-            return View(autorPieza);
+
+            return Json(new { success = true, renderID = renderID, texto = texto, guardar = guardar });
+
         }
 
         // GET: AutorPieza/Edit/5
-        public ActionResult Edit(Guid? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            AutorPieza autorPieza = db.AutorPiezas.Find(id);
-            if (autorPieza == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.AutorID = new SelectList(db.Autores, "AutorID", "Nombre", autorPieza.AutorID);
-            ViewBag.PiezaID = new SelectList(db.Piezas, "PiezaID", "SubFolio", autorPieza.PiezaID);
-            return View(autorPieza);
-        }
+        //public ActionResult Edit(Guid? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    AutorPieza autorPieza = db.AutorPiezas.Find(id);
+        //    if (autorPieza == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    ViewBag.AutorID = new SelectList(db.Autores, "AutorID", "Nombre", autorPieza.AutorID);
+        //    ViewBag.PiezaID = new SelectList(db.Piezas, "PiezaID", "SubFolio", autorPieza.PiezaID);
+        //    return View(autorPieza);
+        //}
 
         // POST: AutorPieza/Edit/5
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que desea enlazarse. Para obtener 
         // más información vea http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "PiezaID,AutorID,Status")] AutorPieza autorPieza)
+        public ActionResult Editar(AutorPieza autorPieza, Guid AtributoID, Guid LlaveID)
         {
-            if (ModelState.IsValid)
+            string renderID = "autor_" + autorPieza.PiezaID + "_" + LlaveID; 
+
+            string texto = "";
+            bool guardar = false;
+
+
+            var autorPiezaAnterior = db.AutorPiezas.Find(autorPieza.PiezaID, LlaveID);
+            
+            if (autorPiezaAnterior == null)
             {
-                db.Entry(autorPieza).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                guardar = false;
+                //alerta no existe el atributo
             }
-            ViewBag.AutorID = new SelectList(db.Autores, "AutorID", "Nombre", autorPieza.AutorID);
-            ViewBag.PiezaID = new SelectList(db.Piezas, "PiezaID", "SubFolio", autorPieza.PiezaID);
-            return View(autorPieza);
+            else
+            {
+                string valor = Request.Form["id_" + AtributoID].ToString();
+
+                autorPieza.AutorID = new Guid(valor);
+
+                //no existe el ListaValorID entonces actualizar el AtributoPiezaID con el ListaValorID
+                if (db.AutorPiezas.Where(a => a.PiezaID == autorPieza.PiezaID && a.AutorID == autorPieza.AutorID).Count() == 0)
+                {
+                    guardar = true;
+
+                    var autor = db.Autores.Find(autorPieza.AutorID);
+
+                    texto = autor.Nombre + " " + autor.Apellido;
+
+                    AlertaSuccess(string.Format("Autor: <b>{0}</b> se actualizo a <b>{1}</b>.", autorPiezaAnterior.Autor.Nombre + "" + autorPiezaAnterior.Autor.Apellido, autor.Nombre + " " + autor.Apellido), true);
+                    autorPieza.AutorID = autor.AutorID;
+
+                }
+                else
+                {
+                    guardar = false;
+                    //alerta ya existe
+                }
+            }
+
+            if (guardar)
+            {
+                db.AutorPiezas.Remove(autorPiezaAnterior);
+                db.SaveChanges();
+                db.AutorPiezas.Add(autorPieza);
+                db.SaveChanges();
+            }
+
+
+            return Json(new { success = true, renderID = renderID, texto = texto, guardar = guardar });
         }
 
         // GET: AutorPieza/Delete/5

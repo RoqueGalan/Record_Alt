@@ -241,7 +241,7 @@ namespace RecordFCS_Alt.Controllers
 
             //var listaObras = listaPiezas.GroupBy(x => x.ObraID).Select(x => x.FirstOrDefault()).ToList();
 
-            listaPiezas = listaPiezas.OrderBy(a => a.ObraID);
+            listaPiezas = listaPiezas.OrderBy(a => a.Obra.LetraFolio.Nombre).ThenBy(a=> a.Obra.NumeroFolio);
 
 
             paginaPiezasIDs = listaPiezas.Select(x => x.PiezaID).ToList().ToPagedList(pagIndex, pagTamano);

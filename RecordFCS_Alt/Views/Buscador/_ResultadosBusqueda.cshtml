@@ -3,6 +3,7 @@
 @using RecordFCS_Alt.Helpers
 
 
+
 <ul class="media-list">
 
     @foreach (var piezaID in Model)
@@ -10,3 +11,66 @@
         Html.RenderAction("Ficha", "Pieza", new { id = piezaID, tipo = "basica" });
     }
 </ul>
+
+
+
+<div id="contentPager" class="text-center center-block">
+    @Html.PagedListPager(Model, pagina => Url.Action("MostrarResultados", new { pagina = pagina }), new PagedListRenderOptions { LinkToFirstPageFormat = "<< Inicio", LinkToPreviousPageFormat = "< Anterior", LinkToNextPageFormat = "Siguiente >", LinkToLastPageFormat = "Final >>", UlElementClasses = new[] { "pagination", "pagination-sm" } })
+    <p>Total de piezas encontradas: @Model.TotalItemCount</p>
+</div>
+
+
+<script src="~/Scripts/add.toolTip.js"></script>
+
+
+
+
+<script type="text/javascript">
+
+    //Paginador cargar vista parcial en el div
+
+    $("#contentPager a").on("click", function (e) {
+
+        if ($(this).attr("href")) {
+            $('#renderResultadosBusqueda').html('' +
+                '<div class="text-center">' +
+                    '<p>' +
+                        '<span class="text-muted">' +
+                            'Por favor espere' +
+                        '</span>' +
+                    '</p>' +
+                    '<i class="fa fa-spinner fa-pulse fa-12x text-muted"></i>' +
+                    '<p>' +
+                        'Se estan procedando los resultados...' +
+                    '</p>' +
+                '</div>');
+
+            var liga = $(this).attr("href").split('?');
+            var pag = liga[1].split('=');
+
+            $('#pag').val(pag[1]);
+
+
+            var form = $('#FormFiltros');
+
+
+            $.ajax({
+                url: liga[0],
+                type: 'POST',
+                data: form.serialize(),
+                success: function (result) {
+                    //alert("okokok");
+                    $('#renderResultadosBusqueda').html(result); //  Campo que actualizara
+                }
+            });
+        }
+
+        return false;
+    });
+
+
+
+
+
+
+</script>

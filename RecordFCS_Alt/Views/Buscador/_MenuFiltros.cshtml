@@ -58,7 +58,7 @@
         <div class="panel-footer text-center">
             <input type="hidden" id="pag" name="pag" value="1" />
             <input type="hidden" id="rutaVista" name="rutaVista" value="@ViewBag.rutaVista" />
-            @Html.NoEncodeActionLink("<span class='fa fa-plus'></span> Filtro", "Agrega un Filtro de busqueda", "AgregarFiltro", "Buscador", null, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-success filtroAgregar" })
+            @Html.NoEncodeActionLink("<span class='fa fa-plus'></span> Filtro", "Agrega un Filtro de busqueda", "AgregarFiltro", "Buscador", null, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-default filtroAgregar" })
             <button type="submit" class="btn btn-primary" data-toggle="tooltip" data-original-title="Comenzar la busqueda"><i class="fa fa-search"></i> Buscar</button>
         </div>
 
