@@ -6,6 +6,16 @@ $(function () {
 	$('#LetraFolioID').focus();
 
 
+
+	$('#LetraFolioID').change(function (e) {
+	    $('#TipoObraID').focus();
+
+	});
+
+
+
+
+
 	$('#TipoObraID').change(function () {
 		var strSelecto = "";
 
@@ -19,12 +29,13 @@ $(function () {
 
 		if (strSelecto != "" || strSelecto != 0) {
 			var myUrl = '/TipoPieza/ListaSelect';
-
+			alert("alerta 1");
 			$.ajax({
 				url: myUrl,
 				type: "POST",
 				data: { id: strSelecto, esRoot: true },
 				success: function (result) {
+				    alert("alerta 2");
 
 					$('#renderSelectTipoPieza').html(result);
 

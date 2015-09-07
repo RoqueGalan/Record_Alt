@@ -1,0 +1,278 @@
+﻿@model RecordFCS_Alt.Models.AutorPieza
+
+@{
+    bool EsMultipleValor = ViewBag.EsMultipleValor;
+    Guid AtributoID = ViewBag.AtributoID;
+    string ParametrosHTML = ViewBag.ParametrosHTML;
+    Guid TipoAtributoID = ViewBag.TipoAtributoID;
+    string TipoInput = ViewBag.TipoInput;
+    string NombreAtt = ViewBag.NombreAtt;
+    SelectList ListaAutoresID = (SelectList)ViewBag.AutorID;
+
+    Guid id = ViewBag.id;
+
+
+}
+
+@{
+    ViewBag.PagName = "Crear ";
+    ViewBag.CtrlName = NombreAtt;
+}
+
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" data-toggle="tooltip" title="Cerrar">&times;</button>
+    <h4 class="modal-title" id="myModalLabel">
+        <b>@ViewBag.PagName</b>
+        <i class="text-muted">@ViewBag.CtrlName</i>
+    </h4>
+</div>
+
+
+
+
+
+
+@using (Html.BeginForm("Crear", "AutorPieza", FormMethod.Post, null))
+{
+
+    <div class="modal-body">
+
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.PiezaID)
+            @Html.Hidden("AtributoID", AtributoID)
+
+            <div class="input-group">
+                @Html.DropDownList("id_" + AtributoID, ListaAutoresID, "- Elije una opción -", htmlAttributes: new { @class = "form-control", required = "required" })
+
+                <span class="input-group-addon"></span>
+
+                <input id="buscar_@AtributoID" type="text" placeholder="Buscar valor" class="form-control" />
+
+                <span class="input-group-addon">
+                    <input type="checkbox" id="checkAdd_@AtributoID" class="btnCheckAdd" data-toggle="tooltip" data-title="Buscar/Guardar">
+                </span>
+
+
+                <span id="btnAccion_@AtributoID" name="Buscar" class="input-group-addon btn btn-default">
+                    <span class="fa fa-search"></span>
+                </span>
+
+
+            </div>
+
+
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.esPrincipal, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <div class="checkbox">
+                        @Html.EditorFor(model => model.esPrincipal)
+                        @Html.ValidationMessageFor(model => model.esPrincipal, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Prefijo, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Prefijo, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Prefijo, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <div class="checkbox">
+                        @Html.EditorFor(model => model.Status)
+                        @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <div class="modal-footer">
+        <button class="btn" type="button" data-dismiss="modal">Cancelar</button>
+        <input class="btn btn-primary" type="submit" value="Guardar" />
+    </div>
+
+}
+
+
+
+
+
+<script type="text/javascript">
+
+    $('#btnAccion_@AtributoID').on("click", function (e) {
+
+
+        var attID = '@AtributoID';
+        var tipoAttID = '@TipoAtributoID';
+        var $inputSelect = $('#id_' + attID);
+        var $itemSelected = $inputSelect.find('option:selected');
+        var $btnCheck = $('#checkAdd_' + attID);
+        var $inputBuscar = $('#buscar_' + attID);
+
+        var $btn = $('#btnAccion_@AtributoID');
+
+        /*
+        Elemento Seleccionado:
+            Texto = $itemSelected.text()
+            Valor o id = $itemSelected.val()
+
+        Input Buscador
+            Valor = $inputBuscar.val()
+
+        Boton Checked
+            Valor = $btnCheck.is(':checked')
+
+        Atributos
+            Mostrar: $btn.attr("name")
+            Cambiar Valor :  $btn.attr("name","prueba")
+        */
+
+        if ($btn.attr("name") == "Agregar") {
+            //alert("entro a agregar");
+
+            var myUrl = '@Url.Action("Crear", "Autor", new { EsRegistroObra = true })';
+
+            $.ajaxSetup({ cache: false });
+
+            $('#miModalContenido').load(myUrl, function () {
+                $('#Nombre').val($inputBuscar.val());
+
+                $('#miModal').modal({
+                    backdrop: 'static',
+                    keyboard: true,
+
+                }, 'show');
+
+                $("#miModal").css("z-index", "1500");
+
+                bindForm_ListaAutor(this);
+            });
+
+            function bindForm_ListaAutor(dialog) {
+
+
+                var attID = '@AtributoID';
+
+                $('form', dialog).submit(function (e) {
+
+                    var validarOK = false;
+
+
+                    validarOK = $(this).validate().valid();
+
+                    if (validarOK) {
+                        $.ajax({
+                            url: this.action,
+                            type: this.method,
+                            data: $(this).serialize(),
+                            success: function (result) {
+                                if (result.success) {
+                                    $('#miModal').modal('hide');
+
+                                    $('#buscar_' + attID).val($.trim(result.nombre));
+
+                                    $('#checkAdd_' + attID).trigger("click");
+                                    $('#btnAccion_' + attID).trigger("click");
+
+                                    $('#alertasDiv').load('/Base/_Alertas');
+
+                                } else {
+                                    $('#miModalContenido').html(result);
+                                    bindForm_ListaAutor(dialog);
+                                }
+                            }
+                        });
+                    }
+                    return false;
+                });
+
+            }
+
+            //mostrar modal para confirmar el campo que se va agregar
+
+        }
+        else {
+
+            $.ajaxSetup({ cache: false });
+
+            var myUrl = '@Url.Action("GenerarLista","Autor",null)';
+
+            $inputSelect.html('<option> Cargando... </option>');
+
+            $.ajax({
+                url: myUrl,
+                type: 'POST',
+                data: { id: tipoAttID, Filtro: $inputBuscar.val() },
+                dataType: 'json',
+                success: function (result) {
+
+                    if (result.length) {
+                        $inputSelect.html('<option> - Elije un resultado - </option>');
+
+                        for (var i = 0; i < result.length; i++) {
+                            $inputSelect.append('<option value = "' + result[i].AutorID + '">' + result[i].Nombre + '</option>');
+                        }
+                    }
+                    else {
+                        $inputSelect.html('<option> - Sin resultados - </option>');
+                    }
+
+
+                }
+            });
+
+            $inputSelect.focus();
+
+        }
+
+    });
+
+    $('#checkAdd_@AtributoID').on("click", function (e) {
+
+        var attID = '@AtributoID';
+        var $btnCheck = $('#checkAdd_' + attID);
+        var $btn = $('#btnAccion_@AtributoID');
+        var $inputBuscar = $('#buscar_' + attID);
+
+
+        if ($btnCheck.is(':checked')) {
+            $btn.attr("name", "Agregar");
+            $btn.html('<span class="fa fa-floppy-o"></span>');
+            $btn.removeClass("btn-default");
+            $btn.addClass("btn-success");
+
+            $inputBuscar.attr("placeholder", "Guardar valor");
+
+        }
+        else {
+            $btn.attr("name", "Buscar");
+            $btn.html('<span class="fa fa-search"></span>');
+            $btn.removeClass("btn-success");
+            $btn.addClass("btn-default");
+
+            $inputBuscar.attr("placeholder", "Buscar valor");
+
+        }
+    });
+
+</script>
+
+
+
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+<script src="~/Scripts/jquery.validate.js"></script>
