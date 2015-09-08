@@ -84,7 +84,7 @@
 
 <script src="~/Scripts/add.toolTip.js"></script>
 
-<script src="~/Scripts/reg.tipoObraSelect.js"></script>
+@*<script src="~/Scripts/reg.tipoObraSelect.js"></script>*@
 
 @*<script src="~/Scripts/reg.tipoPiezaSelect.js"></script>*@
 
@@ -92,3 +92,63 @@
 
 
 
+<script type="text/javascript">
+    $('#LetraFolioID').focus();
+
+
+    $(function () {
+        $.ajaxSetup({ cache: false });
+        $('#LetraFolioID').focus();
+
+
+
+        $('#LetraFolioID').change(function (e) {
+            $('#TipoObraID').focus();
+
+        });
+
+
+
+
+
+        $('#TipoObraID').change(function () {
+            var strSelecto = "";
+
+            $('#TipoObraID option:selected').each(function () {
+                strSelecto += $(this)[0].value;
+            });
+
+            $('#renderAtributosRequeridos').html(' <div id="renderAtributosRequeridos">Campos o atributos configurados de la plantilla<div id="renderIconoLoading"></div></div>');
+
+
+
+            if (strSelecto != "" || strSelecto != 0) {
+                var myUrl = '@Url.Action("ListaSelect", "TipoPieza",null)';
+                //alert("alerta 1");
+                $.ajax({
+                    url: myUrl,
+                    type: "POST",
+                    data: { id: strSelecto, esRoot: true },
+                    success: function (result) {
+                        //alert("alerta 2");
+
+                        $('#renderSelectTipoPieza').html(result);
+
+                        $('#TipoPiezaID').focus();
+                    }
+                });
+
+            }
+            else {
+                $('#renderSelectTipoPieza').html('' +
+                    '<select class="form-control">' +
+                        '<option>- Selecciona un tipo de obra -</option>' +
+                    '</select>');
+
+            }
+
+        });
+
+        return false;
+    });
+</script>

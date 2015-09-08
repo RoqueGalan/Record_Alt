@@ -60,54 +60,71 @@
         </div>
     </div>
 
-                <div class="modal-footer">
-            <button class="btn" type="button" data-dismiss="modal">Cancelar</button>
-            <input class="btn btn-primary" type="submit" value="Agregar" />
-        </div>
+    <div class="modal-footer">
+        <button class="btn" type="button" data-dismiss="modal">Cancelar</button>
+        <input class="btn btn-primary" type="submit" value="Agregar" />
+    </div>
 
 }
 
 
 
 
-        <script type='text/javascript'>
-            $('#formCrearImagen').submit(function (event) {
-                event.preventDefault();
 
-                var formData = new FormData($(this)[0]);
 
-                $.ajax({
-                    url: '/ImagenPieza/Crear',
-                    type: 'POST',
-                    data: formData,
-                    async: false,
-                    cache: false,
-                    contentType: false,
-                    processData: false,
-                    success: function (result) {
-                        if (result.success) {
-                            var renderID = '';
-                            if (result.lista == "lista") {
-                                renderID = '#renderCarrusel_' + result.idPieza
-                            } else {
-                                renderID = '#imagen_' + result.idImagenPieza;
-                            }
+<script type='text/javascript'>
+    $('#formCrearImagen').submit(function (event) {
 
-                            $(renderID).load(result.url); // campo que reemplazara + accion
-                            $('#alertasDiv').load('@Url.Action("_Alertas","Base")');
+        $.ajaxSetup({ cache: false });
 
-                            $('#myModal').modal('hide');
-                        }
-                        else {
-                            $('#myModalContent').html(result);
-                            $('#alertasDiv').load('@Url.Action("_Alertas","Base")');
-                        }
-                    },
-                    error: function () {
-                        alert("Ocurrio un error en el envio");
+       
+        event.preventDefault();
+
+        var formData = new FormData($(this)[0]);
+
+        var myurl = '@Url.Action("Crear", "ImagenPieza", null)';
+
+        //alert(myurl);
+
+
+        $.ajax({
+            url: myurl,
+            type: 'POST',
+            data: formData,
+            async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (result) {
+                if (result.success) {
+                    var renderID = '';
+                    if (result.lista == "lista") {
+                        renderID = '#renderCarrusel_' + result.idPieza
+                    } else {
+                        renderID = '#imagen_' + result.idImagenPieza;
                     }
-                });
-                return false;
-            });
 
-        </script>
+                    $(renderID).load(result.url); // campo que reemplazara + accion
+                    $('#alertasDiv').load('@Url.Action("_Alertas","Base")');
+
+                    $('#myModal').modal('hide');
+                }
+                else {
+                    $('#myModalContent').html(result);
+                    $('#alertasDiv').load('@Url.Action("_Alertas","Base")');
+                }
+            },
+            error: function () {
+                alert("Ocurrio un error en el envio");
+            }
+        });
+
+        formData = null;
+
+        return false;
+    });
+
+</script>
+
+
+

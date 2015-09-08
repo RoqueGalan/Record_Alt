@@ -15,11 +15,14 @@
     </h4>
 </div>
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("Editar", "ImagenPieza", FormMethod.Post, new { id = "formEditarImagen", enctype = "multipart/form-data" }))
 {
     <div class="modal-body">
 
         @Html.AntiForgeryToken()
+
+        <img src="@Model.RutaMini" class="thumbnail imagenMini" />
+
 
         <div class="form-horizontal">
 
@@ -29,7 +32,8 @@
             @Html.HiddenFor(model => model.NombreImagen)
             @Html.HiddenFor(model => model.RutaParcial)
 
-
+            
+            
             <div class="form-group">
                 @Html.LabelFor(model => model.Orden, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
@@ -76,6 +80,14 @@
             </div>
 
 
+            <div class="form-group">
+                <label for="FileImagen" class="control-label col-md-2">Archivo</label>
+
+                <div class="col-md-10">
+                    <input type="file" id="FileImagen" name="FileImagen" class="form-control" />
+                </div>
+            </div>
+
 
 
         </div>
@@ -88,4 +100,56 @@
     </div>
 
 }
+
+
+
+<script type='text/javascript'>
+    $('#formEditarImagen').submit(function (event) {
+
+        event.preventDefault();
+
+        var formData = new FormData($(this)[0]);
+
+        var myurl = '@Url.Action("Editar", "ImagenPieza", null)';
+
+        //alert(myurl);
+
+
+        $.ajax({
+            url: myurl,
+            type: 'POST',
+            data: formData,
+            async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (result) {
+                if (result.success) {
+                    var renderID = '';
+                    if (result.lista == "lista") {
+                        renderID = '#renderCarrusel_' + result.idPieza
+                    } else {
+                        renderID = '#imagen_' + result.idImagenPieza;
+                    }
+
+                    $(renderID).load(result.url); // campo que reemplazara + accion
+                    $('#alertasDiv').load('@Url.Action("_Alertas","Base")');
+
+                    $('#myModal').modal('hide');
+                }
+                else {
+                    $('#myModalContent').html(result);
+                    $('#alertasDiv').load('@Url.Action("_Alertas","Base")');
+                }
+            },
+            error: function () {
+                alert("Ocurrio un error en el envio");
+            }
+        });
+        return false;
+    });
+
+</script>
+
+
 

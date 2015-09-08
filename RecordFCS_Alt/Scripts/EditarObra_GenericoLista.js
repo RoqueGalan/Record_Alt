@@ -46,7 +46,7 @@
 
         function bindForm_ListaGenerica(dialog) {
 
-            alert("listaGen_@AtributoID");
+            //alert("listaGen_@AtributoID");
 
             var attID = '@AtributoID';
 

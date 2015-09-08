@@ -272,7 +272,6 @@
     <Content Include="Scripts\bootstrap-switch.js" />
     <Content Include="Scripts\bootstrap-switch.min.js" />
     <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\EditarObra_GenericoLista.js" />
     <Content Include="Scripts\FuncionFiltradoLista.js" />
     <Content Include="Scripts\holder.js" />
@@ -290,6 +289,8 @@
     <Content Include="Scripts\mostrarAtributoLista.js" />
     <Content Include="Scripts\openModalSimple.js" />
     <Content Include="Scripts\reg.tipoPiezaSelect.js" />
+    <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
+    <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\TecnicaLista.js" />
     <Content Include="Scripts\tipoAtributoLista.js" />
     <Content Include="Scripts\TipoMedidaLista.js" />
@@ -298,8 +299,6 @@
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
-    <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
-    <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\TipoTecnicaLista.js" />
     <Content Include="Scripts\tipoTipoMostrarLista.js" />
     <Content Include="Scripts\ubicacionLista.js" />

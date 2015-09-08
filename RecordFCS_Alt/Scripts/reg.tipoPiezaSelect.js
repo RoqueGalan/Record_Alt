@@ -47,8 +47,7 @@ $(function () {
 
         } else {
 
-            $('#renderAtributosRequeridos').html('');
-
+            $('#renderAtributosRequeridos').html(' <div id="renderAtributosRequeridos">Campos o atributos configurados de la plantilla<div id="renderIconoLoading"></div></div>');
             //$('#renderAtributosRequeridos').html('' +
             //    '<div class="text-center">' +
             //        '<span class="fa fa-10x fa-list-alt text-muted"></span>' +

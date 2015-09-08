@@ -78,12 +78,12 @@ namespace RecordFCS_Alt.Controllers
             if (listaImagenes.Count == 0)
             {
                 imagenPieza.Orden = 1;
-                imagenPieza.EsPrincipal = true;                
+                imagenPieza.EsPrincipal = true;
             }
             else
             {
                 imagenPieza.Orden = listaImagenes.Count + 1;
-                imagenPieza.EsPrincipal = false;                
+                imagenPieza.EsPrincipal = false;
             }
 
             return PartialView("_Crear", imagenPieza);
@@ -99,7 +99,7 @@ namespace RecordFCS_Alt.Controllers
 
             if (ModelState.IsValid)
             {
-                
+
 
                 //guardar la imagen en carpeta
                 string extension = Path.GetExtension(FileImagen.FileName);
@@ -113,7 +113,7 @@ namespace RecordFCS_Alt.Controllers
 
 
 
-                var rutaGuardar_Original = Server.MapPath(imagenPieza.Servidor + imagenPieza.RutaParcial + imagenPieza.NombreImagen);
+                var rutaGuardar_Original = Server.MapPath(imagenPieza.Ruta);
 
                 FileImagen.SaveAs(rutaGuardar_Original);
 
@@ -129,7 +129,8 @@ namespace RecordFCS_Alt.Controllers
                 mini.GuardarThumbnail();
 
                 //add a la lista de imagenes
-
+                FileImagen = null;
+                mini = null;
 
 
                 //guardar en db
@@ -165,10 +166,46 @@ namespace RecordFCS_Alt.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Editar([Bind(Include = "ImagenPiezaID,PiezaID,Orden,Titulo,Descripcion,Status,imgNombre,imgExtension,imgRuta")] ImagenPieza imagenPieza)
+        public ActionResult Editar(ImagenPieza imagenPieza, HttpPostedFileBase FileImagen)
         {
+
             if (ModelState.IsValid)
             {
+                if (FileImagen != null)
+                {
+
+                    FileInfo infoThumb = new FileInfo(Server.MapPath("~" + imagenPieza.RutaMini));
+                    if (infoThumb.Exists)
+                        infoThumb.Delete();
+
+                    FileInfo infoOriginal = new FileInfo(Server.MapPath("~" + imagenPieza.Ruta));
+                    if (infoOriginal.Exists)
+                        infoOriginal.Delete();
+
+                    infoOriginal = null;
+                    infoThumb = null;
+
+                    string extension = Path.GetExtension(FileImagen.FileName);
+
+
+                    imagenPieza.RutaParcial = "/Content/img/pieza/";
+                    imagenPieza.NombreImagen = Guid.NewGuid().ToString() + extension;
+                    imagenPieza.Ruta = imagenPieza.RutaParcial + imagenPieza.NombreImagen;
+                    imagenPieza.RutaMini = imagenPieza.RutaParcial + "thumb/" + imagenPieza.NombreImagen;
+                    var rutaGuardar_Original = Server.MapPath(imagenPieza.Ruta);
+                    FileImagen.SaveAs(rutaGuardar_Original);
+                    //Generar la mini
+                    Thumbnail mini = new Thumbnail()
+                    {
+                        OrigenSrc = rutaGuardar_Original,
+                        DestinoSrc = Server.MapPath(imagenPieza.RutaMini),
+                        LimiteAnchoAlto = 250
+                    };
+
+                    mini.GuardarThumbnail();
+
+                }
+
                 db.Entry(imagenPieza).State = EntityState.Modified;
                 db.SaveChanges();
 
@@ -177,7 +214,7 @@ namespace RecordFCS_Alt.Controllers
 
             }
 
-            return PartialView("_Editar",imagenPieza);
+            return PartialView("_Editar", imagenPieza);
         }
 
 
@@ -201,7 +238,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: ImagenPieza/Eliminar/5
         [HttpPost, ActionName("Eliminar")]
         [ValidateAntiForgeryToken]
-        public ActionResult EliminarConfirmado(Int64 id)
+        public ActionResult EliminarConfirmado(Guid id)
         {
             string btnValue = Request.Form["accionx"];
 
@@ -222,13 +259,13 @@ namespace RecordFCS_Alt.Controllers
 
                     //------------ Eliminar el archivo normal y el thumbnail
 
-                    FileInfo infoThumb = new FileInfo(Server.MapPath(imagenPieza.Servidor + imagenPieza.RutaMini));
+                    FileInfo infoThumb = new FileInfo(Server.MapPath("~" + imagenPieza.RutaMini));
                     if (infoThumb.Exists)
                         infoThumb.Delete();
                     else
                         AlertaWarning(string.Format("No se encontro imagen miniatura"), true);
 
-                    FileInfo infoOriginal = new FileInfo(Server.MapPath(imagenPieza.Servidor + imagenPieza.Ruta));
+                    FileInfo infoOriginal = new FileInfo(Server.MapPath("~" + imagenPieza.Ruta));
                     if (infoOriginal.Exists)
                         infoOriginal.Delete();
                     else

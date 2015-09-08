@@ -14,6 +14,11 @@
     width: auto;
 }
 
+.imagenMini{
+    min-width:200px !important;
+    max-width:200px !important;
+}
+
 @font-face {
     font-family: 'Presidencial';
     src: url('../Content/fonts/presidenciafirme-webfont.eot');

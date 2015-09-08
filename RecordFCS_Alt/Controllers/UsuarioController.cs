@@ -165,7 +165,7 @@ namespace RecordFCS_Alt.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [CustomAuthorize(permiso = "UsuarioCrear")]
-        public ActionResult Crear([Bind(Include = "UsuarioID,UserName,Password,Nombre,Apellido,Correo,Status")] Usuario usuario)
+        public ActionResult Crear([Bind(Include = "UsuarioID,UserName,Password,Nombre,Apellido,Correo,Status,ConfirmPassword")] Usuario usuario)
         {
 
             if (usuario.Password != usuario.ConfirmPassword)

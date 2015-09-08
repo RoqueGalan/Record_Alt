@@ -136,13 +136,15 @@
         $.ajaxSetup({ cache: false });
 
         $("#contentPager a").on("click", function (e) {
-            $.ajax({
-                url: $(this).attr("href"),
-                type: 'GET',
-                success: function (result) {
-                    $('#replacetarget').html(result);
-                }
-            });
+            if ($(this).attr("href")) {
+                $.ajax({
+                    url: $(this).attr("href"),
+                    type: 'GET',
+                    success: function (result) {
+                        $('#replacetarget').html(result);
+                    }
+                });
+            }
             return false;
         });
     });

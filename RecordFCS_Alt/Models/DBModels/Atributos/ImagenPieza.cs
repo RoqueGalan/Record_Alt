@@ -32,14 +32,6 @@ namespace RecordFCS_Alt.Models
 
 
         //No Mapeados
-        [NotMapped]
-        public string Servidor
-        {
-            get
-            {
-                return "~";
-            }
-        }
 
         [NotMapped]
         public string Ruta
@@ -48,13 +40,15 @@ namespace RecordFCS_Alt.Models
             {
                 if (string.IsNullOrWhiteSpace(NombreImagen) || string.IsNullOrWhiteSpace(RutaParcial))
                 {
-                    return "holder.js/300x200/text:404";
+                    return "holder.js/250x200/text:404";
                 }
                 else
                 {
                     return RutaParcial + NombreImagen;
                 }
             }
+
+            set { }
         }
 
         [NotMapped]
@@ -64,13 +58,15 @@ namespace RecordFCS_Alt.Models
             {
                 if (string.IsNullOrWhiteSpace(NombreImagen) || string.IsNullOrWhiteSpace(RutaParcial))
                 {
-                    return "holder.js/300x200/text:404";
+                    return "holder.js/250x200/text:404";
                 }
                 else
                 {
                     return RutaParcial + "thumb/" + NombreImagen;
                 }
             }
+
+            set { }
         }
     }
 
