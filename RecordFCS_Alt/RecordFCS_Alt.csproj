@@ -191,6 +191,7 @@
     <Compile Include="Models\DBModels\Atributos\Catalogos\SubCatalogos\TipoTecnica.cs" />
     <Compile Include="Models\DBModels\Usuario.cs" />
     <Compile Include="Models\Migraciones\RowArchivo.cs" />
+    <Compile Include="Models\Migraciones\RowUsuario.cs" />
     <Compile Include="Models\ViewModels\itemListaBasicaDefault.cs" />
     <Compile Include="Models\ViewModels\itemPiezaGenerica.cs" />
     <Compile Include="Models\ViewModels\itemPiezaGenericaCampo.cs" />
@@ -436,7 +437,6 @@
     <Content Include="Views\Usuario\Delete.cshtml" />
     <Content Include="Views\Usuario\Details.cshtml" />
     <Content Include="Views\Usuario\Detalles.cshtml" />
-    <Content Include="Views\Usuario\Edit.cshtml" />
     <Content Include="Views\Usuario\Index.cshtml" />
     <Content Include="Views\Usuario\_Crear.cshtml" />
     <Content Include="Views\Usuario\_Editar.cshtml" />
@@ -484,6 +484,7 @@
     <Content Include="Views\AtributoPieza\_EditarGenericoCampo.cshtml" />
     <Content Include="Views\AutorPieza\_Editar.cshtml" />
     <Content Include="Views\AtributoPieza\_CrearGenericoCampo.cshtml" />
+    <Content Include="Views\Usuario\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

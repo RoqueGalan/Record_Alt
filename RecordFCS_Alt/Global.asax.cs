@@ -38,6 +38,7 @@ namespace RecordFCS_Alt
                 newUser.Nombre = serializeModel.Nombre;
                 newUser.Apellido = serializeModel.Apellido;
                 newUser.ListaRoles = serializeModel.ListaRoles;
+                newUser.Tiempo = serializeModel.Tiempo;
 
                 HttpContext.Current.User = newUser;
             }

@@ -12,6 +12,7 @@ using System.Text;
 using System.Web.Security;
 using RecordFCS_Alt.Helpers.Seguridad;
 using Newtonsoft.Json;
+using System.Text.RegularExpressions;
 
 namespace RecordFCS_Alt.Controllers
 {
@@ -43,35 +44,43 @@ namespace RecordFCS_Alt.Controllers
         public ActionResult IniciarSesion([Bind(Include = "UserName,Password")] Usuario usuario)
         {
             //validar que usuario y contraseña existan
+            usuario.Password = EncriptaPass(usuario.Password);
+
 
             if (db.Usuarios.Where(a => a.UserName == usuario.UserName && a.Password == usuario.Password).Count() == 1)
             {
                 //el usuario es correcto
                 var usuarioX = db.Usuarios.Where(u => u.UserName == usuario.UserName).First();
+                var tiempoActual = DateTime.Now;
+                var tiempoFin = DateTime.Now.AddMinutes(30);
 
                 CustomPrincipalSerializeModel serializeModel = new CustomPrincipalSerializeModel();
                 serializeModel.UsuarioID = usuarioX.UsuarioID;
                 serializeModel.Nombre = usuarioX.Nombre;
                 serializeModel.Apellido = usuarioX.Apellido;
+                serializeModel.Tiempo = tiempoFin.Hour + ":" + tiempoFin.Minute + ":" + tiempoFin.Second;
                 serializeModel.ListaRoles = usuarioX.Permisos.Where(a => a.Status).Select(a => a.TipoPermiso.Clave).ToArray();
 
                 string userData = JsonConvert.SerializeObject(serializeModel);
 
+
+
+
                 FormsAuthenticationTicket authTicket = new FormsAuthenticationTicket(
                      1,
                      usuarioX.UserName,
-                     DateTime.Now,
-                     DateTime.Now.AddMinutes(30),
+                     tiempoActual,
+                     tiempoFin,
                      true,
                      userData);
 
 
                 string encTicket = FormsAuthentication.Encrypt(authTicket);
-                HttpCookie faCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encTicket) { Expires = authTicket.Expiration};
+                HttpCookie faCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encTicket) { Expires = authTicket.Expiration };
                 Response.Cookies.Add(faCookie);
 
 
-                if (usuario.Password == "Record_2015")
+                if (usuario.Password == EncriptaPass("Record@2015"))
                 {
                     AlertaWarning("Recuerda cambiar tu contraseña por una personal, con el fin de tener mayor seguridad.");
                 }
@@ -152,11 +161,11 @@ namespace RecordFCS_Alt.Controllers
         {
             Usuario usuario = new Usuario()
             {
-                Password = "Record_2015",
-                ConfirmPassword = "Record_2015",
+                Password = "Record@2015",
+                ConfirmPassword = "Record@2015",
             };
 
-            ViewBag.PassDefault = "Record_2015";
+            ViewBag.PassDefault = "Record@2015";
 
             return PartialView("_Crear", usuario);
         }
@@ -183,6 +192,9 @@ namespace RecordFCS_Alt.Controllers
                 }
                 usuario.UsuarioID = Guid.NewGuid();
                 usuario.Status = true;
+
+                usuario.Password = EncriptaPass(usuario.Password);
+
                 db.Usuarios.Add(usuario);
                 db.SaveChanges();
 
@@ -209,6 +221,8 @@ namespace RecordFCS_Alt.Controllers
             {
                 return HttpNotFound();
             }
+
+            usuario.ConfirmPassword = usuario.Password;
             return PartialView("_Editar", usuario);
         }
 
@@ -216,11 +230,33 @@ namespace RecordFCS_Alt.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [CustomAuthorize(permiso = "UsuarioEdit")]
-        public ActionResult Editar([Bind(Include = "UsuarioID,UserName,Password,Nombre,Apellido,Correo,Status")] Usuario usuario)
+        public ActionResult Editar(Usuario usuario)
         {
+            var passOld = db.Usuarios.Select(a => new { a.Password, a.UsuarioID }).FirstOrDefault(a => a.UsuarioID == usuario.UsuarioID);
+            var passForm = Regex.Replace(usuario.Password.ToString().Trim(), @"\s+", " ");
+
+            if (passForm != passOld.Password)
+            {
+                usuario.Password = EncriptaPass(passForm);
+            }
+
+            usuario.ConfirmPassword = usuario.Password;
+
+            try
+            {
+                var addr = new System.Net.Mail.MailAddress(usuario.Correo);
+
+            }
+            catch
+            {
+                usuario.Correo = null;
+            }
+
+
             if (ModelState.IsValid)
             {
                 db.Entry(usuario).State = EntityState.Modified;
+
                 db.SaveChanges();
 
                 AlertaSuccess(string.Format("Usuario: <b>{0}</b> se edito con exitó.", usuario.UserName), true);
@@ -228,6 +264,8 @@ namespace RecordFCS_Alt.Controllers
                 var url = Url.Action("Lista", "Usuario");
                 return Json(new { success = true, url = url });
             }
+
+
             return PartialView("_Editar", usuario);
         }
 
@@ -282,11 +320,22 @@ namespace RecordFCS_Alt.Controllers
 
         [HttpPost]
         [CustomAuthorize]
-        public JsonResult validarRegistroUnico(string UserName)
+        public JsonResult validarRegistroUnico(string UserName, Guid UsuarioID)
         {
-            var lista = db.Usuarios.Where(a => a.UserName == UserName);
-
-            return Json(lista.Count() == 0);
+            var usuario = db.Usuarios.Where(a => a.UserName == UserName).FirstOrDefault();
+            bool x = false;
+            if (usuario == null)
+            {
+                x = true;
+            }
+            else
+            {
+                if (usuario.UsuarioID == UsuarioID)
+                {
+                    x = true;
+                }
+            }
+            return Json(x);
         }
 
         [HttpPost]
@@ -340,6 +389,7 @@ namespace RecordFCS_Alt.Controllers
             return Json(new { success = true, url = url, modelo = "Usuario" });
         }
 
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -348,5 +398,28 @@ namespace RecordFCS_Alt.Controllers
             }
             base.Dispose(disposing);
         }
+
+
+        /// <summary>
+        /// Encripta una cadena (se utiliza para los passwords de los usuarios)
+        /// </summary>
+        /// <param name="cont">Cadena a encriptar</param>
+        /// <returns>Regresa la cadena encriptada</returns>
+        /// <remarks></remarks>
+        public static string EncriptaPass(string cont)
+        {
+            System.Security.Cryptography.MD5CryptoServiceProvider x = new System.Security.Cryptography.MD5CryptoServiceProvider();
+            byte[] bs = Encoding.UTF8.GetBytes(cont);
+            bs = x.ComputeHash(bs);
+            StringBuilder s = new StringBuilder();
+            for (Int16 i = 0; i <= bs.Length - 1; i++)
+            {
+                s.Append(bs[i].ToString("x2").ToLower());
+            }
+            return s.ToString();
+        }
+
+
+
     }
 }

@@ -28,7 +28,7 @@
     @Html.Partial("_Menu")
 
 
-    
+
     <div id="alertasDiv" class="notificacion clearfix">
         @{ Html.RenderPartial("_Alertas"); }
     </div>
@@ -68,8 +68,39 @@
 
     <footer>
         <p class="text-center">
-                &copy; @DateTime.Now.Year - <b>Record</b> - <i>Registro, Control y Documentación de Obra</i>
+            &copy; @DateTime.Now.Year - <b>Record</b> - <i>Registro, Control y Documentación de Obra</i>
         </p>
+
+        @if (IsAuthenticated)
+        {
+            <p>
+                Tiempo para cerrar sesion: @User.Tiempo
+            </p>
+
+
+            <script type="text/javascript">
+                setInterval(function () {
+                    //ChecarTiempo();
+                    //code goes here that will be run every 10 seconds.
+                }, 1000);
+
+                var tiempoFin = '@User.Tiempo';
+
+                function ChecarTiempo() {
+                    var fecha = new Date();
+                    var currenTime = fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
+
+                    alert(currenTime);
+                    if (currenTime == tiempoFin) {
+                        alert("Se terminó la sesión.");
+                        var myUrl = '@Url.Action("CerrarSesion","Usuario",null)';
+
+                        window.location = myUrl;
+                    }
+                }
+
+            </script>
+        }
     </footer>
 
 
@@ -88,6 +119,14 @@
 
     @RenderSection("scripts", required: false)
 
+
+
+    <script type="text/javascript">
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+
 </body>
 
 
@@ -95,12 +134,3 @@
 
 
 </html>
-
-
-<script type="text/javascript">
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
-    })
-</script>
-
-

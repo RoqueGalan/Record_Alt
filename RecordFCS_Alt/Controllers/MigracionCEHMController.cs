@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
@@ -18,6 +19,13 @@ namespace RecordFCS_Alt.Controllers
         private SqlConnection con3 = new SqlConnection(ConfigurationManager.ConnectionStrings["ArchivoCEHMConnection"].ConnectionString);
         private SqlConnection con4 = new SqlConnection(ConfigurationManager.ConnectionStrings["ArchivoCEHMConnection"].ConnectionString);
 
+        private SqlConnection conRec1 = new SqlConnection(ConfigurationManager.ConnectionStrings["RecordNewConnection"].ConnectionString);
+        private SqlConnection conRec2 = new SqlConnection(ConfigurationManager.ConnectionStrings["RecordNewConnection"].ConnectionString);
+        private SqlConnection conRec3 = new SqlConnection(ConfigurationManager.ConnectionStrings["RecordNewConnection"].ConnectionString);
+
+
+
+
         private RecordFCSContext db = new RecordFCSContext();
 
 
@@ -30,6 +38,8 @@ namespace RecordFCS_Alt.Controllers
 
         public ActionResult IniciarMigracion()
         {
+            int NumFol = 0; //ultima registrada
+
             RecordFCSContext dbx = new RecordFCSContext();
 
             int bloqueGuardar = 500;
@@ -42,7 +52,7 @@ namespace RecordFCS_Alt.Controllers
             TipoPieza tipoPieza = tipoObra.TipoPiezas.FirstOrDefault(a => a.TipoPiezaID == TipoPiezaID);
 
             LetraFolio letra = dbx.LetraFolios.SingleOrDefault(a => a.Nombre == "A");
-
+            
 
             if (tipoObra != null && tipoPieza != null && letra != null)
             {
@@ -52,20 +62,20 @@ namespace RecordFCS_Alt.Controllers
 
                 //extraer
                 con1.Open();
-                string textSql1 = string.Format("SELECT * FROM [{0}]", "Archivo");
+                string textSql1 = string.Format("SELECT * FROM [{0}]", "ArchivoFondo");
                 SqlCommand sql1 = new SqlCommand(textSql1, con1);
                 SqlDataReader leer1 = sql1.ExecuteReader();
 
                 List<RowArchivo> listaArchivoCEHM = new List<RowArchivo>();
 
-                var i = 0;
+                int i = NumFol;
                
                 while (leer1.Read())
                 {
                     i++;
                     var rowArchivo = new RowArchivo()
                     {
-                        ArchivoID = Convert.ToInt32(leer1["ArchivoID"]),
+                        ArchivoID = Convert.ToInt32(i),
                         Asunto1 = Regex.Replace(leer1["Asunto1"].ToString().Trim(), @"\s+", " "),
                         Asunto2 = Regex.Replace(leer1["Asunto2"].ToString().Trim(), @"\s+", " "),
                         Caja = Regex.Replace(leer1["Caja"].ToString().Trim(), @"\s+", " "),
@@ -337,11 +347,11 @@ namespace RecordFCS_Alt.Controllers
                                             // queda: Carpeta : 1
                                             var cajaOk = false;
                                             addOK = row.Caja == null || row.Caja == "" ? false : true;
-                                            valorText += addOK? "Caja: " + row.Caja : "";
+                                            valorText += addOK? "" + row.Caja : "";
                                             cajaOk = addOK;
                                             addOK = row.Carpeta == null || row.Carpeta == "" ? false : true;
                                             valorText += cajaOk && addOK? " / " : "";
-                                            valorText += addOK ? "Carpeta: " + row.Carpeta : "";
+                                            valorText += addOK ? "" + row.Carpeta : "";
                                             addOK = addOK || cajaOk ? true : false;
                                             break;
 
@@ -349,11 +359,11 @@ namespace RecordFCS_Alt.Controllers
                                             // se forma con Fojas, Documento
                                             var fojaOk = false;
                                             addOK = row.Fojas == null || row.Fojas == "" ? false : true;
-                                            valorText += addOK? "Fojas: " + row.Fojas : "";
+                                            valorText += addOK? "" + row.Fojas : "";
                                             fojaOk = addOK;
                                             addOK = row.Documento == null || row.Documento == "" ? false : true;
                                             valorText += fojaOk && addOK? " / " : "";
-                                            valorText += addOK ? "Documento: " + row.Documento : "";
+                                            valorText += addOK ? "" + row.Documento : "";
                                             addOK = addOK || fojaOk ? true : false;
                                             break;
 
@@ -479,6 +489,118 @@ namespace RecordFCS_Alt.Controllers
 
             return View();
         }
+
+
+
+        public ActionResult IniciarUsuarios(){
+
+            conRec1.Open();
+            string textSql1 = string.Format("SELECT * FROM [{0}]", "m_usuario");
+            SqlCommand sql1 = new SqlCommand(textSql1, conRec1);
+            SqlDataReader leer1 = sql1.ExecuteReader();
+
+            List<RowUsuario> listaUsuarios = new List<RowUsuario>();
+
+            var i = 0;
+
+            while (leer1.Read())
+            {
+                i++;
+                var rowUsuario = new RowUsuario()
+                {
+                    a_materno = Regex.Replace(leer1["a_materno"].ToString().Trim(), @"\s+", " "),
+                    a_paterno = Regex.Replace(leer1["a_paterno"].ToString().Trim(), @"\s+", " "),
+                    cmonitoreo = Regex.Replace(leer1["cmonitoreo"].ToString().Trim(), @"\s+", " "),
+                    cve_permiso = Regex.Replace(leer1["cve_permiso"].ToString().Trim(), @"\s+", " "),
+                    cve_usuario = Regex.Replace(leer1["cve_usuario"].ToString().Trim(), @"\s+", " "),
+                    Departamento_Clave = Regex.Replace(leer1["Departamento_Clave"].ToString().Trim(), @"\s+", " "),
+                    email = Regex.Replace(leer1["email"].ToString().Trim(), @"\s+", " "),
+                    estatus = Regex.Replace(leer1["estatus"].ToString().Trim(), @"\s+", " "),
+                    login = Regex.Replace(leer1["login"].ToString().Trim(), @"\s+", " "),
+                    nombre = Regex.Replace(leer1["nombre"].ToString().Trim(), @"\s+", " "),
+                    password = Regex.Replace(leer1["password"].ToString().Trim(), @"\s+", " "),
+                    passwordOK = Regex.Replace(leer1["passwordOK"].ToString().Trim(), @"\s+", " "),
+                    permisos = Regex.Replace(leer1["permisos"].ToString().Trim(), @"\s+", " "),
+                    Puesto_Clave = Regex.Replace(leer1["Puesto_Clave"].ToString().Trim(), @"\s+", " ")
+                };
+
+
+                if (rowUsuario.cve_usuario != "0")
+                    listaUsuarios.Add(rowUsuario);
+
+            }
+            conRec1.Close();
+            leer1 = null;
+
+            string pass = "Record@2015";
+            string passEncriptado = EncriptaPass(pass);
+
+            foreach (var item in listaUsuarios)
+            {
+                var usuario = new Usuario();
+
+                usuario.UsuarioID = Guid.NewGuid();
+                
+
+                usuario.Apellido = item.a_paterno + " " + item.a_materno;
+                usuario.Apellido = Regex.Replace(usuario.Apellido.ToString().Trim(), @"\s+", " ");
+
+
+
+                try
+                {
+                    var addr = new System.Net.Mail.MailAddress(item.email);
+                    usuario.Correo = item.email;
+                }
+                catch
+                {
+                }
+
+
+
+
+                usuario.Nombre = item.nombre;
+                usuario.Password = passEncriptado;
+
+
+
+
+
+                usuario.Status = item.estatus == "1" ? true : false;
+                usuario.UserName = item.login;
+                usuario.ConfirmPassword = usuario.Password;
+
+
+                db.Usuarios.Add(usuario);
+                db.SaveChanges();
+            }
+
+
+        return View();
+    }
+
+
+
+        /// <summary>
+        /// Encripta una cadena (se utiliza para los passwords de los usuarios)
+        /// </summary>
+        /// <param name="cont">Cadena a encriptar</param>
+        /// <returns>Regresa la cadena encriptada</returns>
+        /// <remarks></remarks>
+        public static string EncriptaPass(string cont)
+        {
+            System.Security.Cryptography.MD5CryptoServiceProvider x = new System.Security.Cryptography.MD5CryptoServiceProvider();
+            byte[] bs = Encoding.UTF8.GetBytes(cont);
+            bs = x.ComputeHash(bs);
+            StringBuilder s = new StringBuilder();
+            for (Int16 i = 0; i <= bs.Length - 1; i++)
+            {
+                s.Append(bs[i].ToString("x2").ToLower());
+            }
+            return s.ToString();
+        }
+
+
 
     }
 }

@@ -24,6 +24,7 @@
         <div class="form-horizontal">
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             @Html.HiddenFor(model => model.UsuarioID)
+            @Html.HiddenFor(model => model.ConfirmPassword)
 
             @if (User.IsInRole("UsuarioTodosEdit"))
             {
@@ -107,6 +108,3 @@
         <input class="btn btn-primary" type="submit" value="Guardar" />
     </div>
 }
-
-
-@Scripts.Render("~/bundles/jqueryval")

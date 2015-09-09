@@ -16,11 +16,11 @@ namespace RecordFCS_Alt.Models
         [Required]
         //[Remote("EsUsuarioDisponible", "Validacion")]
         [Display(Name = "Nombre de Usuario")]
-        [Remote("validarRegistroUnico", "Usuario", HttpMethod = "POST", ErrorMessage = "Ya existe un registro con este nombre. Intenta con otro.")]
+        [Remote("validarRegistroUnico", "Usuario", HttpMethod = "POST", AdditionalFields = "UsuarioID", ErrorMessage = "Ya existe un registro con este nombre. Intenta con otro.")]
         public string UserName { get; set; }
 
         [Required]
-        [RegularExpression(@"^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_])[0-9a-zA-Z!@#$%^&*_0-9]{8,128}$", ErrorMessage = "Contraseña debe contener, Mayuscula, Número, Caracter Especial !@#$%^&*_ y 8 Caracteres Mínimo.")]
+        //[RegularExpression(@"^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_])[0-9a-zA-Z!@#$%^&*_0-9]{8,128}$", ErrorMessage = "Contraseña debe contener, Mayuscula, Número, Caracter Especial !@#$%^&*_ y 8 Caracteres Mínimo.")]
         [DataType(DataType.Password)]
         [Display(Name = "Contraseña")]
         public string Password { get; set; }
@@ -36,7 +36,7 @@ namespace RecordFCS_Alt.Models
 
         [Display(Name = "Correo Eléctronico")]
         [EmailAddress]
-        [StringLength(64)]
+        [StringLength(128)]
         [DataType(DataType.EmailAddress)]
         public string Correo { get; set; }
 

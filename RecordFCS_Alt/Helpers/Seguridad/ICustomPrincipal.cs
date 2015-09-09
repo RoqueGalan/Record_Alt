@@ -10,6 +10,7 @@ namespace RecordFCS_Alt.Helpers.Seguridad
         Guid UsuarioID { get; set; }
         string Nombre { get; set; }
         string Apellido { get; set; }
+        string Tiempo { get; set; }
         string[] ListaRoles { get; set; }
     }
 
@@ -43,6 +44,8 @@ namespace RecordFCS_Alt.Helpers.Seguridad
         public Guid UsuarioID { get; set; }
         public string Nombre { get; set; }
         public string Apellido { get; set; }
+        public string Tiempo { get; set; }
+
         public string[] ListaRoles { get; set; }
 
     }
@@ -53,6 +56,8 @@ namespace RecordFCS_Alt.Helpers.Seguridad
         public Guid UsuarioID { get; set; }
         public string Nombre { get; set; }
         public string Apellido { get; set; }
+        public string Tiempo { get; set; }
+
         public string[] ListaRoles { get; set; }
     }
 
