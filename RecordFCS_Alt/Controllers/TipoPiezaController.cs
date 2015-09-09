@@ -56,8 +56,7 @@ namespace RecordFCS_Alt.Controllers
 
             return PartialView("_Lista", lista.ToList());
         }
-
-
+        
         public ActionResult ListaSelect(Guid? id, bool esRoot = false)
         {
             if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

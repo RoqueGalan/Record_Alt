@@ -52,9 +52,7 @@ namespace RecordFCS_Alt.Models
         public virtual ICollection<TecnicaPieza> TecnicaPiezas { get; set; }
         public virtual ICollection<MedidaPieza> MedidaPiezas { get; set; }
         public virtual ICollection<AtributoPieza> AtributoPiezas { get; set; }
-
-
-
+        
         //atributoPieza
 
         //  videos

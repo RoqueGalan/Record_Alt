@@ -153,8 +153,7 @@ namespace RecordFCS_Alt.Controllers
 
             return PartialView("_Crear", atributo);
         }
-
-
+        
         // GET: Atributo/Editar/5
         public ActionResult Editar(Guid? id)
         {
