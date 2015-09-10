@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using RecordFCS_Alt.Models;
+using RecordFCS_Alt.Helpers.Seguridad;
 
 namespace RecordFCS_Alt.Controllers
 {
@@ -15,6 +16,7 @@ namespace RecordFCS_Alt.Controllers
         private RecordFCSContext db = new RecordFCSContext();
 
         // GET: MostrarAtributo/Editar/5
+        [CustomAuthorize(permiso = "")]
         public ActionResult Editar(Guid? id, Guid? AtributoID)
         {
             if (id == null || AtributoID == null)
@@ -33,6 +35,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: MostrarAtributo/Editar/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [CustomAuthorize(permiso = "")]
         public ActionResult Editar([Bind(Include = "TipoMostrarID,AtributoID,Orden,InicioHTML,FinHTML,Status")] MostrarAtributo mostrarAtributo)
         {
             if (ModelState.IsValid)
@@ -55,31 +58,7 @@ namespace RecordFCS_Alt.Controllers
             return PartialView("_Editar", mostrarAtributo);
         }
 
-        // GET: MostrarAtributo/Eliminar/5
-        public ActionResult Delete(Guid? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            MostrarAtributo mostrarAtributo = db.MostrarAtributos.Find(id);
-            if (mostrarAtributo == null)
-            {
-                return HttpNotFound();
-            }
-            return View(mostrarAtributo);
-        }
-
-        // POST: MostrarAtributo/Eliminar/5
-        [HttpPost, ActionName("Eliminar")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(Guid id)
-        {
-            MostrarAtributo mostrarAtributo = db.MostrarAtributos.Find(id);
-            db.MostrarAtributos.Remove(mostrarAtributo);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
+       
 
         protected override void Dispose(bool disposing)
         {

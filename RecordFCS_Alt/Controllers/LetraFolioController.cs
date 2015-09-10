@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using RecordFCS_Alt.Models;
 using PagedList;
+using RecordFCS_Alt.Helpers.Seguridad;
 
 namespace RecordFCS_Alt.Controllers
 {
@@ -16,12 +17,14 @@ namespace RecordFCS_Alt.Controllers
         private RecordFCSContext db = new RecordFCSContext();
 
         // GET: LetraFolio
+        [CustomAuthorize(permiso = "")]
         public ActionResult Index()
         {
             return View();
         }
 
         // GET: LetraFolio/Detalles/5
+        [CustomAuthorize(permiso = "")]
         public ActionResult Lista(string FiltroActual, string Busqueda, int? Pagina)
         {
             if (Busqueda != null) Pagina = 1;
@@ -51,6 +54,7 @@ namespace RecordFCS_Alt.Controllers
 
 
         // GET: LetraFolio/Crear
+        [CustomAuthorize(permiso = "")]
         public ActionResult Crear()
         {
             var lf = new LetraFolio()
@@ -64,6 +68,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: LetraFolio/Crear
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [CustomAuthorize(permiso = "")]
         public ActionResult Crear([Bind(Include = "LetraFolioID,Nombre,Descripcion,Status")] LetraFolio letraFolio)
         {
             //validar el nombre
@@ -87,6 +92,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: LetraFolio/Editar/5
+        [CustomAuthorize(permiso = "")]
         public ActionResult Editar(int? id)
         {
             if (id == null)
@@ -105,6 +111,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: LetraFolio/Editar/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [CustomAuthorize(permiso = "")]
         public ActionResult Editar([Bind(Include = "LetraFolioID,Nombre,Descripcion,Status")] LetraFolio letraFolio)
         {
             //validar el nombre
@@ -129,6 +136,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: LetraFolio/Eliminar/5
+        [CustomAuthorize(permiso = "")]
         public ActionResult Eliminar(int? id)
         {
             if (id == null)
@@ -147,6 +155,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: LetraFolio/Eliminar/5
         [HttpPost, ActionName("Eliminar")]
         [ValidateAntiForgeryToken]
+        [CustomAuthorize(permiso = "")]
         public ActionResult EliminarConfirmado(int id)
         {
             string btnValue = Request.Form["accionx"];

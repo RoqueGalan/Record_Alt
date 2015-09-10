@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using RecordFCS_Alt.Models;
+using RecordFCS_Alt.Helpers.Seguridad;
 
 namespace RecordFCS_Alt.Controllers
 {
@@ -15,6 +16,7 @@ namespace RecordFCS_Alt.Controllers
         private RecordFCSContext db = new RecordFCSContext();
 
         // GET: Atributo
+        [CustomAuthorize(permiso = "")]
         public ActionResult Lista(Guid? id)
         {
             if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -63,6 +65,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: Atributo/Crear
+        [CustomAuthorize(permiso = "")]
         public ActionResult Crear(Guid? id)
         {
             if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -104,6 +107,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: Atributo/Crear
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [CustomAuthorize(permiso = "")]
         public ActionResult Crear([Bind(Include = "AtributoID,Orden,NombreAlterno,Status,TipoPiezaID,TipoAtributoID")] Atributo atributo)
         {
             //validar 
@@ -155,6 +159,7 @@ namespace RecordFCS_Alt.Controllers
         }
         
         // GET: Atributo/Editar/5
+        [CustomAuthorize(permiso = "")]
         public ActionResult Editar(Guid? id)
         {
             if (id == null)
@@ -173,6 +178,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: Atributo/Editar/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [CustomAuthorize(permiso = "")]
         public ActionResult Editar([Bind(Include = "AtributoID,Orden,NombreAlterno,Status,TipoPiezaID,TipoAtributoID")] Atributo atributo)
         {
             if (ModelState.IsValid)
@@ -198,6 +204,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: Atributo/Eliminar/5
+        [CustomAuthorize(permiso = "")]
         public ActionResult Eliminar(Guid? id)
         {
             if (id == null)
@@ -215,6 +222,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: Atributo/Eliminar/5
         [HttpPost, ActionName("Eliminar")]
         [ValidateAntiForgeryToken]
+        [CustomAuthorize(permiso = "")]
         public ActionResult EliminarConfirmado(Guid id)
         {
             string btnValue = Request.Form["accionx"];
@@ -254,7 +262,7 @@ namespace RecordFCS_Alt.Controllers
             return Json(x);
         }
 
-
+        [CustomAuthorize(permiso = "")]
         public ActionResult RegistroFormulario(Guid? id)
         {
             //buscar el tipo de pieza
@@ -280,7 +288,7 @@ namespace RecordFCS_Alt.Controllers
             return PartialView("_Registro_form", lista);
         }
 
-
+        [CustomAuthorize(permiso = "")]
         public ActionResult GenerarCampoRegistro(Guid? id, Guid? AtributoID)
         {
             PartialViewResult _vista = null;
@@ -390,9 +398,7 @@ namespace RecordFCS_Alt.Controllers
 
             return _vista;
         }
-
-
-
+        
         protected override void Dispose(bool disposing)
         {
             if (disposing)

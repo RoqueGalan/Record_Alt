@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using RecordFCS_Alt.Models;
 using PagedList;
+using RecordFCS_Alt.Helpers.Seguridad;
 
 namespace RecordFCS_Alt.Controllers
 {
@@ -16,11 +17,11 @@ namespace RecordFCS_Alt.Controllers
         private RecordFCSContext db = new RecordFCSContext();
 
         // GET: Autor
+        [CustomAuthorize(permiso = "")]
         public ActionResult Index()
         {
             return View();
         }
-
 
         public ActionResult ListaString(string busqueda, bool exacta)
         {
@@ -52,7 +53,7 @@ namespace RecordFCS_Alt.Controllers
             return RedirectToAction("RenderListaCoincidencias", "Buscador");
         }
 
-
+        [CustomAuthorize(permiso = "")]
         public ActionResult Lista(string FiltroActual, string Busqueda, int? Pagina)
         {
 
@@ -85,6 +86,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: Autor/Crear
+        [CustomAuthorize(permiso = "")]
         public ActionResult Crear(bool EsRegistroObra = false)
         {
             var autor = new Autor()
@@ -101,6 +103,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: Autor/Crear
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [CustomAuthorize(permiso = "")]
         public ActionResult Crear([Bind(Include = "AutorID,Nombre,Apellido,LugarNacimiento,AnoNacimiento,LugarMuerte,AnoMuerte,Observaciones,Status,Temp")] Autor autor, bool EsRegistroObra)
         {
             //validar el nombre
@@ -135,6 +138,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: Autor/Editar/5
+        [CustomAuthorize(permiso = "")]
         public ActionResult Editar(Guid? id)
         {
             if (id == null)
@@ -152,6 +156,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: Autor/Editar/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [CustomAuthorize(permiso = "")]
         public ActionResult Editar([Bind(Include = "AutorID,Nombre,Apellido,LugarNacimiento,AnoNacimiento,LugarMuerte,AnoMuerte,Observaciones,Status,Temp")] Autor autor)
         {
             //validar el nombre
@@ -175,6 +180,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: Autor/Eliminar/5
+        [CustomAuthorize(permiso = "")]
         public ActionResult Eliminar(Guid? id)
         {
             if (id == null)
@@ -192,6 +198,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: Autor/Eliminar/5
         [HttpPost, ActionName("Eliminar")]
         [ValidateAntiForgeryToken]
+        [CustomAuthorize(permiso = "")]
         public ActionResult EliminarConfirmado(Guid id)
         {
             string btnValue = Request.Form["accionx"];

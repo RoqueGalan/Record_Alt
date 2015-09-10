@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using RecordFCS_Alt.Models;
+using RecordFCS_Alt.Helpers.Seguridad;
 
 namespace RecordFCS_Alt.Controllers
 {
@@ -14,34 +15,14 @@ namespace RecordFCS_Alt.Controllers
     {
         private RecordFCSContext db = new RecordFCSContext();
 
-        // GET: AutorPieza/Detalles/5
-        public ActionResult Details(Guid? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            AutorPieza autorPieza = db.AutorPiezas.Find(id);
-            if (autorPieza == null)
-            {
-                return HttpNotFound();
-            }
-            return View(autorPieza);
-        }
 
-        // GET: AutorPieza/Create
-        //public ActionResult Create()
-        //{
-        //    ViewBag.AutorID = new SelectList(db.Autores, "AutorID", "Nombre");
-        //    ViewBag.PiezaID = new SelectList(db.Piezas, "PiezaID", "SubFolio");
-        //    return View();
-        //}
 
         // POST: AutorPieza/Create
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que desea enlazarse. Para obtener 
         // más información vea http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [CustomAuthorize(permiso = "")]
         public ActionResult Crear([Bind(Include = "PiezaID,AutorID,Status")] AutorPieza autorPieza, Guid AtributoID)
         {
 
@@ -86,28 +67,13 @@ namespace RecordFCS_Alt.Controllers
 
         }
 
-        // GET: AutorPieza/Edit/5
-        //public ActionResult Edit(Guid? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    AutorPieza autorPieza = db.AutorPiezas.Find(id);
-        //    if (autorPieza == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    ViewBag.AutorID = new SelectList(db.Autores, "AutorID", "Nombre", autorPieza.AutorID);
-        //    ViewBag.PiezaID = new SelectList(db.Piezas, "PiezaID", "SubFolio", autorPieza.PiezaID);
-        //    return View(autorPieza);
-        //}
-
+  
         // POST: AutorPieza/Edit/5
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que desea enlazarse. Para obtener 
         // más información vea http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [CustomAuthorize(permiso = "")]
         public ActionResult Editar(AutorPieza autorPieza, Guid AtributoID, Guid LlaveID)
         {
             string renderID = "autor_" + autorPieza.PiezaID + "_" + LlaveID; 
@@ -161,31 +127,6 @@ namespace RecordFCS_Alt.Controllers
             return Json(new { success = true, renderID = renderID, texto = texto, guardar = guardar });
         }
 
-        // GET: AutorPieza/Delete/5
-        public ActionResult Delete(Guid? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            AutorPieza autorPieza = db.AutorPiezas.Find(id);
-            if (autorPieza == null)
-            {
-                return HttpNotFound();
-            }
-            return View(autorPieza);
-        }
-
-        // POST: AutorPieza/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(Guid id)
-        {
-            AutorPieza autorPieza = db.AutorPiezas.Find(id);
-            db.AutorPiezas.Remove(autorPieza);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
 
         protected override void Dispose(bool disposing)
         {

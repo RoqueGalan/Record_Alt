@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using RecordFCS_Alt.Models;
 using System.Text.RegularExpressions;
+using RecordFCS_Alt.Helpers.Seguridad;
 
 namespace RecordFCS_Alt.Controllers
 {
@@ -15,29 +16,9 @@ namespace RecordFCS_Alt.Controllers
     {
         private RecordFCSContext db = new RecordFCSContext();
 
-        // GET: AtributoPieza
-        public ActionResult Index()
-        {
-            var atributoPiezas = db.AtributoPiezas.Include(a => a.Atributo).Include(a => a.ListaValor).Include(a => a.Pieza);
-            return View(atributoPiezas.ToList());
-        }
-
-        // GET: AtributoPieza/Details/5
-        public ActionResult Details(Guid? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            AtributoPieza atributoPieza = db.AtributoPiezas.Find(id);
-            if (atributoPieza == null)
-            {
-                return HttpNotFound();
-            }
-            return View(atributoPieza);
-        }
 
         // GET: AtributoPieza/Create
+        [CustomAuthorize(permiso = "")]
         public ActionResult Crear(Guid? id, Guid? AtributoID)
         {
             // AtributoPiezaID = id
@@ -178,6 +159,7 @@ namespace RecordFCS_Alt.Controllers
         // más información vea http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [CustomAuthorize(permiso = "")]
         public ActionResult Crear([Bind(Include = "AtributoPiezaID,Valor,Status,PiezaID,AtributoID,ListaValorID")] AtributoPieza atributoPieza)
         {
 
@@ -264,6 +246,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: AtributoPieza/Edit/5
+        [CustomAuthorize(permiso = "")]
         public ActionResult Editar(Guid? id, Guid? AtributoID, Guid? LLaveID)
         {
 
@@ -393,6 +376,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: AtributoPieza/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [CustomAuthorize(permiso = "")]
         public ActionResult Editar([Bind(Include = "AtributoPiezaID,Valor,Status,PiezaID,AtributoID,ListaValorID")] AtributoPieza atributoPieza)
         {
             Guid renderID = atributoPieza.AtributoPiezaID;
@@ -475,31 +459,6 @@ namespace RecordFCS_Alt.Controllers
             return Json(new { success = true, renderID = "valor_" + renderID, texto = texto, guardar = guardar });
         }
 
-        // GET: AtributoPieza/Delete/5
-        public ActionResult Delete(Guid? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            AtributoPieza atributoPieza = db.AtributoPiezas.Find(id);
-            if (atributoPieza == null)
-            {
-                return HttpNotFound();
-            }
-            return View(atributoPieza);
-        }
-
-        // POST: AtributoPieza/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(Guid id)
-        {
-            AtributoPieza atributoPieza = db.AtributoPiezas.Find(id);
-            db.AtributoPiezas.Remove(atributoPieza);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
 
         protected override void Dispose(bool disposing)
         {

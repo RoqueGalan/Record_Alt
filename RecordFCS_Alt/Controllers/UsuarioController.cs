@@ -51,14 +51,14 @@ namespace RecordFCS_Alt.Controllers
             {
                 //el usuario es correcto
                 var usuarioX = db.Usuarios.Where(u => u.UserName == usuario.UserName).First();
-                var tiempoActual = DateTime.Now;
-                var tiempoFin = DateTime.Now.AddMinutes(30);
+                //var tiempoActual = DateTime.Now;
+                //var tiempoFin = DateTime.Now.AddMinutes(2);
 
                 CustomPrincipalSerializeModel serializeModel = new CustomPrincipalSerializeModel();
                 serializeModel.UsuarioID = usuarioX.UsuarioID;
                 serializeModel.Nombre = usuarioX.Nombre;
                 serializeModel.Apellido = usuarioX.Apellido;
-                serializeModel.Tiempo = tiempoFin.Hour + ":" + tiempoFin.Minute + ":" + tiempoFin.Second;
+                //serializeModel.Tiempo = tiempoFin.Hour + ":" + tiempoFin.Minute + ":" + tiempoFin.Second;
                 serializeModel.ListaRoles = usuarioX.Permisos.Where(a => a.Status).Select(a => a.TipoPermiso.Clave).ToArray();
 
                 string userData = JsonConvert.SerializeObject(serializeModel);
@@ -66,13 +66,7 @@ namespace RecordFCS_Alt.Controllers
 
 
 
-                FormsAuthenticationTicket authTicket = new FormsAuthenticationTicket(
-                     1,
-                     usuarioX.UserName,
-                     tiempoActual,
-                     tiempoFin,
-                     true,
-                     userData);
+                FormsAuthenticationTicket authTicket = new FormsAuthenticationTicket(1, usuarioX.UserName,DateTime.Now, DateTime.Now.AddHours(8),true,userData);
 
 
                 string encTicket = FormsAuthentication.Encrypt(authTicket);
@@ -106,10 +100,12 @@ namespace RecordFCS_Alt.Controllers
         [AllowAnonymous]
         public ActionResult CerrarSesion()
         {
+            AlertaWarning("Sesión concluida.");
             FormsAuthentication.SignOut();
             return RedirectToAction("Index", "Home", null);
         }
 
+                
 
         // GET: Usuario/Lista
         [CustomAuthorize(permiso = "UsuarioVer")]

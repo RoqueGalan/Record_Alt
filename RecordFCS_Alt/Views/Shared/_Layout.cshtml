@@ -73,31 +73,79 @@
 
         @if (IsAuthenticated)
         {
-            <p>
-                Tiempo para cerrar sesion: @User.Tiempo
-            </p>
+          
 
 
             <script type="text/javascript">
-                setInterval(function () {
-                    //ChecarTiempo();
-                    //code goes here that will be run every 10 seconds.
+
+                var IsAuthenticated = true;
+
+                $(document).ready(function () {
+                    $.LazyMouse({
+                        delay: 900000 //15 minutos
+                    });
+                })
+
+  
+                $(document).ready(function () {
+                    $("body").bind("mouse.active", function () {
+                        console.log("Mouse Active");
+
+                    });
+                    $("body").bind("mouse.inactive", function () {
+                        console.log("Mouse Inctive");
+
+                        if (IsAuthenticated) {
+                            CerrarSesion();
+                        }
+                    });
+                })
+
+
+                @*setInterval(function () {
+                    if (IsAuthenticated) {
+                        ChecarTiempo();
+                    }
+                    //code goes here that will be run every 30 seconds.
                 }, 1000);
 
-                var tiempoFin = '@User.Tiempo';
+
+                var horaStr = "@User.Tiempo";
+                var horaArr = horaStr.split(':');
+                var horas = parseInt(horaArr[0]);
+                var minutos = parseInt(horaArr[1]);
+                var segundos = parseInt(horaArr[2]);
+
+                var horaFinDecimal = horas + (minutos / 60) + ((segundos / 60) / 60);
+
 
                 function ChecarTiempo() {
-                    var fecha = new Date();
-                    var currenTime = fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
 
-                    alert(currenTime);
-                    if (currenTime == tiempoFin) {
-                        alert("Se terminó la sesión.");
+                    var horaActStr = new Date();
+                    horas = parseInt(horaActStr.getHours());
+                    minutos = parseInt(horaActStr.getMinutes());
+                    segundos = parseInt(horaActStr.getSeconds());
+
+                    var horaActDecimal = horas + (minutos / 60) + ((segundos / 60) / 60);
+
+                    if (horaActDecimal >= horaFinDecimal) {
+                        
+                        CerrarSesion("Se terminó la sesión.");
+
                         var myUrl = '@Url.Action("CerrarSesion","Usuario",null)';
 
                         window.location = myUrl;
                     }
+                }*@
+
+
+
+                function CerrarSesion() {
+                    IsAuthenticated = false;
+                    var myUrl = '@Url.Action("CerrarSesion","Usuario",null)';
+                    window.location = myUrl;
                 }
+
 
             </script>
         }
@@ -127,6 +175,7 @@
         })
     </script>
 
+    <script src="~/Scripts/jquery-lazymouse.js"></script>
 </body>
 
 

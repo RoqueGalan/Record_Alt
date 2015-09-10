@@ -1,4 +1,5 @@
-﻿using RecordFCS_Alt.Models;
+﻿using RecordFCS_Alt.Helpers.Seguridad;
+using RecordFCS_Alt.Models;
 using RecordFCS_Alt.Models.Migraciones;
 using System;
 using System.Collections.Generic;
@@ -30,12 +31,13 @@ namespace RecordFCS_Alt.Controllers
 
 
         // GET: MigracionCEHM
+        [CustomAuthorize(permiso = "")]
         public ActionResult Index()
         {
             return View();
         }
 
-
+        [CustomAuthorize(permiso = "")]
         public ActionResult IniciarMigracion()
         {
             int NumFol = 0; //ultima registrada
@@ -491,7 +493,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
 
-
+        [CustomAuthorize(permiso = "")]
         public ActionResult IniciarUsuarios(){
 
             conRec1.Open();

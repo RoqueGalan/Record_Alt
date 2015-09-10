@@ -9,13 +9,15 @@ using System.Web.Mvc;
 using RecordFCS_Alt.Models;
 using System.IO;
 using RecordFCS_Alt.Helpers;
+using RecordFCS_Alt.Helpers.Seguridad;
 
 namespace RecordFCS_Alt.Controllers
 {
     public class ImagenPiezaController : BaseController
     {
         private RecordFCSContext db = new RecordFCSContext();
-
+        
+        [CustomAuthorize(permiso = "")]
         public ActionResult Carrusel(Guid? id, bool status = false, string tipo = "original")
         {
             if (id == null) { return new HttpStatusCodeResult(HttpStatusCode.BadRequest); }
@@ -54,7 +56,7 @@ namespace RecordFCS_Alt.Controllers
 
 
 
-
+        [CustomAuthorize(permiso = "")]
         public ActionResult Crear(Guid? id)
         {
             if (id == null)
@@ -94,6 +96,7 @@ namespace RecordFCS_Alt.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [CustomAuthorize(permiso = "")]
         public ActionResult Crear(ImagenPieza imagenPieza, HttpPostedFileBase FileImagen)
         {
 
@@ -147,7 +150,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
 
-
+        [CustomAuthorize(permiso = "")]
         public ActionResult Editar(Guid? id)
         {
             if (id == null)
@@ -166,6 +169,7 @@ namespace RecordFCS_Alt.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [CustomAuthorize(permiso = "")]
         public ActionResult Editar(ImagenPieza imagenPieza, HttpPostedFileBase FileImagen)
         {
 
@@ -219,6 +223,7 @@ namespace RecordFCS_Alt.Controllers
 
 
         // GET: ImagenPieza/Eliminar/5
+        [CustomAuthorize(permiso = "")]
         public ActionResult Eliminar(Guid? id)
         {
             if (id == null)
@@ -238,6 +243,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: ImagenPieza/Eliminar/5
         [HttpPost, ActionName("Eliminar")]
         [ValidateAntiForgeryToken]
+        [CustomAuthorize(permiso = "")]
         public ActionResult EliminarConfirmado(Guid id)
         {
             string btnValue = Request.Form["accionx"];
@@ -289,105 +295,22 @@ namespace RecordFCS_Alt.Controllers
 
 
 
-        // GET: ImagenPieza/Detalles/5
-        public ActionResult Details(Guid? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            ImagenPieza imagenPieza = db.ImagenPiezas.Find(id);
-            if (imagenPieza == null)
-            {
-                return HttpNotFound();
-            }
-            return View(imagenPieza);
-        }
+        //// GET: ImagenPieza/Detalles/5
+        //public ActionResult Details(Guid? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    ImagenPieza imagenPieza = db.ImagenPiezas.Find(id);
+        //    if (imagenPieza == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    return View(imagenPieza);
+        //}
 
-        // GET: ImagenPieza/Create
-        public ActionResult Create()
-        {
-            ViewBag.PiezaID = new SelectList(db.Piezas, "PiezaID", "SubFolio");
-            return View();
-        }
-
-        // POST: ImagenPieza/Create
-        // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que desea enlazarse. Para obtener 
-        // más información vea http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ImagenPiezaID,Orden,Titulo,Descripcion,EsPrincipal,RutaParcial,NombreImagen,Status,PiezaID")] ImagenPieza imagenPieza)
-        {
-            if (ModelState.IsValid)
-            {
-                imagenPieza.ImagenPiezaID = Guid.NewGuid();
-                db.ImagenPiezas.Add(imagenPieza);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            ViewBag.PiezaID = new SelectList(db.Piezas, "PiezaID", "SubFolio", imagenPieza.PiezaID);
-            return View(imagenPieza);
-        }
-
-        // GET: ImagenPieza/Edit/5
-        public ActionResult Edit(Guid? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            ImagenPieza imagenPieza = db.ImagenPiezas.Find(id);
-            if (imagenPieza == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.PiezaID = new SelectList(db.Piezas, "PiezaID", "SubFolio", imagenPieza.PiezaID);
-            return View(imagenPieza);
-        }
-
-        // POST: ImagenPieza/Edit/5
-        // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que desea enlazarse. Para obtener 
-        // más información vea http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ImagenPiezaID,Orden,Titulo,Descripcion,EsPrincipal,RutaParcial,NombreImagen,Status,PiezaID")] ImagenPieza imagenPieza)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(imagenPieza).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            ViewBag.PiezaID = new SelectList(db.Piezas, "PiezaID", "SubFolio", imagenPieza.PiezaID);
-            return View(imagenPieza);
-        }
-
-        // GET: ImagenPieza/Delete/5
-        public ActionResult Delete(Guid? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            ImagenPieza imagenPieza = db.ImagenPiezas.Find(id);
-            if (imagenPieza == null)
-            {
-                return HttpNotFound();
-            }
-            return View(imagenPieza);
-        }
-
-        // POST: ImagenPieza/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(Guid id)
-        {
-            ImagenPieza imagenPieza = db.ImagenPiezas.Find(id);
-            db.ImagenPiezas.Remove(imagenPieza);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
+       
 
         protected override void Dispose(bool disposing)
         {

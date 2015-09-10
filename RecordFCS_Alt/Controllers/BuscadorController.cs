@@ -1,5 +1,6 @@
 ﻿using PagedList;
 using RecordFCS_Alt.Helpers;
+using RecordFCS_Alt.Helpers.Seguridad;
 using RecordFCS_Alt.Models;
 using RecordFCS_Alt.Models.ViewsModel;
 using System;
@@ -16,6 +17,7 @@ namespace RecordFCS_Alt.Controllers
 
 
         // GET: Buscador
+        [CustomAuthorize(permiso = "")]
         public ActionResult Index()
         {
 

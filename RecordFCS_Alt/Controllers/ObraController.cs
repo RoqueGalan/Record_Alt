@@ -11,6 +11,7 @@ using System.Threading;
 using System.Text.RegularExpressions;
 using System.IO;
 using RecordFCS_Alt.Helpers;
+using RecordFCS_Alt.Helpers.Seguridad;
 
 namespace RecordFCS_Alt.Controllers
 {
@@ -18,13 +19,9 @@ namespace RecordFCS_Alt.Controllers
     {
         private RecordFCSContext db = new RecordFCSContext();
 
-        // GET: Obra
-        public ActionResult Index()
-        {
-            return View(db.Obras.ToList());
-        }
 
         //GET: Obra/Detalles/5
+        [CustomAuthorize(permiso = "")]
         public ActionResult Detalles(Guid? id)
         {
             if (id == null)
@@ -41,6 +38,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: Obra/Registrar
+        [CustomAuthorize(permiso = "")]
         public ActionResult Registrar()
         {
             var listaLetras = db.LetraFolios.Select(a => new { a.LetraFolioID, Nombre = a.Nombre + " - " + a.Descripcion, a.Status }).Where(a => a.Status).OrderBy(a => a.Nombre);
@@ -84,11 +82,12 @@ namespace RecordFCS_Alt.Controllers
         // POST: Obra/Registrar
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [CustomAuthorize(permiso = "")]
         public ActionResult Registrar(Guid? TipoObraID, int? LetraFolioID, Guid? TipoPiezaID)
         {
             var Formulario = Request.Form;
 
-
+            int InicioFolio = 1;
             if (TipoObraID == null || LetraFolioID == null || TipoPiezaID == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
@@ -100,6 +99,19 @@ namespace RecordFCS_Alt.Controllers
                 return HttpNotFound();
 
 
+            switch (letra.Nombre)
+            {
+                case "A":
+                    InicioFolio = 4368;
+                    break;
+                case "H":
+                    InicioFolio = 1;
+                    break;
+                default:
+                    InicioFolio = 1;
+                    break;
+            }
+
 
             var obra = new Obra()
             {
@@ -107,7 +119,7 @@ namespace RecordFCS_Alt.Controllers
                 TipoObraID = tipoObra.TipoObraID,
                 LetraFolioID = letra.LetraFolioID,
                 Status = false,
-                NumeroFolio = 1
+                NumeroFolio = InicioFolio
             };
 
             obra.ObraID = Guid.NewGuid();
@@ -541,66 +553,7 @@ namespace RecordFCS_Alt.Controllers
             return Json(new { success = false });
         }
 
-        // GET: Obra/Editar/5
-        public ActionResult Edit(Guid? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Obra obra = db.Obras.Find(id);
-            if (obra == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.LetraFolioID = new SelectList(db.LetraFolios, "LetraFolioID", "Nombre", obra.LetraFolioID);
-            ViewBag.TipoObraID = new SelectList(db.TipoObras, "TipoObraID", "Nombre", obra.TipoObraID);
-            return View(obra);
-        }
 
-        // POST: Obra/Editar/5
-        // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que desea enlazarse. Para obtener 
-        // más información vea http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ObraID,NumeroFolio,FechaRegistro,TipoObraID,LetraFolioID,Status,Temp")] Obra obra)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(obra).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            ViewBag.LetraFolioID = new SelectList(db.LetraFolios, "LetraFolioID", "Nombre", obra.LetraFolioID);
-            ViewBag.TipoObraID = new SelectList(db.TipoObras, "TipoObraID", "Nombre", obra.TipoObraID);
-            return View(obra);
-        }
-
-        // GET: Obra/Eliminar/5
-        public ActionResult Delete(Guid? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Obra obra = db.Obras.Find(id);
-            if (obra == null)
-            {
-                return HttpNotFound();
-            }
-            return View(obra);
-        }
-
-        // POST: Obra/Eliminar/5
-        [HttpPost, ActionName("Eliminar")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(Guid id)
-        {
-            Obra obra = db.Obras.Find(id);
-            db.Obras.Remove(obra);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
 
         protected override void Dispose(bool disposing)
         {

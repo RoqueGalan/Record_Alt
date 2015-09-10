@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using RecordFCS_Alt.Models;
 using PagedList;
+using RecordFCS_Alt.Helpers.Seguridad;
 
 namespace RecordFCS_Alt.Controllers
 {
@@ -23,6 +24,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: ListaValor/Detalles/5
+        [CustomAuthorize(permiso = "")]
         public ActionResult Lista(Guid? id, string FiltroActual, string Busqueda, int? Pagina)
         {
             if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -60,6 +62,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: ListaValor/Crear
+        [CustomAuthorize(permiso = "")]
         public ActionResult Crear(Guid? id, bool EsRegistroObra = false)
         {
             if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -83,6 +86,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: ListaValor/Crear
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [CustomAuthorize(permiso = "")]
         public ActionResult Crear([Bind(Include = "ListaValorID,Valor,Status,Temp,TipoAtributoID")] ListaValor listaValor, bool EsRegistroObra)
         {
             var lv = db.ListaValores.Select(a => new { a.ListaValorID, a.Valor, a.TipoAtributoID }).FirstOrDefault(a => a.Valor == listaValor.Valor && a.TipoAtributoID == listaValor.TipoAtributoID);
@@ -120,6 +124,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: ListaValor/Editar/5
+        [CustomAuthorize(permiso = "")]
         public ActionResult Editar(Guid? id)
         {
             if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -134,6 +139,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: ListaValor/Editar/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [CustomAuthorize(permiso = "")]
         public ActionResult Editar([Bind(Include = "ListaValorID,Valor,Status,Temp,TipoAtributoID")] ListaValor listaValor)
         {
             var lv = db.ListaValores.Select(a => new { a.Valor, a.TipoAtributoID, a.ListaValorID }).FirstOrDefault(a => a.Valor == listaValor.Valor && a.TipoAtributoID == listaValor.TipoAtributoID);
@@ -162,6 +168,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: ListaValor/Eliminar/5
+        [CustomAuthorize(permiso = "")]
         public ActionResult Eliminar(Guid? id)
         {
             if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -176,6 +183,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: ListaValor/Eliminar/5
         [HttpPost, ActionName("Eliminar")]
         [ValidateAntiForgeryToken]
+        [CustomAuthorize(permiso = "")]
         public ActionResult EliminarConfirmado(Guid id)
         {
             string btnValue = Request.Form["accionx"];
