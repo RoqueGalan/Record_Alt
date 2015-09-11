@@ -1,15 +1,13 @@
 ﻿@{
     ViewBag.Title = "RECORD - Inicio";
 }
-
 <div class="text-center">
     <h3>Acciones Rápidas</h3>
 </div>
 
-
 <div class="row">
     <div class="col-md-4 text-center">
-        @if (User.IsInRole("ObraRegistrar"))
+        @if (User.IsInRole("obraCrear"))
         {
             <a href="@Url.Action("Registrar","Obra")" class="link link-success animated zoomInLeft">
                 <span class="fa-stack fa-7x">
@@ -22,17 +20,20 @@
     </div>
 
     <div class="col-md-4 text-center">
-        <a href="@Url.Action("Index","Buscador")" class="link link-info  animated zoomInUp">
-            <span class="fa-stack fa-7x">
-                <i class="fa fa-circle fa-stack-2x"></i>
-                <i class="fa fa-search fa-stack-1x fa-inverse"></i>
-            </span>
-            <h3 class="">Buscador</h3>
-        </a>
+        @if (User.IsInRole("verBuscadorAvan"))
+        {
+            <a href="@Url.Action("Index","Buscador")" class="link link-info  animated zoomInUp">
+                <span class="fa-stack fa-7x">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-search fa-stack-1x fa-inverse"></i>
+                </span>
+                <h3 class="">Buscador</h3>
+            </a>
+        }
     </div>
 
     <div class="col-md-4 text-center">
-        @if (User.IsInRole("UsuarioVer"))
+        @if (User.IsInRole("usuarioLista"))
         {
             <a href="@Url.Action("Index", "Usuario")" class="link link-inverse animated zoomInRight">
                 <span class="fa-stack fa-7x">
@@ -44,14 +45,17 @@
         }
         else
         {
-            <a href="@Url.Action("Detalles", "Usuario", new { id = User.UsuarioID })" class="link link-inverse">
-                <span class="fa-stack fa-7x">
-                    <i class="fa fa-circle fa-stack-2x"></i>
-                    <i class="fa fa-street-view fa-stack-1x fa-inverse"></i>
-                </span>
-                <h3 class="">Mis Datos</h3>
-            </a>
+            if (User.IsInRole("usuarioDetalle"))
+            {
+                <a href="@Url.Action("Detalles", "Usuario", new { id = User.UsuarioID })" class="link link-inverse">
+                    <span class="fa-stack fa-7x">
+                        <i class="fa fa-circle fa-stack-2x"></i>
+                        <i class="fa fa-street-view fa-stack-1x fa-inverse"></i>
+                    </span>
+                    <h3 class="">Mis Datos</h3>
+                </a>
+            }
         }
-        
+
     </div>
 </div>

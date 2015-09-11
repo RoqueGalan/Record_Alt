@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using RecordFCS_Alt.Models;
 using PagedList;
+using RecordFCS_Alt.Helpers.Seguridad;
 
 namespace RecordFCS_Alt.Controllers
 {
@@ -16,12 +17,14 @@ namespace RecordFCS_Alt.Controllers
         private RecordFCSContext db = new RecordFCSContext();
 
         // GET: TipoTecnica
+        [CustomAuthorize(permiso = "")]
         public ActionResult Index()
         {
             return View();
         }
 
 
+        [CustomAuthorize(permiso = "")]
         public ActionResult Detalles(Guid? id)
         {
             if (id == null)
@@ -40,6 +43,7 @@ namespace RecordFCS_Alt.Controllers
 
 
         // GET: TipoTecnica/Lista
+        [CustomAuthorize(permiso = "")]
         public ActionResult Lista(string FiltroActual, string Busqueda, int? Pagina)
         {
             if (Busqueda != null) Pagina = 1;
@@ -69,6 +73,7 @@ namespace RecordFCS_Alt.Controllers
 
 
         // GET: TipoTecnica/Crear
+        [CustomAuthorize(permiso = "")]
         public ActionResult Crear()
         {
             var tt = new TipoTecnica()
@@ -82,6 +87,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: TipoTecnica/Crear
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [CustomAuthorize(permiso = "")]
         public ActionResult Crear([Bind(Include = "TipoTecnicaID,Nombre,Descripcion,Status,Temp")] TipoTecnica tipoTecnica)
         {
             //validar el nombre
@@ -107,6 +113,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: TipoTecnica/Editar/5
+        [CustomAuthorize(permiso = "")]
         public ActionResult Editar(Guid? id)
         {
             if (id == null)
@@ -124,6 +131,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: TipoTecnica/Editar/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [CustomAuthorize(permiso = "")]
         public ActionResult Editar([Bind(Include = "TipoTecnicaID,Nombre,Descripcion,Status,Temp")] TipoTecnica tipoTecnica)
         {
             //validar el nombre
@@ -148,6 +156,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: TipoTecnica/Eliminar/5
+        [CustomAuthorize(permiso = "")]
         public ActionResult Eliminar(Guid? id)
         {
             if (id == null)
@@ -165,6 +174,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: TipoTecnica/Eliminar/5
         [HttpPost, ActionName("Eliminar")]
         [ValidateAntiForgeryToken]
+        [CustomAuthorize(permiso = "")]
         public ActionResult EliminarConfirmado(Guid id)
         {
             string btnValue = Request.Form["accionx"];

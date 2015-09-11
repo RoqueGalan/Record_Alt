@@ -319,9 +319,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layoutxxxxx.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\Index1.cshtml" />
     <Content Include="Views\TipoObra\_Crear.cshtml" />
     <Content Include="Views\TipoObra\_Eliminar.cshtml" />
     <Content Include="Views\TipoObra\Detalles.cshtml" />
@@ -417,9 +414,7 @@
     <Content Include="Views\TipoMedida\_CampoRegistro.cshtml" />
     <Content Include="Views\ImagenPieza\_Crear.cshtml" />
     <Content Include="Views\ImagenPieza\_Eliminar.cshtml" />
-    <Content Include="Views\ImagenPieza\Details.cshtml" />
     <Content Include="Views\ImagenPieza\_Editar.cshtml" />
-    <Content Include="Views\ImagenPieza\Index.cshtml" />
     <Content Include="Views\ImagenPieza\_CampoRegistro.cshtml" />
     <Content Include="Views\Pieza\Create.cshtml" />
     <Content Include="Views\Pieza\Delete.cshtml" />
@@ -466,8 +461,6 @@
     <Content Include="Views\Error\NoEncontrado.cshtml" />
     <Content Include="Views\Buscador\_ResultadosBusqueda.cshtml" />
     <Content Include="Views\Buscador\_ResultadosBusqueda_Listado.cshtml" />
-    <Content Include="Views\Home\Index11.cshtml" />
-    <Content Include="Views\Home\IndexUsuario.cshtml" />
     <Content Include="Views\Shared\_Alertas.cshtml" />
     <Content Include="Views\Shared\_FormBuscar.cshtml" />
     <Content Include="Views\Shared\_Layoutxx.cshtml" />
@@ -475,17 +468,15 @@
     <Content Include="Views\Shared\_Layout_Html_PDF.cshtml" />
     <Content Include="Views\Shared\_Menu.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\ImagenPieza\_CarruselThumb.cshtml" />
     <Content Include="Views\AtributoPieza\_CrearGenericoLista.cshtml" />
-    <Content Include="Views\AtributoPieza\Delete.cshtml" />
-    <Content Include="Views\AtributoPieza\Details.cshtml" />
     <Content Include="Views\AtributoPieza\_EditarGenericoLista.cshtml" />
-    <Content Include="Views\AtributoPieza\Index.cshtml" />
     <Content Include="Views\AtributoPieza\_EditarGenericoCampo.cshtml" />
     <Content Include="Views\AutorPieza\_Editar.cshtml" />
     <Content Include="Views\AtributoPieza\_CrearGenericoCampo.cshtml" />
     <Content Include="Views\Usuario\Edit.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\IndexUsuario.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

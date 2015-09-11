@@ -21,7 +21,7 @@ namespace RecordFCS_Alt.Controllers
         private RecordFCSContext db = new RecordFCSContext();
 
         // GET: Usuario
-        [CustomAuthorize(permiso = "UsuarioVer")]
+        [CustomAuthorize(permiso = "")]
         public ActionResult Index()
         {
 
@@ -108,7 +108,7 @@ namespace RecordFCS_Alt.Controllers
                 
 
         // GET: Usuario/Lista
-        [CustomAuthorize(permiso = "UsuarioVer")]
+        [CustomAuthorize(permiso = "")]
         public ActionResult Lista(int? pagina)
         {
             var usuarios = db.Usuarios.OrderBy(a => a.Nombre);
@@ -126,7 +126,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: Usuario/Detalles/5
-        [CustomAuthorize(permiso = "UsuarioEdit")]
+        [CustomAuthorize(permiso = "")]
         public ActionResult Detalles(Guid? id)
         {
 
@@ -152,7 +152,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: Usuario/Crear
-        [CustomAuthorize(permiso = "UsuarioCrear")]
+        [CustomAuthorize(permiso = "")]
         public ActionResult Crear()
         {
             Usuario usuario = new Usuario()
@@ -169,7 +169,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: Usuario/Crear
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize(permiso = "UsuarioCrear")]
+        [CustomAuthorize(permiso = "")]
         public ActionResult Crear([Bind(Include = "UsuarioID,UserName,Password,Nombre,Apellido,Correo,Status,ConfirmPassword")] Usuario usuario)
         {
 
@@ -205,7 +205,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: Usuario/Editar/5
-        [CustomAuthorize(permiso = "UsuarioEdit")]
+        [CustomAuthorize(permiso = "")]
         public ActionResult Editar(Guid? id)
         {
             if (id == null)
@@ -225,7 +225,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: Usuario/Editar/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize(permiso = "UsuarioEdit")]
+        [CustomAuthorize(permiso = "")]
         public ActionResult Editar(Usuario usuario)
         {
             var passOld = db.Usuarios.Select(a => new { a.Password, a.UsuarioID }).FirstOrDefault(a => a.UsuarioID == usuario.UsuarioID);
@@ -266,7 +266,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: Usuario/Eliminar/5
-        [CustomAuthorize(permiso = "UsuarioElimininar")]
+        [CustomAuthorize(permiso = "")]
         public ActionResult Eliminar(Guid? id)
         {
             if (id == null)
@@ -284,7 +284,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: Usuario/Eliminar/5
         [HttpPost, ActionName("Eliminar")]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize(permiso = "UsuarioElimininar")]
+        [CustomAuthorize(permiso = "")]
         public ActionResult EliminarConfirmado(Guid id)
         {
             string btnValue = Request.Form["accionx"];

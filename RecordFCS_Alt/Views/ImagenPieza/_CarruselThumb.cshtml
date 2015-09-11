@@ -23,7 +23,10 @@
                         <span class="center-block"><b>Agregue una Imagen</b></span>
                         <span class="text-muted"></span>
                         <div>
-                            @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Nueva Imagen", "Crear", "ImagenPieza", new { id = ViewBag.PiezaID }, htmlAttributes: new { data_modal = "", @class = "link link-success btn-xs CrearImagen" })
+                            @if (User.IsInRole("imagenCrear"))
+                            {
+                                @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Nueva Imagen", "Crear", "ImagenPieza", new { id = ViewBag.PiezaID }, htmlAttributes: new { data_modal = "", @class = "link link-success btn-xs CrearImagen" })
+                            }
                         </div>
 
 
@@ -55,14 +58,19 @@
 
 
                         <div>
-
-                            @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Nueva Imagen", "Crear", "ImagenPieza", new { id = item.PiezaID }, htmlAttributes: new { data_modal = "", @class = "link link-success btn-xs CrearImagen" })
-
-
-                            @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar Imagen", "Editar", "ImagenPieza", new { id = item.ImagenPiezaID }, htmlAttributes: new { data_modal = "", @class = "link link-info btn-xs EditarImagen" })
-
-
-                            @Html.NoEncodeActionLink("<span class='fa fa-trash'></span>", "Eliminar Imagen", "Eliminar", "ImagenPieza", new { id = item.ImagenPiezaID }, htmlAttributes: new { data_modal = "", @class = "link link-danger btn-xs EditarImagen" })
+                            
+                            @if (User.IsInRole("imagenCrear"))
+                            {
+                                @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Nueva Imagen", "Crear", "ImagenPieza", new { id = item.PiezaID }, htmlAttributes: new { data_modal = "", @class = "link link-success btn-xs CrearImagen" })
+                            }
+                            @if (User.IsInRole("imagenEditar"))
+                            {
+                                @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar Imagen", "Editar", "ImagenPieza", new { id = item.ImagenPiezaID }, htmlAttributes: new { data_modal = "", @class = "link link-info btn-xs EditarImagen" })
+                            }
+                            @if (User.IsInRole("imagenEliminar"))
+                            {
+                                @Html.NoEncodeActionLink("<span class='fa fa-trash'></span>", "Eliminar Imagen", "Eliminar", "ImagenPieza", new { id = item.ImagenPiezaID }, htmlAttributes: new { data_modal = "", @class = "link link-danger btn-xs EditarImagen" })
+                            }
 
                         </div>
                     </div>
