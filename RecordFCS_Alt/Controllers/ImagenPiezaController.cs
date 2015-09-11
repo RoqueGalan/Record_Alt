@@ -10,6 +10,7 @@ using RecordFCS_Alt.Models;
 using System.IO;
 using RecordFCS_Alt.Helpers;
 using RecordFCS_Alt.Helpers.Seguridad;
+using System.Drawing;
 
 namespace RecordFCS_Alt.Controllers
 {
@@ -100,12 +101,17 @@ namespace RecordFCS_Alt.Controllers
         public ActionResult Crear(ImagenPieza imagenPieza, HttpPostedFileBase FileImagen)
         {
 
+            var FileImageForm = FileImagen.;
+
+            //FileInfo file = new FileInfo("~/App_Data/uploads/image.jpg");
+            //file.Delete();
+
             if (ModelState.IsValid)
             {
 
 
                 //guardar la imagen en carpeta
-                string extension = Path.GetExtension(FileImagen.FileName);
+                string extension = Path.GetExtension(FileImageForm.FileName);
                 imagenPieza.ImagenPiezaID = Guid.NewGuid();
 
                 imagenPieza.NombreImagen = Guid.NewGuid().ToString() + extension;
@@ -118,23 +124,21 @@ namespace RecordFCS_Alt.Controllers
 
                 var rutaGuardar_Original = Server.MapPath(imagenPieza.Ruta);
 
-                FileImagen.SaveAs(rutaGuardar_Original);
+                FileImageForm.SaveAs(rutaGuardar_Original);
 
 
-                //Generar la mini
-                Thumbnail mini = new Thumbnail()
-                {
-                    OrigenSrc = rutaGuardar_Original,
-                    DestinoSrc = Server.MapPath(imagenPieza.RutaMini),
-                    LimiteAnchoAlto = 250
-                };
+                ////Generar la mini
+                //Thumbnail mini = new Thumbnail()
+                //{
+                //    OrigenSrc = rutaGuardar_Original,
+                //    DestinoSrc = Server.MapPath(imagenPieza.RutaMini),
+                //    LimiteAnchoAlto = 250
+                //};
 
-                mini.GuardarThumbnail();
+                //mini.GuardarThumbnail();
 
                 //add a la lista de imagenes
-                FileImagen = null;
-                mini = null;
-
+                
 
                 //guardar en db
                 db.ImagenPiezas.Add(imagenPieza);
