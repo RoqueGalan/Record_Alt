@@ -17,6 +17,7 @@ namespace RecordFCS_Alt.Controllers
         private RecordFCSContext db = new RecordFCSContext();
 
         // GET: ListaValor
+        [CustomAuthorize(permiso = "")]
         public ActionResult Index()
         {
             return RedirectToAction("Index", "TipoAtributo");
@@ -79,7 +80,7 @@ namespace RecordFCS_Alt.Controllers
             };
 
             ViewBag.EsRegistroObra = EsRegistroObra;
-            
+
             return PartialView("_Crear", listaValor);
         }
 
@@ -115,7 +116,7 @@ namespace RecordFCS_Alt.Controllers
                     string url = Url.Action("Lista", "ListaValor", new { id = listaValor.TipoAtributoID });
                     return Json(new { success = true, url = url });
                 }
-                
+
             }
 
             ViewBag.EsRegistroObra = EsRegistroObra;
@@ -254,8 +255,8 @@ namespace RecordFCS_Alt.Controllers
                         lista = lista.Where(a => a.Valor.ToLower().Contains(Filtro)).ToList();
                     }
 
-                    
-                    var x =  lista.Select(a => new { ListaValorID = a.ListaValorID, Valor = a.Valor }).OrderBy(a => a.Valor).ToList();
+
+                    var x = lista.Select(a => new { ListaValorID = a.ListaValorID, Valor = a.Valor }).OrderBy(a => a.Valor).ToList();
 
                     return Json(x, JsonRequestBehavior.AllowGet);
             }
@@ -295,7 +296,8 @@ namespace RecordFCS_Alt.Controllers
                 if (exacta)
                 {
                     listado = tipoatt.ListaValores.Where(a => a.Valor == busqueda).OrderBy(b => b.Valor).Take(10).ToList();
-                }else
+                }
+                else
                 {
                     listado = tipoatt.ListaValores.Where(a => a.Valor.Contains(busqueda)).OrderBy(b => b.Valor).Take(10).ToList();
                 }
@@ -311,7 +313,7 @@ namespace RecordFCS_Alt.Controllers
 
                 if (exacta)
                 {
-                    campos = db.AtributoPiezas.Where(a => a.Valor == busqueda && a.Atributo.TipoAtributoID == tipoatt.TipoAtributoID).OrderBy(b=> b.Valor).Take(10).ToList();
+                    campos = db.AtributoPiezas.Where(a => a.Valor == busqueda && a.Atributo.TipoAtributoID == tipoatt.TipoAtributoID).OrderBy(b => b.Valor).Take(10).ToList();
                 }
                 else
                 {

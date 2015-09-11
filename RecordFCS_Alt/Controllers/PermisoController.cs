@@ -16,7 +16,7 @@ namespace RecordFCS_Alt.Controllers
         private RecordFCSContext db = new RecordFCSContext();
 
         // GET: Permiso
-        [CustomAuthorize]
+        [CustomAuthorize(permiso = "")]
         public ActionResult Lista(Guid? id)
         {
             if (id == null)
@@ -62,7 +62,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: Permiso/Details/5
-        [CustomAuthorize(permiso = "UsuarioPermisosEdit")]
+        [CustomAuthorize(permiso = "")]
         public ActionResult CambiarStatus(Guid? id, Guid? TipoPermisoID, bool Estado)
         {
             var permiso = new Permiso()
@@ -88,7 +88,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: Permiso/Details/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize(permiso = "UsuarioPermisosEdit")]
+        [CustomAuthorize(permiso = "")]
         public ActionResult CambiarStatus([Bind(Include = "UsuarioID,TipoPermisoID,Status")] Permiso permiso)
         {
             var valPermiso = db.Permisos.Find(permiso.UsuarioID, permiso.TipoPermisoID);

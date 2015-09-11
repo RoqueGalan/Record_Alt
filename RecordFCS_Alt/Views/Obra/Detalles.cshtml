@@ -3,16 +3,21 @@
 @{
     string FolioCompleto = ViewBag.FolioCompleto;
 
+    Guid ObraSig = ViewBag.ObraSiguiente;
+    Guid ObraAnt = ViewBag.ObraAnterior;
+
     ViewBag.PaginaTitulo = "Ficha Completa";
     ViewBag.PaginaSubtitulo = FolioCompleto;
 
     ViewBag.Title = ViewBag.PaginaTitulo + " - " + ViewBag.PaginaSubtitulo;
+
+
 }
 
 
 <h1>
     @ViewBag.PaginaTitulo
-    <b class="text-primary">@ViewBag.PaginaSubtitulo</b>
+    <b class="text-primary pull-right">@ViewBag.PaginaSubtitulo</b>
 </h1>
 
 <ol class="breadcrumb">
@@ -54,19 +59,40 @@
     </dl>
 </div>
     -->
-
-
 @*<div class="">
-    <p>Menu de acciónes para toda la Obra en general</p>
-    <p>
-        @Html.ActionLink("Edit", "Edit", new { id = Model.ObraID }) |
-        @Html.ActionLink("Back to List", "Index")
-    </p>
+        <p>Menu de acciónes para toda la Obra en general</p>
+        <p>
+            @Html.ActionLink("Edit", "Edit", new { id = Model.ObraID }) |
+            @Html.ActionLink("Back to List", "Index")
+        </p>
+    </div>
+
+    <hr />*@
+
+<div class="row">
+    <div class="pull-right">
+
+        @if (ObraAnt == Guid.Empty)
+        {
+            <span class="btn btn-primary btn-xs disabled" data-toggle="tooltip" title="Obra Anterior"><span class='fa fa-chevron-left'></span></span>
+        }
+        else
+        {
+            <a href="@Url.Action("Detalles", "Obra", new  {id = ObraAnt })" class="btn btn-primary btn-xs " data-toggle="tooltip" title="Obra Anterior"><span class='fa fa-chevron-left'></span></a>
+        }
+
+        @if (ObraSig == Guid.Empty)
+        {
+            <span class="btn btn-primary btn-xs disabled" data-toggle="tooltip" title="Obra Siguiente"><span class='fa fa-chevron-right'></span></span>
+        }
+        else
+        {
+            <a href="@Url.Action("Detalles", "Obra", new  {id = ObraSig })" class="btn btn-primary btn-xs " data-toggle="tooltip" title="Obra Siguiente"><span class='fa fa-chevron-right'></span></a>
+        }
+
+
+    </div>
 </div>
-
-<hr />*@
-
-
 
 <ul class="media-list">
 

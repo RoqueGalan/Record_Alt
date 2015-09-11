@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using RecordFCS_Alt.Models;
+using RecordFCS_Alt.Helpers.Seguridad;
 
 namespace RecordFCS_Alt.Controllers
 {
@@ -15,12 +16,14 @@ namespace RecordFCS_Alt.Controllers
         private RecordFCSContext db = new RecordFCSContext();
 
         // GET: TipoMostrar
+        [CustomAuthorize(permiso = "")]
         public ActionResult Index()
         {
             return View();
         }
 
 
+        [CustomAuthorize(permiso = "")]
         public ActionResult Lista()
         {
             var lista = db.TipoMostarlos.OrderBy(a => a.Nombre).ToList();
@@ -32,6 +35,7 @@ namespace RecordFCS_Alt.Controllers
 
 
         // GET: TipoMostrar/Crear
+        [CustomAuthorize(permiso = "")]
         public ActionResult Crear()
         {
             var tipoMostrar = new TipoMostrar()
@@ -45,6 +49,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: TipoMostrar/Crear
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [CustomAuthorize(permiso = "")]
         public ActionResult Crear([Bind(Include = "TipoMostrarID,Nombre,Status")] TipoMostrar tipoMostrar)
         {
 
@@ -64,6 +69,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: TipoMostrar/Editar/5
+        [CustomAuthorize(permiso = "")]
         public ActionResult Editar(Guid? id)
         {
             if (id == null)
@@ -81,6 +87,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: TipoMostrar/Editar/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [CustomAuthorize(permiso = "")]
         public ActionResult Editar([Bind(Include = "TipoMostrarID,Nombre,Status")] TipoMostrar tipoMostrar)
         {
             var tm = db.TipoMostarlos.Select(a => new { a.Nombre, a.TipoMostrarID }).SingleOrDefault(a => a.Nombre == tipoMostrar.Nombre);
@@ -104,6 +111,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: TipoMostrar/Eliminar/5
+        [CustomAuthorize(permiso = "")]
         public ActionResult Eliminar(Guid? id)
         {
             if (id == null)
@@ -122,6 +130,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: TipoMostrar/Eliminar/5
         [HttpPost, ActionName("Eliminar")]
         [ValidateAntiForgeryToken]
+        [CustomAuthorize(permiso = "")]
         public ActionResult EliminarConfirmado(Guid id)
         {
             string btnValue = Request.Form["accionx"];

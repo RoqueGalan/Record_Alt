@@ -60,6 +60,11 @@ namespace RecordFCS_Alt.Helpers
             encoderParameters = new EncoderParameters(1);
             encoderParameters.Param[0] = new EncoderParameter(Encoder.Quality, 50L);
             thumbnail.Save(DestinoSrc, info[1], encoderParameters);
+
+            Imagen.Dispose();
+            thumbnail.Dispose();
+            GC.Collect();
+
         }
 
     }

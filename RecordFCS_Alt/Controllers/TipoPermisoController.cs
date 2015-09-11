@@ -17,8 +17,7 @@ namespace RecordFCS_Alt.Controllers
 
         // GET: TipoPermiso
         //[CustomAuthorize(permiso = "TipoPermisoVer")]
-                [CustomAuthorize]
-
+        [CustomAuthorize(permiso = "")]
         public ActionResult Index()
         {
             return View();
@@ -26,8 +25,7 @@ namespace RecordFCS_Alt.Controllers
 
         // GET: TipoPermiso/Lista
         //[CustomAuthorize(permiso = "TipoPermisoVer")]
-                [CustomAuthorize]
-
+[CustomAuthorize(permiso = "")]
         public ActionResult Lista()
         {
             var tipoPermisos = db.TipoPermisos.OrderBy(to => to.Clave);
@@ -39,8 +37,7 @@ namespace RecordFCS_Alt.Controllers
 
         // GET: TipoPermisos/Crear
         //[CustomAuthorize(permiso = "TipoPermisoCrear")]
-                [CustomAuthorize]
-
+[CustomAuthorize(permiso = "")]
         public ActionResult Crear()
         {
             TipoPermiso tipoPermiso = new TipoPermiso();
@@ -52,8 +49,7 @@ namespace RecordFCS_Alt.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         //[CustomAuthorize(permiso = "TipoPermisoCrear")]
-        [CustomAuthorize]
-
+        [CustomAuthorize(permiso = "")]
         public ActionResult Crear([Bind(Include = "TipoPermisoID,Clave,Nombre,Descripcion,Status")] TipoPermiso tipoPermiso)
         {
             if (ModelState.IsValid)
@@ -78,8 +74,7 @@ namespace RecordFCS_Alt.Controllers
 
         // GET: TipoPermisos/Editar/5
         //[CustomAuthorize(permiso = "TipoPermisoEdit")]
-                [CustomAuthorize]
-
+[CustomAuthorize(permiso = "")]
         public ActionResult Editar(Guid? id)
         {
             if (id == null)
@@ -97,10 +92,11 @@ namespace RecordFCS_Alt.Controllers
 
         // POST: TipoPermisos/Editar/5
         //[CustomAuthorize(permiso = "TipoPermisoEdit")]
-                [CustomAuthorize]
+        [CustomAuthorize]
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [CustomAuthorize(permiso = "")]
         public ActionResult Editar([Bind(Include = "TipoPermisoID,Clave,Nombre,Descripcion,Status")] TipoPermiso tipoPermiso)
         {
             if (ModelState.IsValid)
@@ -118,8 +114,8 @@ namespace RecordFCS_Alt.Controllers
 
         // GET: TipoPermisos/Eliminar/5
         //[CustomAuthorize(permiso = "TipoPermisoEliminar")]
-                [CustomAuthorize]
-
+        [CustomAuthorize]
+        [CustomAuthorize(permiso = "")]
         public ActionResult Eliminar(Guid? id)
         {
             if (id == null)
@@ -140,7 +136,7 @@ namespace RecordFCS_Alt.Controllers
         [ValidateAntiForgeryToken]
         //[CustomAuthorize(permiso = "TipoPermisoEliminar")]
         [CustomAuthorize]
-
+        [CustomAuthorize(permiso = "")]
         public ActionResult DeleteConfirmed(Guid id)
         {
             string btnValue = Request.Form["accionx"];
@@ -170,7 +166,6 @@ namespace RecordFCS_Alt.Controllers
         }
 
         [HttpPost]
-        [CustomAuthorize]
         public JsonResult validarRegistroUnicoClave(string Clave)
         {
             var lista = db.TipoPermisos.Where(a => a.Clave == Clave);

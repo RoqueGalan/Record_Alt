@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using RecordFCS_Alt.Models;
+using RecordFCS_Alt.Helpers.Seguridad;
 
 namespace RecordFCS_Alt.Controllers
 {
@@ -15,6 +16,8 @@ namespace RecordFCS_Alt.Controllers
         private RecordFCSContext db = new RecordFCSContext();
 
         // GET: Pieza
+        [CustomAuthorize(permiso = "")]
+
         public ActionResult Index()
         {
             var piezas = db.Piezas.Include(p => p.Obra).Include(p => p.PiezaPadre).Include(p => p.TipoPieza).Include(p => p.Ubicacion);
@@ -22,6 +25,8 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: Pieza/Detalles/5
+        [CustomAuthorize(permiso = "")]
+
         public ActionResult Details(Guid? id)
         {
             if (id == null)
@@ -37,6 +42,8 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: Pieza/Create
+        [CustomAuthorize(permiso = "")]
+
         public ActionResult Create()
         {
             ViewBag.ObraID = new SelectList(db.Obras, "ObraID", "Temp");
@@ -51,6 +58,8 @@ namespace RecordFCS_Alt.Controllers
         // más información vea http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [CustomAuthorize(permiso = "")]
+
         public ActionResult Create([Bind(Include = "PiezaID,SubFolio,FechaRegistro,Status,ObraID,TipoPiezaID,UbicacionID,PiezaPadreID,Temp")] Pieza pieza)
         {
             if (ModelState.IsValid)
@@ -69,6 +78,8 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: Pieza/Edit/5
+        [CustomAuthorize(permiso = "")]
+
         public ActionResult Edit(Guid? id)
         {
             if (id == null)
@@ -92,6 +103,8 @@ namespace RecordFCS_Alt.Controllers
         // más información vea http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [CustomAuthorize(permiso = "")]
+
         public ActionResult Edit([Bind(Include = "PiezaID,SubFolio,FechaRegistro,Status,ObraID,TipoPiezaID,UbicacionID,PiezaPadreID,Temp")] Pieza pieza)
         {
             if (ModelState.IsValid)
@@ -108,6 +121,8 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: Pieza/Delete/5
+        [CustomAuthorize(permiso = "")]
+
         public ActionResult Delete(Guid? id)
         {
             if (id == null)
@@ -125,6 +140,8 @@ namespace RecordFCS_Alt.Controllers
         // POST: Pieza/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [CustomAuthorize(permiso = "")]
+
         public ActionResult DeleteConfirmed(Guid id)
         {
             Pieza pieza = db.Piezas.Find(id);
@@ -134,6 +151,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
 
+        [CustomAuthorize(permiso = "")]
 
         public ActionResult Ficha(Guid? id, string tipo = "basica")
         {
@@ -156,6 +174,8 @@ namespace RecordFCS_Alt.Controllers
 
 
             ViewBag.TipoFicha = tipo;
+
+            ViewBag.esCompleta = tipo == "Ficha Completa" ? true : false;
 
             return PartialView("_Ficha", pieza);
         }

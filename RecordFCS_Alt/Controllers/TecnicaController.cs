@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using RecordFCS_Alt.Models;
 using PagedList;
+using RecordFCS_Alt.Helpers.Seguridad;
 
 namespace RecordFCS_Alt.Controllers
 {
@@ -16,12 +17,14 @@ namespace RecordFCS_Alt.Controllers
         private RecordFCSContext db = new RecordFCSContext();
 
         // GET: Tecnica
+        [CustomAuthorize(permiso = "")]
         public ActionResult Index()
         {
             //redireccionar a Tipo de Tecnicas
             return RedirectToAction("Index", "TipoTecnica");
         }
 
+        [CustomAuthorize(permiso = "")]
         public ActionResult Lista(Guid? id, string FiltroActual, string Busqueda, int? Pagina)
         {
             if (id == null)
@@ -45,7 +48,7 @@ namespace RecordFCS_Alt.Controllers
                 lista = lista.Where(a => a.Descripcion.ToLower().Contains(Busqueda));
             }
 
-            lista = lista.OrderBy(a => a.TecnicaPadreID).ThenBy(b=> b.Descripcion);
+            lista = lista.OrderBy(a => a.TecnicaPadreID).ThenBy(b => b.Descripcion);
 
             ViewBag.TipoTecnicaID = ttecnica.TipoTecnicaID;
             ViewBag.Nombre = ttecnica.Nombre;
@@ -61,6 +64,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: Tecnica/Crear
+        [CustomAuthorize(permiso = "")]
         public ActionResult Crear(Guid? id, bool EsRegistroObra = false)
         {
             if (id == null)
@@ -92,6 +96,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: Tecnica/Crear
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [CustomAuthorize(permiso = "")]
         public ActionResult Crear([Bind(Include = "TecnicaID,ClaveSigla,ClaveTexto,MatriculaSigla,Descripcion,Status,TipoTecnicaID,TecnicaPadreID,Temp1,Temp2")] Tecnica tecnica, bool EsRegistroObra = false)
         {
             var tec = db.Tecnicas.Select(a => new { a.Descripcion, a.TipoTecnicaID, a.TecnicaID, a.TecnicaPadreID }).FirstOrDefault(a => a.Descripcion == tecnica.Descripcion && a.TipoTecnicaID == tecnica.TipoTecnicaID && a.TecnicaPadreID == tecnica.TecnicaPadreID);
@@ -119,7 +124,7 @@ namespace RecordFCS_Alt.Controllers
                     string url = Url.Action("Lista", "Tecnica", new { id = tecnica.TipoTecnicaID });
                     return Json(new { success = true, url = url });
                 }
-                
+
             }
 
             var ttecnica = db.TipoTecnicas.Find(tecnica.TipoTecnicaID);
@@ -134,10 +139,11 @@ namespace RecordFCS_Alt.Controllers
 
 
             return PartialView("_Crear", tecnica);
-            
+
         }
 
         // GET: Tecnica/Editar/5
+        [CustomAuthorize(permiso = "")]
         public ActionResult Editar(Guid? id)
         {
             if (id == null)
@@ -157,7 +163,7 @@ namespace RecordFCS_Alt.Controllers
             ViewBag.total = lista.Count();
 
             ViewBag.TecnicaPadreID = new SelectList(lista, "TecnicaID", "Nombre", tecnica.TecnicaPadreID);
-            
+
 
             return PartialView("_Editar", tecnica);
         }
@@ -165,6 +171,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: Tecnica/Editar/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [CustomAuthorize(permiso = "")]
         public ActionResult Editar([Bind(Include = "TecnicaID,ClaveSigla,ClaveTexto,MatriculaSigla,Descripcion,Status,TipoTecnicaID,TecnicaPadreID,Temp1,Temp2")] Tecnica tecnica)
         {
             var tec = db.Tecnicas.Select(a => new { a.Descripcion, a.TipoTecnicaID, a.TecnicaID, a.TecnicaPadreID }).FirstOrDefault(a => a.Descripcion == tecnica.Descripcion && a.TipoTecnicaID == tecnica.TipoTecnicaID && a.TecnicaPadreID == tecnica.TecnicaPadreID);
@@ -178,11 +185,11 @@ namespace RecordFCS_Alt.Controllers
             {
                 db.Entry(tecnica).State = EntityState.Modified;
                 db.SaveChanges();
-            
+
                 AlertaInfo(string.Format("Técnica: <b>{0}</b> se editó.", tecnica.Descripcion), true);
 
                 string url = Url.Action("Lista", "Tecnica", new { id = tecnica.TipoTecnicaID });
-                return Json(new { success = true, url = url });            
+                return Json(new { success = true, url = url });
             }
 
             var ttecnica = db.TipoTecnicas.Find(tecnica.TipoTecnicaID);
@@ -192,12 +199,13 @@ namespace RecordFCS_Alt.Controllers
             ViewBag.total = lista.Count();
 
             ViewBag.TecnicaPadreID = new SelectList(lista, "TecnicaID", "Nombre", tecnica.TecnicaPadreID);
-            
+
 
             return PartialView("_Editar", tecnica);
         }
 
         // GET: Tecnica/Eliminar/5
+        [CustomAuthorize(permiso = "")]
         public ActionResult Eliminar(Guid? id)
         {
             if (id == null)
@@ -215,10 +223,11 @@ namespace RecordFCS_Alt.Controllers
         // POST: Tecnica/Eliminar/5
         [HttpPost, ActionName("Eliminar")]
         [ValidateAntiForgeryToken]
+        [CustomAuthorize(permiso = "")]
         public ActionResult EliminarConfirmado(Guid id)
         {
             string btnValue = Request.Form["accionx"];
-            
+
             Tecnica tecnica = db.Tecnicas.Find(id);
 
 
@@ -241,7 +250,7 @@ namespace RecordFCS_Alt.Controllers
             }
 
             string url = Url.Action("Lista", "Tecnica", new { id = tecnica.TipoTecnicaID });
-            return Json(new { success = true, url = url });    
+            return Json(new { success = true, url = url });
         }
 
 

@@ -10,6 +10,7 @@
     int NuMedidas = Model.MedidaPiezas.Count;
     int NuTecnicas = Model.TecnicaPiezas.Count;
 
+    bool esCompleta = ViewBag.esCompleta;
     string subFolio = Model.SubFolio;
 }
 
@@ -28,14 +29,21 @@
 
 
     <div class="media-body clearfix">
-        <h4 class="media-heading pull-right">@(Model.Obra.LetraFolio.Nombre + Model.Obra.NumeroFolio + "-" + subFolio)</h4>
-
+        @if (!esCompleta)
+        {
+            <h4 class="media-heading pull-right">@(Model.Obra.LetraFolio.Nombre + Model.Obra.NumeroFolio + "-" + subFolio)</h4>
+        }
         <table class="table table-hover">
             <thead>
                 <tr>
                     <th class="col-lg-3 col-md-5 col-sm-5"></th>
                     <th>
-                        <a href="@Url.Action("Detalles", "Obra", new  {id = Model.ObraID })" class="btn btn-primary btn-xs pull-right" data-toggle="tooltip" title="Abrir Ficha Completa" target="_blank"><span class='fa fa-pencil'></span></a>
+                        @if (!esCompleta)
+                        {
+                            <a href="@Url.Action("Detalles", "Obra", new  {id = Model.ObraID })" class="btn btn-primary btn-xs pull-right" data-toggle="tooltip" title="Abrir Ficha Completa" target="_blank"><span class='fa fa-pencil'></span></a>
+                        }
+
+                    </th>
                 </tr>
 
             </thead>
@@ -99,7 +107,7 @@
                                     if (!tipoAtt.EsMultipleValor)
                                     {
                                         @Html.NoEncodeActionLink("<span class='fa fa-plus'><span/>", "Agregar " + att.NombreAlterno, "Crear", "AtributoPieza", new { id = Model.PiezaID, AtributoId = att.AtributoID }, new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-primary btn-xs pull-right CrearValor" })
-                                        
+
 
                                     }
                                 }
@@ -120,7 +128,7 @@
                                     <tr class="@color">
                                         <td>
                                             @att.NombreAlterno
-                                            @Html.NoEncodeActionLink("<span class='fa fa-plus'><span/>", "Agregar otr@ " + att.NombreAlterno, "Crear", "AtributoPieza", new { id = Model.PiezaID , AtributoID = att.AtributoID}, new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-primary btn-xs  pull-right CrearValor" })
+                                            @Html.NoEncodeActionLink("<span class='fa fa-plus'><span/>", "Agregar otr@ " + att.NombreAlterno, "Crear", "AtributoPieza", new { id = Model.PiezaID, AtributoID = att.AtributoID }, new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-primary btn-xs  pull-right CrearValor" })
 
                                         </td>
                                         <td>

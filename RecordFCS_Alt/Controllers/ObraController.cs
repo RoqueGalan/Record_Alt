@@ -34,6 +34,21 @@ namespace RecordFCS_Alt.Controllers
 
             ViewBag.FolioCompleto = obra.LetraFolio.Nombre + "" + obra.NumeroFolio;
 
+
+            // 1 2 3 4 [5] 6 7 8 9 10
+            // [1] 2 3 4 5 6 7 8 9 10
+            // 1 2 3 4 5 6 7 8 9 9 [10]
+
+            var NoFolSig = obra.NumeroFolio + 1;
+
+            Obra Obratemp = null;
+
+            Obratemp = db.Obras.FirstOrDefault(a => a.LetraFolioID == obra.LetraFolioID && a.NumeroFolio == obra.NumeroFolio - 1);
+            ViewBag.ObraAnterior = Obratemp == null ? Guid.Empty : Obratemp.ObraID;
+
+            Obratemp = db.Obras.FirstOrDefault(a => a.LetraFolioID == obra.LetraFolioID && a.NumeroFolio == obra.NumeroFolio + 1);
+            ViewBag.ObraSiguiente = Obratemp == null ? Guid.Empty : Obratemp.ObraID;
+
             return View(obra);
         }
 
@@ -52,7 +67,7 @@ namespace RecordFCS_Alt.Controllers
 
         public int DarFolioValido(int LetraFolioID, int Numero, bool segunda = false)
         {
-            int timeDormirMiliSeg = 2000; //2 segundo
+            int timeDormirMiliSeg = 1000; //1 segundo
             Thread.Sleep(timeDormirMiliSeg);
 
             var existe = true;
@@ -470,11 +485,11 @@ namespace RecordFCS_Alt.Controllers
                             //buscar en form todas las llaves que correspondan al id_xxxxxxxxxxxxxx_xxxxxxxxxxxxxx
                             foreach (string key in listaKey)
                             {
-                                HttpPostedFileBase FileImagen = Request.Files[key];
+                                HttpPostedFileBase FileImageForm = Request.Files[key];
 
                                 string texto_Titulo = Formulario["id_" + att.AtributoID + "_Titulo"];
                                 string texto_Descripcion = Formulario["id_" + att.AtributoID + "_Descripcion"];
-                                string extension = Path.GetExtension(FileImagen.FileName);
+                                string extension = Path.GetExtension(FileImageForm.FileName);
 
                                 var imgGuid = Guid.NewGuid();
 
@@ -493,7 +508,12 @@ namespace RecordFCS_Alt.Controllers
 
                                 var rutaGuardar_Original = Server.MapPath(imagenPieza.Ruta);
 
-                                FileImagen.SaveAs(rutaGuardar_Original);
+                                FileImageForm.SaveAs(rutaGuardar_Original);
+
+
+                                FileImageForm.InputStream.Dispose();
+                                FileImageForm.InputStream.Close();
+                                GC.Collect();
 
                                 //Generar la mini
                                 Thumbnail mini = new Thumbnail()

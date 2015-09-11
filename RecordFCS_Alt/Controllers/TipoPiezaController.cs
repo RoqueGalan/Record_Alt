@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using RecordFCS_Alt.Models;
+using RecordFCS_Alt.Helpers.Seguridad;
 
 namespace RecordFCS_Alt.Controllers
 {
@@ -14,6 +15,7 @@ namespace RecordFCS_Alt.Controllers
     {
         private RecordFCSContext db = new RecordFCSContext();
 
+        [CustomAuthorize(permiso = "")]
         public ActionResult Index()
         {
             //redireccionar a Tipo de Obras
@@ -22,6 +24,7 @@ namespace RecordFCS_Alt.Controllers
 
         // GET: TipoPieza
         //root = true --> mostrar lista de piezas maestras
+        [CustomAuthorize(permiso = "")]
         public ActionResult Lista(Guid? id, bool esRoot = false)
         {
             if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -56,7 +59,8 @@ namespace RecordFCS_Alt.Controllers
 
             return PartialView("_Lista", lista.ToList());
         }
-        
+
+        [CustomAuthorize(permiso = "")]
         public ActionResult ListaSelect(Guid? id, bool esRoot = false)
         {
             if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -91,6 +95,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: TipoPieza/Detalles/5
+        [CustomAuthorize(permiso = "")]
         public ActionResult Detalles(Guid? id)
         {
             if (id == null)
@@ -106,6 +111,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: TipoPieza/Crear
+        [CustomAuthorize(permiso = "")]
         public ActionResult Crear(Guid? id, bool principal = false)
         {
             if (id == null)
@@ -145,6 +151,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: TipoPieza/Crear
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [CustomAuthorize(permiso = "")]
         public ActionResult Crear([Bind(Include = "TipoPiezaID,Nombre,Descripcion,Prefijo,Orden,EsPrincipal,Status,TipoObraID,TipoPiezaPadreID,Temp")] TipoPieza tipoPieza)
         {
             var tp = db.TipoPiezas.Select(a => new { a.TipoObraID, a.TipoPiezaPadreID, a.TipoPiezaID, a.Nombre }).FirstOrDefault(a => a.Nombre == tipoPieza.Nombre && a.TipoObraID == tipoPieza.TipoObraID && a.TipoPiezaPadreID == tipoPieza.TipoPiezaPadreID);
@@ -182,6 +189,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: TipoPieza/Editar/5
+        [CustomAuthorize(permiso = "")]
         public ActionResult Editar(Guid? id)
         {
             if (id == null)

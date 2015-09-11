@@ -101,10 +101,9 @@ namespace RecordFCS_Alt.Controllers
         public ActionResult Crear(ImagenPieza imagenPieza, HttpPostedFileBase FileImagen)
         {
 
-            var FileImageForm = FileImagen.;
+            var FileImageForm = FileImagen;
 
-            //FileInfo file = new FileInfo("~/App_Data/uploads/image.jpg");
-            //file.Delete();
+
 
             if (ModelState.IsValid)
             {
@@ -126,16 +125,19 @@ namespace RecordFCS_Alt.Controllers
 
                 FileImageForm.SaveAs(rutaGuardar_Original);
 
+                FileImageForm.InputStream.Dispose(); 
+                FileImageForm.InputStream.Close(); 
+                GC.Collect();
 
                 ////Generar la mini
-                //Thumbnail mini = new Thumbnail()
-                //{
-                //    OrigenSrc = rutaGuardar_Original,
-                //    DestinoSrc = Server.MapPath(imagenPieza.RutaMini),
-                //    LimiteAnchoAlto = 250
-                //};
+                Thumbnail mini = new Thumbnail()
+                {
+                    OrigenSrc = rutaGuardar_Original,
+                    DestinoSrc = Server.MapPath(imagenPieza.RutaMini),
+                    LimiteAnchoAlto = 250
+                };
 
-                //mini.GuardarThumbnail();
+                mini.GuardarThumbnail();
 
                 //add a la lista de imagenes
                 
