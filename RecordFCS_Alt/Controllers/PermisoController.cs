@@ -53,7 +53,7 @@ namespace RecordFCS_Alt.Controllers
 
             ViewBag.totalRegistros = usuario.Permisos.Count();
 
-            if (!User.IsInRole("UsuarioPermisosEdit"))
+            if (!User.IsInRole("perEdit"))
             {
                 listaPermisos = listaPermisos.Where(a => a.Status).ToList();
             }
@@ -62,7 +62,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: Permiso/Details/5
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "perEdit")]
         public ActionResult CambiarStatus(Guid? id, Guid? TipoPermisoID, bool Estado)
         {
             var permiso = new Permiso()
@@ -88,7 +88,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: Permiso/Details/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "perEdit")]
         public ActionResult CambiarStatus([Bind(Include = "UsuarioID,TipoPermisoID,Status")] Permiso permiso)
         {
             var valPermiso = db.Permisos.Find(permiso.UsuarioID, permiso.TipoPermisoID);

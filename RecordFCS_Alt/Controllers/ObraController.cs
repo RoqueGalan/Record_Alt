@@ -21,7 +21,7 @@ namespace RecordFCS_Alt.Controllers
 
 
         //GET: Obra/Detalles/5
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "verFichComp")]
         public ActionResult Detalles(Guid? id)
         {
             if (id == null)
@@ -53,7 +53,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: Obra/Registrar
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "oNew")]
         public ActionResult Registrar()
         {
             var listaLetras = db.LetraFolios.Select(a => new { a.LetraFolioID, Nombre = a.Nombre + " - " + a.Descripcion, a.Status }).Where(a => a.Status).OrderBy(a => a.Nombre);
@@ -97,7 +97,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: Obra/Registrar
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "oNew")]
         public ActionResult Registrar(Guid? TipoObraID, int? LetraFolioID, Guid? TipoPiezaID)
         {
             var Formulario = Request.Form;

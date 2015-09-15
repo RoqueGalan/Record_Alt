@@ -16,11 +16,15 @@
 
     <span class="input-group-addon">        </span>
 
-    <input id="buscar_@AtributoID"  type="text" placeholder="Buscar @NombreAtt" class="form-control" />
+    <input id="buscar_@AtributoID" type="text" placeholder="Buscar @NombreAtt" class="form-control" />
 
-    <span class="input-group-addon">
-        <input type="checkbox" id="checkAdd_@AtributoID"  class="btnCheckAdd" data-toggle="tooltip" data-title="Buscar/Guardar">
-    </span>
+    @if (User.IsInRole("regValNew"))
+    {
+        <span class="input-group-addon">
+            <input type="checkbox" id="checkAdd_@AtributoID" class="btnCheckAdd" data-toggle="tooltip" data-title="Buscar/Guardar">
+        </span>
+    }
+
 
 
     <span id="btnAccion_@AtributoID" name="Buscar" class="input-group-addon btn btn-default">

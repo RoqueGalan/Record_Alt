@@ -29,7 +29,7 @@
             ¿Es Activo?
         </th>
         <th>
-            @if (User.IsInRole("UsuarioCrear"))
+            @if (User.IsInRole("usrNew"))
             {
                 @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Crear Nuevo Usuario", "Crear", "Usuario", null, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-success pull-right Usuario" })
             }
@@ -56,17 +56,17 @@
             </td>
             <td>
                 <div class="pull-right">
-                    @if (User.IsInRole("UsuarioPermisosVer"))
+                    @if (User.IsInRole("usrAllEdit"))
                     {
                         @Html.NoEncodeActionLink("<span class='fa fa-gear'></span>", "Config. Usuario", "Detalles", "Usuario", routeValues: new { id = item.UsuarioID }, htmlAttributes: new { data_toggle = "tooltip", @class = "btn btn-primary btn-xs" })
 
                     }
-                    @if (User.IsInRole("UsuarioEdit"))
+                    @if (User.IsInRole("usrEdit"))
                     {
                         @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar", "Editar", "Usuario", routeValues: new { id = item.UsuarioID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-default btn-xs Usuario" })
 
                     }
-                    @if (User.IsInRole("UsuarioEliminar"))
+                    @if (User.IsInRole("usrDeta"))
                     {
                         @Html.NoEncodeActionLink("<span class='fa fa-trash'></span>", "Eliminar", "Eliminar", "Usuario", routeValues: new { id = item.UsuarioID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-danger btn-xs Usuario" })
 

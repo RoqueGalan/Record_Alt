@@ -26,7 +26,7 @@
         <div class="col-md-2 col-sm-4 text-center">
             @*<img src="holder.js/100x150" alt="No hay Imagenes" class="">*@
             <div class="pull-right">
-                @if (User.IsInRole("UsuarioEdit"))
+                @if (User.IsInRole("usrEdit"))
                 {
                     @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar", "Editar", "Usuario", routeValues: new { id = Model.UsuarioID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-default btn-xs Usuario" })
                 }

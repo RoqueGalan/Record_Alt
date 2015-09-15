@@ -95,7 +95,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: TipoPieza/Detalles/5
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "tPiDeta")]
         public ActionResult Detalles(Guid? id)
         {
             if (id == null)
@@ -111,7 +111,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: TipoPieza/Crear
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "tPiNew")]
         public ActionResult Crear(Guid? id, bool principal = false)
         {
             if (id == null)
@@ -151,7 +151,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: TipoPieza/Crear
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "tPiNew")]
         public ActionResult Crear([Bind(Include = "TipoPiezaID,Nombre,Descripcion,Prefijo,Orden,EsPrincipal,Status,TipoObraID,TipoPiezaPadreID,Temp")] TipoPieza tipoPieza)
         {
             var tp = db.TipoPiezas.Select(a => new { a.TipoObraID, a.TipoPiezaPadreID, a.TipoPiezaID, a.Nombre }).FirstOrDefault(a => a.Nombre == tipoPieza.Nombre && a.TipoObraID == tipoPieza.TipoObraID && a.TipoPiezaPadreID == tipoPieza.TipoPiezaPadreID);
@@ -189,7 +189,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: TipoPieza/Editar/5
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "tPiEdit")]
         public ActionResult Editar(Guid? id)
         {
             if (id == null)
@@ -208,7 +208,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: TipoPieza/Editar/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "tPiEdit")]
         public ActionResult Editar([Bind(Include = "TipoPiezaID,Nombre,Descripcion,Prefijo,Orden,EsPrincipal,Status,TipoObraID,TipoPiezaPadreID,Temp")] TipoPieza tipoPieza)
         {
             var tp = db.TipoPiezas.Select(a => new { a.TipoObraID, a.TipoPiezaPadreID, a.TipoPiezaID, a.Nombre }).FirstOrDefault(a => a.Nombre == tipoPieza.Nombre && a.TipoObraID == tipoPieza.TipoObraID && a.TipoPiezaPadreID == tipoPieza.TipoPiezaPadreID);
@@ -239,7 +239,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: TipoPieza/Eliminar/5
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "tPiDel")]
         public ActionResult Eliminar(Guid? id)
         {
             if (id == null)
@@ -258,7 +258,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: TipoPieza/Eliminar/5
         [HttpPost, ActionName("Eliminar")]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "tPiDel")]
         public ActionResult EliminarConfirmado(Guid id)
         {
             string btnValue = Request.Form["accionx"];

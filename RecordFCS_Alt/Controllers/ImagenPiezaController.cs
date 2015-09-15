@@ -57,7 +57,7 @@ namespace RecordFCS_Alt.Controllers
 
 
 
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "imgNew")]
         public ActionResult Crear(Guid? id)
         {
             if (id == null)
@@ -97,7 +97,7 @@ namespace RecordFCS_Alt.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "imgNew")]
         public ActionResult Crear(ImagenPieza imagenPieza, HttpPostedFileBase FileImagen)
         {
 
@@ -156,7 +156,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
 
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "imgEdit")]
         public ActionResult Editar(Guid? id)
         {
             if (id == null)
@@ -175,7 +175,7 @@ namespace RecordFCS_Alt.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "imgEdit")]
         public ActionResult Editar(ImagenPieza imagenPieza, HttpPostedFileBase FileImagen)
         {
 
@@ -229,7 +229,7 @@ namespace RecordFCS_Alt.Controllers
 
 
         // GET: ImagenPieza/Eliminar/5
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "imgDel")]
         public ActionResult Eliminar(Guid? id)
         {
             if (id == null)
@@ -249,7 +249,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: ImagenPieza/Eliminar/5
         [HttpPost, ActionName("Eliminar")]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "imgDel")]
         public ActionResult EliminarConfirmado(Guid id)
         {
             string btnValue = Request.Form["accionx"];

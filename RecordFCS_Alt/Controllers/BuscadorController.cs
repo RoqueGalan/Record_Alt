@@ -17,21 +17,21 @@ namespace RecordFCS_Alt.Controllers
 
 
         // GET: Buscador
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "verBusca")]
         public ActionResult Index()
         {
 
             return View();
         }
 
-
+        [CustomAuthorize(permiso = "")]
         public ActionResult MenuFiltros(string rutaVista = "_ResultadosBusqueda")
         {
             ViewBag.rutaVista = rutaVista;
             return PartialView("_MenuFiltros");
         }
 
-
+        [CustomAuthorize(permiso = "")]
         public ActionResult RenderBuscarCampo(Guid? idTipoAtributo)
         {
             var tipoAtt = db.TipoAtributos.Find(idTipoAtributo);
@@ -72,7 +72,7 @@ namespace RecordFCS_Alt.Controllers
             return PartialView("_RenderBuscarCampo", tipoAtt);
         }
 
-
+        [CustomAuthorize(permiso = "")]
         public ActionResult RenderListaCoincidencias()
         {
             List<string> lista = (List<string>)TempData["listaValores"];
@@ -91,6 +91,7 @@ namespace RecordFCS_Alt.Controllers
 
 
         [HttpPost]
+        [CustomAuthorize(permiso = "")]
         public ActionResult MostrarResultados(string rutaVista = "_ResultadosBusqueda", string nombreListaImprimir = "listaDefault")
         {
             //paginador
@@ -175,7 +176,7 @@ namespace RecordFCS_Alt.Controllers
                 }
             }
 
-            
+
 
 
             //implementar el buscador
@@ -183,7 +184,7 @@ namespace RecordFCS_Alt.Controllers
             {
                 if (campo.TipoAtributo.EsGenerico)
                 {
-                  
+
                     if (campo.TipoAtributo.EsLista)
                     {
                         //como es lista entonces buscar en ListaValor
@@ -243,7 +244,7 @@ namespace RecordFCS_Alt.Controllers
 
             //var listaObras = listaPiezas.GroupBy(x => x.ObraID).Select(x => x.FirstOrDefault()).ToList();
 
-            listaPiezas = listaPiezas.OrderBy(a => a.Obra.LetraFolio.Nombre).ThenBy(a=> a.Obra.NumeroFolio);
+            listaPiezas = listaPiezas.OrderBy(a => a.Obra.LetraFolio.Nombre).ThenBy(a => a.Obra.NumeroFolio);
 
 
             paginaPiezasIDs = listaPiezas.Select(x => x.PiezaID).ToList().ToPagedList(pagIndex, pagTamano);
@@ -263,6 +264,7 @@ namespace RecordFCS_Alt.Controllers
 
 
         //GET: Buscador/AgregarFiltro
+        [CustomAuthorize(permiso = "")]
         public ActionResult AgregarFiltro()
         {
             var listaTipoAtt = db.TipoAtributos.Where(a => a.Status == true && a.EnBuscador).OrderBy(a => a.Orden);
@@ -274,6 +276,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         //POST: Buscador/AgregarFiltro
+        [CustomAuthorize(permiso = "")]
         public ActionResult GenerarFiltro(Guid TipoAtributoID, string Filtro, string PalabraExacta)
         {
             var tipoAtt = db.TipoAtributos.Find(TipoAtributoID);
@@ -301,6 +304,7 @@ namespace RecordFCS_Alt.Controllers
 
 
         [HttpPost]
+        [CustomAuthorize(permiso = "")]
         public ActionResult MostrarResultadosListado(string rutaVista = "_ResultadosBusqueda")
         {
             //paginador
@@ -398,7 +402,7 @@ namespace RecordFCS_Alt.Controllers
                     {
                         if (campo.Exacto)
                             listaPiezas = listaPiezas.Where(a => a.AtributoPiezas.Any(b => b.Atributo.TipoAtributoID == campo.TipoAtributo.TipoAtributoID && b.Valor == campo.Valor));
-                        else 
+                        else
                             listaPiezas = listaPiezas.Where(a => a.AtributoPiezas.Any(b => b.Atributo.TipoAtributoID == campo.TipoAtributo.TipoAtributoID && b.Valor.Contains(campo.Valor)));
 
                     }

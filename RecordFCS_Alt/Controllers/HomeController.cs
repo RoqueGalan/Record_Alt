@@ -13,7 +13,6 @@ namespace RecordFCS_Alt.Controllers
     {
         private RecordFCSContext db = new RecordFCSContext();
 
-        [AllowAnonymous]
         public ActionResult Index(string mensaje = "")
         {
             //string FullName = User.Nombre + " " + User.Apellido;
@@ -30,18 +29,18 @@ namespace RecordFCS_Alt.Controllers
             return View();
         }
 
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
+        //public ActionResult About()
+        //{
+        //    ViewBag.Message = "Your application description page.";
 
-            return View();
-        }
+        //    return View();
+        //}
 
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
+        //public ActionResult Contact()
+        //{
+        //    ViewBag.Message = "Your contact page.";
 
-            return View();
-        }
+        //    return View();
+        //}
     }
 }

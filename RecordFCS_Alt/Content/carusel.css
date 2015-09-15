@@ -1,0 +1,20 @@
+﻿
+a.left.carousel-control{
+   margin-left: 1em;
+   color: #d4bd93;
+} 
+
+a.right.carousel-control{
+   margin-right: 1em;
+      color: #d4bd93;
+
+} 
+
+
+a.left.carousel-control:hover{
+   color: #000000;
+} 
+
+a.right.carousel-control:hover{
+   color: #000000;
+} 

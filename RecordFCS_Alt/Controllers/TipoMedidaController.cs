@@ -17,7 +17,7 @@ namespace RecordFCS_Alt.Controllers
         private RecordFCSContext db = new RecordFCSContext();
 
         // GET: TipoMedida
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "catList")]
         public ActionResult Index()
         {
             return View();
@@ -53,7 +53,7 @@ namespace RecordFCS_Alt.Controllers
 
 
         // GET: TipoMedida/_Crear
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "tMedNew")]
         public ActionResult Crear()
         {
             var tm = new TipoMedida()
@@ -67,7 +67,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: TipoMedida/_Crear
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "tMedNew")]
         public ActionResult Crear([Bind(Include = "TipoMedidaID,Nombre,Descripcion,Status,Temp")] TipoMedida tipoMedida)
         {
             //validar el nombre
@@ -93,7 +93,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: TipoMedida/Editar/5
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "tMedEdit")]
         public ActionResult Editar(Guid? id)
         {
             if (id == null)
@@ -112,7 +112,7 @@ namespace RecordFCS_Alt.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "tMedEdit")]
         public ActionResult Editar([Bind(Include = "TipoMedidaID,Nombre,Descripcion,Status,Temp")] TipoMedida tipoMedida)
         {
             //validar el nombre
@@ -136,7 +136,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: TipoMedida/Eliminar/5
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "tMedDel")]
         public ActionResult Eliminar(Guid? id)
         {
             if (id == null)
@@ -154,7 +154,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: TipoMedida/Eliminar/5
         [HttpPost, ActionName("Eliminar")]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "tMedDel")]
         public ActionResult EliminarConfirmado(Guid id)
         {
             string btnValue = Request.Form["accionx"];
@@ -184,6 +184,7 @@ namespace RecordFCS_Alt.Controllers
             return Json(new { success = true, url = url });
         }
 
+        [CustomAuthorize(permiso = "")]
         public JsonResult EsUnico(string Nombre, Guid? TipoMedidaID)
         {
             bool x = false;

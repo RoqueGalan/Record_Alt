@@ -210,6 +210,7 @@
     <Content Include="Content\bootstrap-switch.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\carusel.css" />
     <Content Include="Content\Colores.css" />
     <Content Include="Content\css\font-awesome.css" />
     <Content Include="Content\css\font-awesome.min.css" />
@@ -355,11 +356,7 @@
     <Content Include="Views\Ubicacion\Index.cshtml" />
     <Content Include="Views\Ubicacion\_Editar.cshtml" />
     <Content Include="Views\Ubicacion\_Lista.cshtml" />
-    <Content Include="Views\Obra\Create.cshtml" />
-    <Content Include="Views\Obra\Delete.cshtml" />
     <Content Include="Views\Obra\Detalles.cshtml" />
-    <Content Include="Views\Obra\Edit.cshtml" />
-    <Content Include="Views\Obra\Index.cshtml" />
     <Content Include="Views\Obra\Registrar.cshtml" />
     <Content Include="Scripts\reg.tipoObraSelect.js" />
     <Content Include="Views\TipoPieza\_Registro_inputSelect.cshtml" />
@@ -395,9 +392,6 @@
     <Content Include="Views\TipoAtributo\Detalles.cshtml" />
     <Content Include="Views\Atributo\_Registro_form.cshtml" />
     <Content Include="Views\AutorPieza\_Crear.cshtml" />
-    <Content Include="Views\AutorPieza\Delete.cshtml" />
-    <Content Include="Views\AutorPieza\Details.cshtml" />
-    <Content Include="Views\AutorPieza\Index.cshtml" />
     <Content Include="Views\Atributo\_ErrorCampo.cshtml" />
     <Content Include="Views\Atributo\_GenericoLista.cshtml" />
     <Content Include="Views\Atributo\_GenericoCampo.cshtml" />
@@ -418,11 +412,6 @@
     <Content Include="Views\ImagenPieza\_Eliminar.cshtml" />
     <Content Include="Views\ImagenPieza\_Editar.cshtml" />
     <Content Include="Views\ImagenPieza\_CampoRegistro.cshtml" />
-    <Content Include="Views\Pieza\Create.cshtml" />
-    <Content Include="Views\Pieza\Delete.cshtml" />
-    <Content Include="Views\Pieza\Details.cshtml" />
-    <Content Include="Views\Pieza\Edit.cshtml" />
-    <Content Include="Views\Pieza\Index.cshtml" />
     <Content Include="Views\Pieza\_Ficha.cshtml" />
     <Content Include="Views\Buscador\Index.cshtml" />
     <Content Include="Views\Buscador\_MenuFiltros.cshtml" />
@@ -431,9 +420,6 @@
     <Content Include="Views\Buscador\_CampoMenuFiltro.cshtml" />
     <Content Include="Views\Buscador\_RenderBuscarCampo.cshtml" />
     <Content Include="Views\ListaValor\_CampoBuscador.cshtml" />
-    <Content Include="Views\Usuario\Create.cshtml" />
-    <Content Include="Views\Usuario\Delete.cshtml" />
-    <Content Include="Views\Usuario\Details.cshtml" />
     <Content Include="Views\Usuario\Detalles.cshtml" />
     <Content Include="Views\Usuario\Index.cshtml" />
     <Content Include="Views\Usuario\_Crear.cshtml" />
@@ -441,20 +427,11 @@
     <Content Include="Views\Usuario\_Eliminar.cshtml" />
     <Content Include="Views\Usuario\_IniciarSesion.cshtml" />
     <Content Include="Views\Usuario\_Lista.cshtml" />
-    <Content Include="Views\TipoPermiso\Create.cshtml" />
-    <Content Include="Views\TipoPermiso\Delete.cshtml" />
-    <Content Include="Views\TipoPermiso\Details.cshtml" />
-    <Content Include="Views\TipoPermiso\Edit.cshtml" />
     <Content Include="Views\TipoPermiso\Index.cshtml" />
     <Content Include="Views\TipoPermiso\_Crear.cshtml" />
     <Content Include="Views\TipoPermiso\_Editar.cshtml" />
     <Content Include="Views\TipoPermiso\_Eliminar.cshtml" />
     <Content Include="Views\TipoPermiso\_Lista.cshtml" />
-    <Content Include="Views\Permiso\Create.cshtml" />
-    <Content Include="Views\Permiso\Delete.cshtml" />
-    <Content Include="Views\Permiso\Details.cshtml" />
-    <Content Include="Views\Permiso\Edit.cshtml" />
-    <Content Include="Views\Permiso\Index.cshtml" />
     <Content Include="Views\Permiso\_CambiarStatus.cshtml" />
     <Content Include="Views\Permiso\_Lista.cshtml" />
     <Content Include="Views\Error\AccesoDenegado.cshtml" />
@@ -476,7 +453,6 @@
     <Content Include="Views\AtributoPieza\_EditarGenericoCampo.cshtml" />
     <Content Include="Views\AutorPieza\_Editar.cshtml" />
     <Content Include="Views\AtributoPieza\_CrearGenericoCampo.cshtml" />
-    <Content Include="Views\Usuario\Edit.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\IndexUsuario.cshtml" />
   </ItemGroup>

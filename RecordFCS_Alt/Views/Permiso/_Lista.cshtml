@@ -20,7 +20,7 @@
 
             <td>
 
-                @if (User.IsInRole("UsuarioPermisosEdit"))
+                @if (User.IsInRole("perEdit"))
                 {
                     @Html.NoEncodeActionLink(Html.DisplayFor(modelItem => item.Status).ToString(), "CambiarStatus", "CambiarStatus", "Permiso", routeValues: new { id = item.UsuarioID, TipoPermisoID = item.TipoPermisoID, Estado = item.Status }, htmlAttributes: new { data_modal = "", @class = "link link-danger CambiarStatus" })
                 }
@@ -47,7 +47,7 @@
 </table>
 
 
-@if (User.IsInRole("UsuarioPermisosEdit"))
+@if (User.IsInRole("perEdit"))
 {
     <script type="text/javascript">
 

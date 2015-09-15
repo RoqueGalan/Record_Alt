@@ -50,12 +50,16 @@
         </dd>
         <dt>Acciones</dt>
         <dd>
-            @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar", "Editar", "TipoObra", routeValues: new { id = Model.TipoObraID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-default btn-xs openModal_TipoObra" })
+            @if (User.IsInRole("tOEdit"))
+            {
+                @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar", "Editar", "TipoObra", routeValues: new { id = Model.TipoObraID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-default btn-xs openModal_TipoObra" })
+
+            }
         </dd>
     </dl>
 </div>
 
-<h4 class="text-center"><b>Tipos de Piezas Principales para @Html.DisplayFor(model => model.Nombre)</b></h4>
+<h4 class="text-center"><b>Plantillas principales para @Html.DisplayFor(model => model.Nombre)</b></h4>
 <!-- Campo que se reemplaza-->
 
 <div id="renderListaTipoPiezas">

@@ -106,7 +106,17 @@ input[type='submit'] {
     color: #000000 !important;
 }
 
+a>.text-black:hover {
+    color: #978361 !important;
+}
 
+.text-gray {
+    color: #e6e6e6 !important;
+}
+
+a>.text-gray:hover{
+    color: #978361 !important;
+}
 
 
 

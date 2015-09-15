@@ -26,61 +26,75 @@
         </th>
 
         <th class="col-lg-1 col-md-1 col-sm-1 col-xs-3">
-            @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Crear Tipo de Atributo", "Crear", "TipoAtributo", null, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-success btn-xs pull-right openModal_TipoAtributo" })
+            @if (User.IsInRole("tAttNew"))
+            {
+                @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Crear Tipo de Atributo", "Crear", "TipoAtributo", null, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-success btn-xs pull-right openModal_TipoAtributo" })
+            }
         </th>
     </tr>
 
     <!-- LetraFolio-->
-    <tr>
-        <td></td>
-        <td>
-            Letra para el # de inventario
-            <small class="text-muted">Catálogo estático</small>
-        </td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>
-            <div class="pull-right btn-group">
-                @Html.NoEncodeActionLink("<span class='fa fa-gear'></span>", "Configurar Letra de Folio", "Index", "LetraFolio", null, htmlAttributes: new { data_toggle = "tooltip", @class = "btn btn-primary btn-xs" })
-            </div>
-        </td>
-    </tr>
+    @if (User.IsInRole("leFolList"))
+    {
+        <tr>
+            <td></td>
+            <td>
+                Letra para el Número de inventario
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+                <div class="pull-right btn-group">
+                    @Html.NoEncodeActionLink("<span class='fa fa-gear'></span>", "Configurar Letra de Folio", "Index", "LetraFolio", null, htmlAttributes: new { data_toggle = "tooltip", @class = "btn btn-primary btn-xs" })
+
+                </div>
+            </td>
+        </tr>
+    }
+
     <!-- MostrarAtributo-->
-    <tr>
-        <td></td>
-        <td>
-            Tipo de mostrar atributo
-            <small class="text-muted">Catálogo estático</small>
-        </td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>
-            <div class="pull-right btn-group">
-                @Html.NoEncodeActionLink("<span class='fa fa-gear'></span>", "Configurar Tipo de Mostrar", "Index", "TipoMostrar", null, htmlAttributes: new { data_toggle = "tooltip", @class = "btn btn-primary btn-xs" })
-            </div>
-        </td>
-    </tr>
+    @if (User.IsInRole("tMosList"))
+    {
+        <tr>
+            <td></td>
+            <td>
+                Visualización de atributos de la obra
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+                <div class="pull-right btn-group">
+                    @Html.NoEncodeActionLink("<span class='fa fa-gear'></span>", "Configurar Tipo de Mostrar", "Index", "TipoMostrar", null, htmlAttributes: new { data_toggle = "tooltip", @class = "btn btn-primary btn-xs" })
+
+                </div>
+            </td>
+        </tr>
+    }
     <!-- TipoObra-->
-    <tr>
-        <td></td>
-        <td>
-            Tipo de obra
-            <small class="text-muted">Catalogo de plantillas configurables</small>
-        </td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>
-            <div class="pull-right btn-group">
-                @Html.NoEncodeActionLink("<span class='fa fa-gear'></span>", "Configurar Tipos de Obra", "Index", "TipoObra", null, htmlAttributes: new { data_toggle = "tooltip", @class = "btn btn-primary btn-xs" })
-            </div>
-        </td>
-    </tr>
+    @if (User.IsInRole("tOList"))
+    {
+        <tr>
+            <td></td>
+            <td>
+                Tipo de obra
+                <small class="text-muted">Plantillas</small>
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+                <div class="pull-right btn-group">
+                    @Html.NoEncodeActionLink("<span class='fa fa-gear'></span>", "Configurar Tipos de Obra", "Index", "TipoObra", null, htmlAttributes: new { data_toggle = "tooltip", @class = "btn btn-primary btn-xs" })
+                </div>
+            </td>
+        </tr>
+    }
+
 
     @foreach (var item in Model)
     {
@@ -110,24 +124,48 @@
 
             <td>
                 <div class="pull-right">
+
                     @if (item.EsLista)
                     {
                         switch (item.TablaSQL)
                         {
                             case "ListaValor":
-                                @Html.NoEncodeActionLink("<span class='fa fa-gear'></span>", "Configurar " + item.Nombre, "Detalles", "TipoAtributo", routeValues: new { id = item.TipoAtributoID }, htmlAttributes: new { data_toggle = "tooltip", @class = "btn btn-primary btn-xs" })
+                                if (User.IsInRole("catList"))
+                                {
+                                    @Html.NoEncodeActionLink("<span class='fa fa-gear'></span>", "Configurar " + item.Nombre, "Detalles", "TipoAtributo", routeValues: new { id = item.TipoAtributoID }, htmlAttributes: new { data_toggle = "tooltip", @class = "btn btn-primary btn-xs" })
+                                }
                                 break;
                             case "ImagenPieza":
                                 break;
+                            case "Ubicacion":
+                                if (User.IsInRole("ubiList"))
+                                {
+                                    @Html.NoEncodeActionLink("<span class='fa fa-gear'></span>", "Configurar " + item.Nombre, "Index", item.TablaSQL, null, htmlAttributes: new { data_toggle = "tooltip", @class = "btn btn-primary btn-xs" })
+                                }
+
+                                break;
+
                             default:
-                            @Html.NoEncodeActionLink("<span class='fa fa-gear'></span>", "Configurar " + item.Nombre, "Index", item.TablaSQL, null, htmlAttributes: new { data_toggle = "tooltip", @class = "btn btn-primary btn-xs" })
+                                if (User.IsInRole("catList"))
+                                {
+                                    @Html.NoEncodeActionLink("<span class='fa fa-gear'></span>", "Configurar " + item.Nombre, "Index", item.TablaSQL, null, htmlAttributes: new { data_toggle = "tooltip", @class = "btn btn-primary btn-xs" })
+                                }
                                 break;
                         }
                     }
 
 
-                    @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar " + item.Nombre, "Editar", "TipoAtributo", routeValues: new { id = item.TipoAtributoID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-default btn-xs openModal_TipoAtributo" })
-                    @Html.NoEncodeActionLink("<span class='fa fa-trash'></span>", "Eliminar " + item.Nombre, "Eliminar", "TipoAtributo", routeValues: new { id = item.TipoAtributoID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-danger btn-xs openModal_TipoAtributo" })
+                    @if (User.IsInRole("tAttEdit"))
+                    {
+                        @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar " + item.Nombre, "Editar", "TipoAtributo", routeValues: new { id = item.TipoAtributoID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-default btn-xs openModal_TipoAtributo" })
+
+                    }
+                    @if (User.IsInRole("tAttDel"))
+                    {
+                        @Html.NoEncodeActionLink("<span class='fa fa-trash'></span>", "Eliminar " + item.Nombre, "Eliminar", "TipoAtributo", routeValues: new { id = item.TipoAtributoID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-danger btn-xs openModal_TipoAtributo" })
+
+                    }
+
                 </div>
             </td>
         </tr>

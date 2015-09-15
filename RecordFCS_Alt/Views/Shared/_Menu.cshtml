@@ -26,83 +26,92 @@
             {
                 //barras izquierda|
                 <ul class="nav navbar-nav">
+                    @if (User.IsInRole("verConsult"))
+                    {
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class='fa fa-search'></i> Consulta <span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                @if (User.IsInRole("verBusca"))
+                                {
+                                    @Html.MenuItemIcon("<i class='fa fa-search'></i> Buscador Avanzado", "Buscador Avanzado", "Index", "Buscador")
+                                }
+                                @*@Html.MenuItemIcon("<i class='fa fa-list'></i> Listados", "Listados", "Index", "Listado")*@
+                                @*@Html.MenuItemIcon("<i class='fa fa-list-alt'></i> Reportes", "Reportes", "Index", "Reporte")*@
+                            </ul>
+                        </li>
+                    }
+                    
+                    @if (User.IsInRole("verCtrlO"))
+                    {
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class='fa fa-connectdevelop'></i> Control de Obra <span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                @if (User.IsInRole("oNew"))
+                                {
+                                    @Html.MenuItemIcon("<i class='fa fa-edit'></i> Registro de Obra", "Registro de Obra", "Registrar", "Obra")
+                                }
 
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class='fa fa-search'></i> Consulta <span class="caret"></span></a>
-                        <ul class="dropdown-menu" role="menu">
-                            @Html.MenuItemIcon("<i class='fa fa-search'></i> Buscador Avanzado", "Buscador Avanzado", "Index", "Buscador")
-                            @*@Html.MenuItemIcon("<i class='fa fa-list'></i> Listados", "Listados", "Index", "Listado")*@
-                            @*@Html.MenuItemIcon("<i class='fa fa-list-alt'></i> Reportes", "Reportes", "Index", "Reporte")*@
-                        </ul>
-                    </li>
-
-
-
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class='fa fa-connectdevelop'></i> Control de Obra <span class="caret"></span></a>
-                        <ul class="dropdown-menu" role="menu">
-                            @if (User.IsInRole("ObraRegistrar"))
-                            {
-                                @Html.MenuItemIcon("<i class='fa fa-edit'></i> Registro de Obra", "Registro de Obra", "Registrar", "Obra")
-                            }
-
-                        </ul>
-                    </li>
-
-
-
-
-
-
-                    <li class="menu-item dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-gear"></i> Configuración<span class="caret"></span></a>
-
-                        <ul class="dropdown-menu">
-
-                            @if (User.IsInRole("SeguridadVer"))
-                            {
-                                <li class="menu-item dropdown dropdown-submenu">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-shield"></i> Seguridad Sistema</a>
-
-                                    <ul class="dropdown-menu">
-                                        @if (User.IsInRole("TipoPermisoVer"))
-                                        {
-                                            @Html.MenuItemIcon("<i class='fa fa-key'></i> Permisos", "Catalogo Permisos", "Index", "TipoPermiso")
-                                        }
-                                        @if (User.IsInRole("UsuarioVer"))
-                                        {
-                                            @Html.MenuItemIcon("<i class='fa fa-group'></i> Usuarios", "Usuarios", "Index", "Usuario")
-                                        }
-                                    </ul>
-
-                                </li>
-                            }
-
-                            @if (User.IsInRole("ConfigVer"))
-                            {
-                                <li class="menu-item dropdown dropdown-submenu">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-gear"></i> Configuración Obras</a>
-
-                                    <ul class="dropdown-menu">
-                                        @if (User.IsInRole("TipoObraVer"))
-                                        {
-                                            @Html.MenuItemIcon("<i class='fa fa-picture-o'></i> Tipos de Obra", "Tipos de Obra", "Index", "TipoObra")
-                                        }
-
-                                        @if (User.IsInRole("CatVer"))
-                                        {
-                                            @Html.MenuItemIcon("<i class='fa fa-th-large'></i> Catalogos", "Catalogos", "Index", "TipoAtributo")
-                                        }
-
-                                    </ul>
-
-                                </li>
-                            }
+                            </ul>
+                        </li>
+                    }
 
 
-                        </ul>
+                    @if (User.IsInRole("verConfg"))
+                    {
+                        <li class="menu-item dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-gear"></i> Configuración<span class="caret"></span></a>
 
-                    </li>
+                            <ul class="dropdown-menu">
+
+                                @if (User.IsInRole("verSecSis"))
+                                {
+                                    <li class="menu-item dropdown dropdown-submenu">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-shield"></i> Seguridad Sistema</a>
+
+                                        <ul class="dropdown-menu">
+                                            @if (User.IsInRole("tPermList"))
+                                            {
+                                                @Html.MenuItemIcon("<i class='fa fa-key'></i> Permisos", "Catalogo Permisos", "Index", "TipoPermiso")
+                                            }
+                                            @if (User.IsInRole("usrLis"))
+                                            {
+                                                @Html.MenuItemIcon("<i class='fa fa-group'></i> Usuarios", "Usuarios", "Index", "Usuario")
+                                            }
+                                        </ul>
+
+                                    </li>
+                                }
+
+                                @if (User.IsInRole("verOConfg"))
+                                {
+                                    <li class="menu-item dropdown dropdown-submenu">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-gear"></i> Configuración Obras</a>
+
+                                        <ul class="dropdown-menu">
+                                            @if (User.IsInRole("tOList"))
+                                            {
+                                                @Html.MenuItemIcon("<i class='fa fa-picture-o'></i> Tipos de Obra", "Tipos de Obra", "Index", "TipoObra")
+                                            }
+
+                                            @if (User.IsInRole("catList"))
+                                            {
+                                                @Html.MenuItemIcon("<i class='fa fa-th-large'></i> Catalogos", "Catalogos", "Index", "TipoAtributo")
+                                            }
+
+                                        </ul>
+
+                                    </li>
+                                }
+
+
+                            </ul>
+
+                        </li>
+
+
+                    }
+
+
 
 
 
@@ -147,7 +156,10 @@
                                 <li class="dropdown">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="text-primary"><i class="fa fa-male"></i> Hola, </span>@User.Nombre<span class="text-primary">! <span class="caret"></span></span></a>
                                     <ul class="dropdown-menu" role="menu">
-                                        @Html.MenuItemIcon("<i class='fa fa-street-view'></i> Mi Perfil", "Mi Perfil", "Detalles", "Usuario", new { id = User.UsuarioID })
+                                        @if (User.IsInRole("usrDeta"))
+                                        {
+                                            @Html.MenuItemIcon("<i class='fa fa-street-view'></i> Mi Perfil", "Mi Perfil", "Detalles", "Usuario", new { id = User.UsuarioID })
+                                        }
                                         @Html.MenuItemIcon("<i class='fa fa-user-times'></i> Cerrar Sesión", "Cerrar Sesión", "CerrarSesion", "Usuario")
                                     </ul>
                                 </li>

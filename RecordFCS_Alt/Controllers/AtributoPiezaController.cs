@@ -18,7 +18,7 @@ namespace RecordFCS_Alt.Controllers
 
 
         // GET: AtributoPieza/Create
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "attPNew")]
         public ActionResult Crear(Guid? id, Guid? AtributoID)
         {
             // AtributoPiezaID = id
@@ -159,7 +159,7 @@ namespace RecordFCS_Alt.Controllers
         // más información vea http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "attPNew")]
         public ActionResult Crear([Bind(Include = "AtributoPiezaID,Valor,Status,PiezaID,AtributoID,ListaValorID")] AtributoPieza atributoPieza)
         {
 
@@ -246,7 +246,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: AtributoPieza/Edit/5
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "attPEdit")]
         public ActionResult Editar(Guid? id, Guid? AtributoID, Guid? LLaveID)
         {
 
@@ -376,7 +376,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: AtributoPieza/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "attPEdit")]
         public ActionResult Editar([Bind(Include = "AtributoPiezaID,Valor,Status,PiezaID,AtributoID,ListaValorID")] AtributoPieza atributoPieza)
         {
             Guid renderID = atributoPieza.AtributoPiezaID;

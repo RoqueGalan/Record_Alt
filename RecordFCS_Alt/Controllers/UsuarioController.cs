@@ -21,7 +21,7 @@ namespace RecordFCS_Alt.Controllers
         private RecordFCSContext db = new RecordFCSContext();
 
         // GET: Usuario
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "usrLis,usrAllEdit")]
         public ActionResult Index()
         {
 
@@ -61,8 +61,9 @@ namespace RecordFCS_Alt.Controllers
                 //serializeModel.Tiempo = tiempoFin.Hour + ":" + tiempoFin.Minute + ":" + tiempoFin.Second;
                 serializeModel.ListaRoles = usuarioX.Permisos.Where(a => a.Status).Select(a => a.TipoPermiso.Clave).ToArray();
 
-                string userData = JsonConvert.SerializeObject(serializeModel);
+             
 
+                string userData = JsonConvert.SerializeObject(serializeModel);
 
 
 
@@ -70,6 +71,16 @@ namespace RecordFCS_Alt.Controllers
 
 
                 string encTicket = FormsAuthentication.Encrypt(authTicket);
+                int maxByteSize = 4000; // Max Cookie Size is 4096 including Cookie Name, Expiry, etc...  
+                var tamTicket = System.Text.ASCIIEncoding.ASCII.GetByteCount(encTicket);
+                if (tamTicket > maxByteSize)
+                {
+                    // Raise the alarm that the cookie is going to get rejected by the browser  
+                    AlertaDanger("Se supero el limite.");
+
+                }
+
+
                 HttpCookie faCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encTicket) { Expires = authTicket.Expiration };
                 Response.Cookies.Add(faCookie);
 
@@ -126,13 +137,13 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: Usuario/Detalles/5
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "usrDeta,usrAllEdit")]
         public ActionResult Detalles(Guid? id)
         {
 
             //validar que si tienes los permisos para editar todos los usuarios
 
-            if (!User.IsInRole("UsuarioTodosEdit"))
+            if (!User.IsInRole("usrAllEdit"))
             {
                 //comprobar que solo estoy accediendo a mi perfil
                 id = User.UsuarioID;
@@ -152,7 +163,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: Usuario/Crear
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "usrNew,usrAllEdit")]
         public ActionResult Crear()
         {
             Usuario usuario = new Usuario()
@@ -169,7 +180,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: Usuario/Crear
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "usrNew,usrAllEdit")]
         public ActionResult Crear([Bind(Include = "UsuarioID,UserName,Password,Nombre,Apellido,Correo,Status,ConfirmPassword")] Usuario usuario)
         {
 
@@ -205,7 +216,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: Usuario/Editar/5
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "usrEdit,usrAllEdit")]
         public ActionResult Editar(Guid? id)
         {
             if (id == null)
@@ -225,7 +236,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: Usuario/Editar/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "usrEdit,usrAllEdit")]
         public ActionResult Editar(Usuario usuario)
         {
             var passOld = db.Usuarios.Select(a => new { a.Password, a.UsuarioID }).FirstOrDefault(a => a.UsuarioID == usuario.UsuarioID);
@@ -266,7 +277,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: Usuario/Eliminar/5
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "usrDel,usrAllEdit")]
         public ActionResult Eliminar(Guid? id)
         {
             if (id == null)
@@ -282,9 +293,9 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // POST: Usuario/Eliminar/5
-        [HttpPost, ActionName("Eliminar")]
+        [HttpPost, ActionName("Eliminar,usrAllEdit")]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "usrDel")]
         public ActionResult EliminarConfirmado(Guid id)
         {
             string btnValue = Request.Form["accionx"];

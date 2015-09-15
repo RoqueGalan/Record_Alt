@@ -13,7 +13,11 @@
         </th>
         <th class="col-lg-1 col-md-1 col-sm-1 col-xs-2">
             @*TipoObraCrear*@
-            @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Crear Tipo de Obra", "Crear", "TipoObra", null, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-success btn-xs pull-right openModal_TipoObra" })
+            @if (User.IsInRole("tONew"))
+            {
+                @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Crear Tipo de Obra", "Crear", "TipoObra", null, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-success btn-xs pull-right openModal_TipoObra" })
+
+            }
         </th>
     </tr>
 
@@ -29,9 +33,21 @@
             </td>
 
             <td>
-                @Html.NoEncodeActionLink("<span class='fa fa-gear'></span>", "Configurar Tipo de Obra " + item.Nombre, "Detalles", "TipoObra", routeValues: new { id = item.TipoObraID}, htmlAttributes: new { data_toggle = "tooltip", @class = "btn btn-primary btn-xs" })
-                @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar " + item.Nombre, "Editar", "TipoObra", routeValues: new { id = item.TipoObraID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-default btn-xs openModal_TipoObra" })
-                @Html.NoEncodeActionLink("<span class='fa fa-trash'></span>", "Eliminar " + item.Nombre, "Eliminar", "TipoObra", routeValues: new { id = item.TipoObraID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-danger btn-xs openModal_TipoObra" })
+                @if (User.IsInRole("tPiDeta"))
+                {
+                    @Html.NoEncodeActionLink("<span class='fa fa-gear'></span>", "Configurar Tipo de Obra " + item.Nombre, "Detalles", "TipoObra", routeValues: new { id = item.TipoObraID }, htmlAttributes: new { data_toggle = "tooltip", @class = "btn btn-primary btn-xs" })
+
+                }
+                @if (User.IsInRole("tOEdit"))
+                {
+                    @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar " + item.Nombre, "Editar", "TipoObra", routeValues: new { id = item.TipoObraID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-default btn-xs openModal_TipoObra" })
+
+                }
+                @if (User.IsInRole("tODel"))
+                {
+                    @Html.NoEncodeActionLink("<span class='fa fa-trash'></span>", "Eliminar " + item.Nombre, "Eliminar", "TipoObra", routeValues: new { id = item.TipoObraID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-danger btn-xs openModal_TipoObra" })
+
+                }
             </td>
         </tr>
     }

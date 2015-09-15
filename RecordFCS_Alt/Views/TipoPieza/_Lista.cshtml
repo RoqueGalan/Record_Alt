@@ -24,15 +24,18 @@
             @Html.DisplayNameFor(model => model.Status)
         </th>
         <th class="col-lg-2 col-md-2 col-sm-2 col-xs-3">
-            @if (ViewBag.root)
+            @if (User.IsInRole("tPiNew"))
             {
-                @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Crear un Tipo de Pieza PRINCIPAL para el Tipo de Obra", "Crear", "TipoPieza", new { id = id, principal = true }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-success btn-xs pull-right openModal_TipoPieza" })
-            }
-            else
-            {
-                string titulo = "Crear un Tipo de Pieza para " + ViewBag.nombre;
-                @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Crear Tipo de Pieza para " + nombre, "Crear", "TipoPieza", new { id = id }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-success btn-xs openModal_TipoPieza" })
+                if (ViewBag.root)
+                {
+                    @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Crear un Tipo de Pieza PRINCIPAL para el Tipo de Obra", "Crear", "TipoPieza", new { id = id, principal = true }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-success btn-xs pull-right openModal_TipoPieza" })
+                }
+                else
+                {
+                    string titulo = "Crear un Tipo de Pieza para " + ViewBag.nombre;
+                    @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Crear Tipo de Pieza para " + nombre, "Crear", "TipoPieza", new { id = id }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-success btn-xs openModal_TipoPieza" })
 
+                }
             }
 
         </th>
@@ -59,9 +62,18 @@
             </td>
             <td>
                 @Html.NoEncodeActionLink("<span class='fa fa-gear'></span>", "Configurar Tipo de Pieza " + item.Nombre, "Detalles", "TipoPieza", routeValues: new { id = item.TipoPiezaID }, htmlAttributes: new { data_toggle = "tooltip", @class = "btn btn-primary btn-xs" })
-                @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar " + item.Nombre, "Editar", "TipoPieza", routeValues: new { id = item.TipoPiezaID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-default btn-xs openModal_TipoPieza" })
-                @Html.NoEncodeActionLink("<span class='fa fa-trash'></span>", "Eliminar " + item.Nombre, "Eliminar", "TipoPieza", routeValues: new { id = item.TipoPiezaID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-danger btn-xs openModal_TipoPieza" })
 
+                @if (User.IsInRole("tPiEdit"))
+                {
+                    @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar " + item.Nombre, "Editar", "TipoPieza", routeValues: new { id = item.TipoPiezaID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-default btn-xs openModal_TipoPieza" })
+
+                }
+                @if (User.IsInRole("tPiDel"))
+                {
+                    @Html.NoEncodeActionLink("<span class='fa fa-trash'></span>", "Eliminar " + item.Nombre, "Eliminar", "TipoPieza", routeValues: new { id = item.TipoPiezaID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-danger btn-xs openModal_TipoPieza" })
+
+                }
+                
             </td>
         </tr>
     }

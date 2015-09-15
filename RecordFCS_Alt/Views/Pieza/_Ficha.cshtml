@@ -18,13 +18,10 @@
 <li class="media">
 
     <div class="media-left media-middle">
-        <div class="thumbnail">
-            @*<img class="media-object img-responsive" src="~/Content/img/pieza/thumb/e0dbc2e2-dddc-42b0-b0f0-819d35530bbe.jpg" />*@
 
             <div id="renderCarrusel_@Model.PiezaID" class="text-center">
                 @{ Html.RenderAction("Carrusel", "ImagenPieza", new { id = Model.PiezaID, status = false, tipo = "thumb" }); }
             </div>
-        </div>
     </div>
 
 
@@ -40,7 +37,10 @@
                     <th>
                         @if (!esCompleta)
                         {
-                            <a href="@Url.Action("Detalles", "Obra", new  {id = Model.ObraID })" class="btn btn-primary btn-xs pull-right" data-toggle="tooltip" title="Abrir Ficha Completa" target="_blank"><span class='fa fa-pencil'></span></a>
+                            if (User.IsInRole("verFichComp"))
+                            {
+                                <a href="@Url.Action("Detalles", "Obra", new  {id = Model.ObraID })" class="btn btn-primary btn-xs pull-right" data-toggle="tooltip" title="Abrir Ficha Completa" target="_blank"><span class='fa fa-pencil'></span></a>
+                            }
                         }
 
                     </th>
@@ -66,7 +66,10 @@
 
                                     @if (tipoAtt.EsMultipleValor)
                                     {
-                                        @Html.NoEncodeActionLink("<span class='fa fa-plus'><span/>", "Agregar otr@ " + att.NombreAlterno, "Crear", "AtributoPieza", new { id = Model.PiezaID, AtributoId = att.AtributoID }, new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-primary btn-xs  pull-right CrearValor" })
+                                        if (User.IsInRole("attPNew"))
+                                        {
+                                            @Html.NoEncodeActionLink("<span class='fa fa-plus'><span/>", "Agregar otr@ " + att.NombreAlterno, "Crear", "AtributoPieza", new { id = Model.PiezaID, AtributoId = att.AtributoID }, new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-primary btn-xs  pull-right CrearValor" })
+                                        }
                                     }
                                 </p>
                             </td>
@@ -77,7 +80,11 @@
                                     foreach (var item in lista_AttPieza)
                                     {
                                         <p class="hover-dorado">
-                                            @Html.NoEncodeActionLink("<span class='fa fa-pencil'><span/>", "Editar", "Editar", "AtributoPieza", new { id = item.PiezaID, AtributoID = item.AtributoID, LlaveID = item.AtributoPiezaID }, new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-default btn-xs  pull-right EditarValor" })
+                                            @if (User.IsInRole("attPEdit"))
+                                            {
+                                                @Html.NoEncodeActionLink("<span class='fa fa-pencil'><span/>", "Editar", "Editar", "AtributoPieza", new { id = item.PiezaID, AtributoID = item.AtributoID, LlaveID = item.AtributoPiezaID }, new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-default btn-xs  pull-right EditarValor" })
+
+                                            }
 
                                             <span id="valor_@item.AtributoPiezaID">
                                                 @if (tipoAtt.EsLista)
@@ -106,9 +113,11 @@
                                 {
                                     if (!tipoAtt.EsMultipleValor)
                                     {
-                                        @Html.NoEncodeActionLink("<span class='fa fa-plus'><span/>", "Agregar " + att.NombreAlterno, "Crear", "AtributoPieza", new { id = Model.PiezaID, AtributoId = att.AtributoID }, new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-primary btn-xs pull-right CrearValor" })
+                                        if (User.IsInRole("attPNew"))
+                                        {
+                                            @Html.NoEncodeActionLink("<span class='fa fa-plus'><span/>", "Agregar " + att.NombreAlterno, "Crear", "AtributoPieza", new { id = Model.PiezaID, AtributoId = att.AtributoID }, new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-primary btn-xs pull-right CrearValor" })
 
-
+                                        }
                                     }
                                 }
                             </td>
@@ -128,7 +137,10 @@
                                     <tr class="@color">
                                         <td>
                                             @att.NombreAlterno
-                                            @Html.NoEncodeActionLink("<span class='fa fa-plus'><span/>", "Agregar otr@ " + att.NombreAlterno, "Crear", "AtributoPieza", new { id = Model.PiezaID, AtributoID = att.AtributoID }, new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-primary btn-xs  pull-right CrearValor" })
+                                            @if (User.IsInRole("attPNew"))
+                                            {
+                                                @Html.NoEncodeActionLink("<span class='fa fa-plus'><span/>", "Agregar otr@ " + att.NombreAlterno, "Crear", "AtributoPieza", new { id = Model.PiezaID, AtributoID = att.AtributoID }, new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-primary btn-xs  pull-right CrearValor" })
+                                            }
 
                                         </td>
                                         <td>
@@ -137,7 +149,11 @@
                                                 foreach (var item in lista_AttAutor)
                                                 {
                                                     <p class="hover-dorado">
-                                                        @Html.NoEncodeActionLink("<span class='fa fa-pencil'><span/>", "Editar", "Editar", "AtributoPieza", new { id = item.PiezaID, AtributoID = att.AtributoID, LlaveID = item.AutorID }, new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-default btn-xs  pull-right EditarValor" })
+                                                        @if (User.IsInRole("attPEdit"))
+                                                        {
+                                                            @Html.NoEncodeActionLink("<span class='fa fa-pencil'><span/>", "Editar", "Editar", "AtributoPieza", new { id = item.PiezaID, AtributoID = att.AtributoID, LlaveID = item.AutorID }, new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-default btn-xs  pull-right EditarValor" })
+
+                                                        }
 
                                                         <span id="autor_@(item.PiezaID)_@(item.AutorID)">
                                                             @(item.Autor.Nombre + " " + item.Autor.Apellido)
@@ -161,9 +177,21 @@
                                             @if (color == "default")
                                             {
                                                 <p id="ubicacion_@(Model.UbicacionID)" class="hover-dorado">
-                                                    @*@Html.NoEncodeActionLink("<span class='fa fa-pencil'><span/>", "Editar", "Editar", "AtributoPieza", new { id = item.PiezaID, autorID = item.AutorID }, new { data_modal = "", data_toggle = "tooltip", @class = "link link-success btn-xs  pull-right EditarAutor" })*@
+                                                    @if (User.IsInRole("attUbiEdit"))
+                                                    {
+                                                    //Ubicacion no existe entonces crearla
+                                                        <span>Pendiente </span>
+                                                    }
                                                     @Model.Ubicacion.Nombre
                                                 </p>
+                                            }
+                                            else
+                                            {
+                                                if (User.IsInRole("attUbiEdit"))
+                                                {
+                                                    //Ubicacion no existe entonces crearla
+                                                    <span>Pendiente </span>
+                                                }
                                             }
                                         </td>
                                     </tr>

@@ -23,9 +23,13 @@
 
         <input id="buscar_@AtributoID"  type="text" placeholder="Buscar valor" class="form-control" />
 
-        <span class="input-group-addon">
-            <input type="checkbox" id="checkAdd_@AtributoID" class="btnCheckAdd" data-toggle="tooltip" data-title="Buscar/Guardar">
-        </span>
+        @if (User.IsInRole("regValNew"))
+        {
+            <span class="input-group-addon">
+                <input type="checkbox" id="checkAdd_@AtributoID" class="btnCheckAdd" data-toggle="tooltip" data-title="Buscar/Guardar">
+            </span>
+        }
+        
 
 
         <span id="btnAccion_@AtributoID" name="Buscar" class="input-group-addon btn btn-default">
@@ -49,9 +53,12 @@ else
 
             <input id="buscar_@AtributoID"  type="text" placeholder="Buscar valor" class="form-control" />
 
-            <span class="input-group-addon">
-                <input type="checkbox" id="checkAdd_@AtributoID" class="btnCheckAdd" data-toggle="tooltip" data-title="Buscar/Guardar">
-            </span>
+            @if (User.IsInRole("regValNew"))
+            {
+                <span class="input-group-addon">
+                    <input type="checkbox" id="checkAdd_@AtributoID" class="btnCheckAdd" data-toggle="tooltip" data-title="Buscar/Guardar">
+                </span>
+            }
 
 
             <span id="btnAccion_@AtributoID" name="Buscar" class="input-group-addon btn btn-default">

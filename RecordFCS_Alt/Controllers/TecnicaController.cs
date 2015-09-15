@@ -64,7 +64,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: Tecnica/Crear
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "tecNew")]
         public ActionResult Crear(Guid? id, bool EsRegistroObra = false)
         {
             if (id == null)
@@ -96,7 +96,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: Tecnica/Crear
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "tecNew")]
         public ActionResult Crear([Bind(Include = "TecnicaID,ClaveSigla,ClaveTexto,MatriculaSigla,Descripcion,Status,TipoTecnicaID,TecnicaPadreID,Temp1,Temp2")] Tecnica tecnica, bool EsRegistroObra = false)
         {
             var tec = db.Tecnicas.Select(a => new { a.Descripcion, a.TipoTecnicaID, a.TecnicaID, a.TecnicaPadreID }).FirstOrDefault(a => a.Descripcion == tecnica.Descripcion && a.TipoTecnicaID == tecnica.TipoTecnicaID && a.TecnicaPadreID == tecnica.TecnicaPadreID);
@@ -143,7 +143,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: Tecnica/Editar/5
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "tecEdit")]
         public ActionResult Editar(Guid? id)
         {
             if (id == null)
@@ -171,7 +171,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: Tecnica/Editar/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "tecEdit")]
         public ActionResult Editar([Bind(Include = "TecnicaID,ClaveSigla,ClaveTexto,MatriculaSigla,Descripcion,Status,TipoTecnicaID,TecnicaPadreID,Temp1,Temp2")] Tecnica tecnica)
         {
             var tec = db.Tecnicas.Select(a => new { a.Descripcion, a.TipoTecnicaID, a.TecnicaID, a.TecnicaPadreID }).FirstOrDefault(a => a.Descripcion == tecnica.Descripcion && a.TipoTecnicaID == tecnica.TipoTecnicaID && a.TecnicaPadreID == tecnica.TecnicaPadreID);
@@ -205,7 +205,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: Tecnica/Eliminar/5
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "tecDel")]
         public ActionResult Eliminar(Guid? id)
         {
             if (id == null)
@@ -223,7 +223,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: Tecnica/Eliminar/5
         [HttpPost, ActionName("Eliminar")]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "tecDel")]
         public ActionResult EliminarConfirmado(Guid id)
         {
             string btnValue = Request.Form["accionx"];
@@ -253,7 +253,7 @@ namespace RecordFCS_Alt.Controllers
             return Json(new { success = true, url = url });
         }
 
-
+        [CustomAuthorize(permiso = "")]
         public JsonResult EsUnico(string Descripcion, Guid? TipoTecnicaID, Guid? TecnicaPadreID, Guid? TecnicaID)
         {
             bool x = false;
@@ -265,7 +265,7 @@ namespace RecordFCS_Alt.Controllers
             return Json(x);
         }
 
-
+        [CustomAuthorize(permiso = "")]
         public ActionResult GenerarLista(Guid? id, string Filtro = "", string TipoLista = "option")
         {
 

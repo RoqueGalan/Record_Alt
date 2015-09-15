@@ -17,7 +17,7 @@ namespace RecordFCS_Alt.Controllers
         private RecordFCSContext db = new RecordFCSContext();
 
         // GET: Ubicacion
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "ubiList")]
         public ActionResult Index()
         {
             return View();
@@ -53,7 +53,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: Ubicacion/Crear
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "ubiNew")]
         public ActionResult Crear(bool EsRegistroObra = false)
         {
             var ubicacion = new Ubicacion()
@@ -70,7 +70,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: Ubicacion/Crear
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "ubiNew")]
         public ActionResult Crear([Bind(Include = "UbicacionID,Nombre,Descripcion,Status,Temp")] Ubicacion ubicacion, bool EsRegistroObra = false)
         {
             //validar el nombre
@@ -109,7 +109,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: Ubicacion/Editar/5
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "ubiEdit")]
         public ActionResult Editar(Guid? id)
         {
             if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -124,7 +124,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: Ubicacion/Editar/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "ubiEdit")]
         public ActionResult Editar([Bind(Include = "UbicacionID,Nombre,Descripcion,Status,Temp")] Ubicacion ubicacion)
         {
             //validar el nombre
@@ -149,7 +149,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: Ubicacion/Eliminar/5
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "ubiDel")]
         public ActionResult Eliminar(Guid? id)
         {
             if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -164,7 +164,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: Ubicacion/Eliminar/5
         [HttpPost, ActionName("Eliminar")]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "ubiDel")]
         public ActionResult EliminarConfirmado(Guid id)
         {
             string btnValue = Request.Form["accionx"];

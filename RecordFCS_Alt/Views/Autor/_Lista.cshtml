@@ -44,7 +44,11 @@
         </th>
 
         <th class="col-lg-1 col-md-1 col-sm-1 col-xs-2">
-            @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Crear Autor", "Crear", "Autor", null, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-success btn-xs pull-right openModal_Autor" })
+            @if (User.IsInRole("catNew"))
+            {
+                @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Crear Autor", "Crear", "Autor", null, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-success btn-xs pull-right openModal_Autor" })
+
+            }
         </th>
     </tr>
 
@@ -72,8 +76,16 @@
 
             <td>
                 <div class="pull-right">
-                    @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar " + item.Nombre, "Editar", "Autor", routeValues: new { id = item.AutorID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-default btn-xs openModal_Autor" })
-                    @Html.NoEncodeActionLink("<span class='fa fa-trash'></span>", "Eliminar " + item.Nombre, "Eliminar", "Autor", routeValues: new { id = item.AutorID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-danger btn-xs openModal_Autor" })
+                    @if (User.IsInRole("catEdit"))
+                    {
+                        @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar " + item.Nombre, "Editar", "Autor", routeValues: new { id = item.AutorID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-default btn-xs openModal_Autor" })
+
+                    }
+                    @if (User.IsInRole("catDel"))
+                    {
+                        @Html.NoEncodeActionLink("<span class='fa fa-trash'></span>", "Eliminar " + item.Nombre, "Eliminar", "Autor", routeValues: new { id = item.AutorID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-danger btn-xs openModal_Autor" })
+
+                    }
                 </div>
             </td>
         </tr>

@@ -65,7 +65,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: Atributo/Crear
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "attNew")]
         public ActionResult Crear(Guid? id)
         {
             if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -107,7 +107,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: Atributo/Crear
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "attNew")]
         public ActionResult Crear([Bind(Include = "AtributoID,Orden,NombreAlterno,Status,TipoPiezaID,TipoAtributoID")] Atributo atributo)
         {
             //validar 
@@ -159,7 +159,7 @@ namespace RecordFCS_Alt.Controllers
         }
         
         // GET: Atributo/Editar/5
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "attEdit")]
         public ActionResult Editar(Guid? id)
         {
             if (id == null)
@@ -178,7 +178,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: Atributo/Editar/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "attEdit")]
         public ActionResult Editar([Bind(Include = "AtributoID,Orden,NombreAlterno,Status,TipoPiezaID,TipoAtributoID")] Atributo atributo)
         {
             if (ModelState.IsValid)
@@ -204,7 +204,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: Atributo/Eliminar/5
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "attDel")]
         public ActionResult Eliminar(Guid? id)
         {
             if (id == null)
@@ -222,7 +222,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: Atributo/Eliminar/5
         [HttpPost, ActionName("Eliminar")]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "attDel")]
         public ActionResult EliminarConfirmado(Guid id)
         {
             string btnValue = Request.Form["accionx"];
@@ -252,6 +252,7 @@ namespace RecordFCS_Alt.Controllers
             return Json(new { success = true, url = url });
         }
 
+        [CustomAuthorize(permiso = "")]
         public JsonResult EsUnico(Guid? TipoAtributoID, Guid? TipoPiezaID, Guid? AtributoID)
         {
             bool x = false;

@@ -16,7 +16,7 @@ namespace RecordFCS_Alt.Controllers
         private RecordFCSContext db = new RecordFCSContext();
 
         // GET: TipoObra
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "tOList")]
         public ActionResult Index()
         {
             return View();
@@ -33,7 +33,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: TipoObra/Detalles/5
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "tPiDeta")]
         public ActionResult Detalles(Guid? id)
         {
             if (id == null)
@@ -50,7 +50,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: TipoObra/Crear
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "tONew")]
         public ActionResult Crear()
         {
             var tipoObra = new TipoObra()
@@ -63,7 +63,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: TipoObra/Crear
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "tONew")]
         public ActionResult Crear([Bind(Include = "TipoObraID,Nombre,Descripcion,Status,Temp")] TipoObra tipoObra)
         {
             //revalidar el nombre
@@ -105,7 +105,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: TipoObra/Editar/5
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "tOEdit")]
         public ActionResult Editar(Guid? id)
         {
             if (id == null)
@@ -123,7 +123,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: TipoObra/Editar/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "tOEdit")]
         public ActionResult Editar([Bind(Include = "TipoObraID,Nombre,Descripcion,Status,Temp")] TipoObra tipoObra)
         {
             //revalidar el nombre
@@ -148,7 +148,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: TipoObra/Eliminar/5
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "tODel")]
         public ActionResult Eliminar(Guid? id)
         {
             if (id == null)
@@ -166,7 +166,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: TipoObra/Eliminar/5
         [HttpPost, ActionName("Eliminar")]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "tODel")]
         public ActionResult EliminarConfirmado(Guid id)
         {
             string btnValue = Request.Form["accionx"];

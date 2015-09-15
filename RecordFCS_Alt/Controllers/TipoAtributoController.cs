@@ -16,7 +16,7 @@ namespace RecordFCS_Alt.Controllers
         private RecordFCSContext db = new RecordFCSContext();
 
         // GET: TipoAtributo
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "catList")]
         public ActionResult Index()
         {
             return View();
@@ -25,7 +25,7 @@ namespace RecordFCS_Alt.Controllers
         [CustomAuthorize(permiso = "")]
         public ActionResult Lista()
         {
-            var lista = db.TipoAtributos.OrderBy(a => a.Orden).ToList();
+            var lista = db.TipoAtributos.OrderBy(a => a.Nombre).ToList();
 
             ViewBag.totalRegistros = lista.Count;
 
@@ -33,7 +33,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         //// GET: TipoAtributo/Detalles/5
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "catList")]
         public ActionResult Detalles(Guid? id)
         {
             if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -50,7 +50,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: TipoAtributo/Crear
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "tAttNew")]
         public ActionResult Crear()
         {
             //Valores default
@@ -73,7 +73,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: TipoAtributo/Crear
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "tAttNew")]
         public ActionResult Crear(TipoAtributo tipoAtt)
         {
             //revalidar campo unico
@@ -94,7 +94,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: TipoAtributo/Editar/5
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "tAttEdit")]
         public ActionResult Editar(Guid? id)
         {
             if (id == null)
@@ -113,7 +113,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: TipoAtributo/Editar/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "tAttEdit")]
         public ActionResult Editar(TipoAtributo tipoAtributo)
         {
             var ta = db.TipoAtributos.Select(a => new { a.TipoAtributoID, a.Nombre }).SingleOrDefault(a => a.Nombre == tipoAtributo.Nombre);
@@ -140,7 +140,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: TipoAtributo/Eliminar/5
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "tAttDel")]
         public ActionResult Eliminar(Guid? id)
         {
             if (id == null)
@@ -158,7 +158,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: TipoAtributo/Eliminar/5
         [HttpPost, ActionName("Eliminar")]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "tAttDel")]
         public ActionResult EliminarConfirmado(Guid id)
         {
             string btnValue = Request.Form["accionx"];
@@ -189,7 +189,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
 
-
+        [CustomAuthorize(permiso = "")]
         public JsonResult EsUnico(string Nombre, Guid? TipoAtributoID)
         {
             bool x = false;

@@ -16,7 +16,7 @@ namespace RecordFCS_Alt.Controllers
         private RecordFCSContext db = new RecordFCSContext();
 
         // GET: MostrarAtributo/Editar/5
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "mosAttEdit")]
         public ActionResult Editar(Guid? id, Guid? AtributoID)
         {
             if (id == null || AtributoID == null)
@@ -35,7 +35,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: MostrarAtributo/Editar/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "mosAttEdit")]
         public ActionResult Editar([Bind(Include = "TipoMostrarID,AtributoID,Orden,InicioHTML,FinHTML,Status")] MostrarAtributo mostrarAtributo)
         {
             if (ModelState.IsValid)

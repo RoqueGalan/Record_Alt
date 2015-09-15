@@ -38,7 +38,11 @@
         </th>
 
         <th class="col-lg-1 col-md-1 col-sm-1 col-xs-2">
-            @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Crear Letra de Folio", "Crear", "LetraFolio", null, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-success btn-xs pull-right openModal_LetraFolio" })
+            @if (User.IsInRole("leFolNew"))
+            {
+                @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Crear Letra de Folio", "Crear", "LetraFolio", null, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-success btn-xs pull-right openModal_LetraFolio" })
+
+            }
         </th>
     </tr>
 
@@ -54,8 +58,16 @@
             </td>
             <td>
                 <div class="pull-right">
-                    @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar " + item.Nombre, "Editar", "LetraFolio", routeValues: new { id = item.LetraFolioID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-default btn-xs openModal_LetraFolio" })
-                    @Html.NoEncodeActionLink("<span class='fa fa-trash'></span>", "Eliminar " + item.Nombre, "Eliminar", "LetraFolio", routeValues: new { id = item.LetraFolioID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-danger btn-xs openModal_LetraFolio" })
+                    @if (User.IsInRole("leFolEdit"))
+                    {
+                        @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar " + item.Nombre, "Editar", "LetraFolio", routeValues: new { id = item.LetraFolioID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-default btn-xs openModal_LetraFolio" })
+
+                    }
+                    @if (User.IsInRole("leFolDel"))
+                    {
+                        @Html.NoEncodeActionLink("<span class='fa fa-trash'></span>", "Eliminar " + item.Nombre, "Eliminar", "LetraFolio", routeValues: new { id = item.LetraFolioID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-danger btn-xs openModal_LetraFolio" })
+
+                    }
                 </div>
             </td>
         </tr>

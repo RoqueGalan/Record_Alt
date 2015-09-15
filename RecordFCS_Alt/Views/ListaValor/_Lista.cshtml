@@ -44,7 +44,11 @@
             @Html.DisplayNameFor(model => model.FirstOrDefault().Status)
         </th>
         <th class="col-lg-1 col-md-1 col-sm-1 col-xs-2">
-            @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Crear Valor para " + nombre, "Crear", "ListaValor", new { id = TipoAtributoID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-success btn-xs pull-right openModal_ListaValor" })
+            @if (User.IsInRole("catNew"))
+            {
+                @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Crear Valor para " + nombre, "Crear", "ListaValor", new { id = TipoAtributoID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-success btn-xs pull-right openModal_ListaValor" })
+
+            }
         </th>
     </tr>
 
@@ -59,8 +63,16 @@
             </td>
             <td>
                 <div class="pull-right">
-                    @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar " + item.Valor, "Editar", "ListaValor", routeValues: new { id = item.ListaValorID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-default btn-xs openModal_ListaValor" })
-                    @Html.NoEncodeActionLink("<span class='fa fa-trash'></span>", "Eliminar " + item.Valor, "Eliminar", "ListaValor", routeValues: new { id = item.ListaValorID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-danger btn-xs openModal_ListaValor" })
+                    @if (User.IsInRole("catEdit"))
+                    {
+                        @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar " + item.Valor, "Editar", "ListaValor", routeValues: new { id = item.ListaValorID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-default btn-xs openModal_ListaValor" })
+
+                    }
+                    @if (User.IsInRole("catDel"))
+                    {
+                        @Html.NoEncodeActionLink("<span class='fa fa-trash'></span>", "Eliminar " + item.Valor, "Eliminar", "ListaValor", routeValues: new { id = item.ListaValorID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-danger btn-xs openModal_ListaValor" })
+
+                    }
                 </div>
              </td>
         </tr>

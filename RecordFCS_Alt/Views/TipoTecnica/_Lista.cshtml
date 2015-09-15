@@ -22,10 +22,6 @@
 </div>
 
 
-
-
-
-
 <table class="table table-hover table-condensed">
     <tr>
         <th >
@@ -37,7 +33,10 @@
         </th>
 
         <th class="col-lg-1 col-md-1 col-sm-2 col-xs-3">
-            @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Crear Tipo de Técnica", "Crear", "TipoTecnica", null, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-success btn-xs pull-right openModal_TipoTecnica" })
+            @if (User.IsInRole("tTecNew"))
+            {           
+                 @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Crear Tipo de Técnica", "Crear", "TipoTecnica", null, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-success btn-xs pull-right openModal_TipoTecnica" })
+            }
         </th>
     </tr>
 
@@ -53,9 +52,22 @@
             </td>
             <td>
                 <div class="pull-right">
-                    @Html.NoEncodeActionLink("<span class='fa fa-gear'></span>", "Configurar Tipo de Técnica " + item.Nombre, "Detalles", "TipoTecnica", routeValues: new { id = item.TipoTecnicaID }, htmlAttributes: new { data_toggle = "tooltip", @class = "btn btn-primary btn-xs" })
-                    @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar " + item.Nombre, "Editar", "TipoTecnica", routeValues: new { id = item.TipoTecnicaID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-default btn-xs openModal_TipoTecnica" })
-                    @Html.NoEncodeActionLink("<span class='fa fa-trash'></span>", "Eliminar " + item.Nombre, "Eliminar", "TipoTecnica", routeValues: new { id = item.TipoTecnicaID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-danger btn-xs openModal_TipoTecnica" })
+                    @if (User.IsInRole("tecList"))
+                    {
+                        @Html.NoEncodeActionLink("<span class='fa fa-gear'></span>", "Configurar Tipo de Técnica " + item.Nombre, "Detalles", "TipoTecnica", routeValues: new { id = item.TipoTecnicaID }, htmlAttributes: new { data_toggle = "tooltip", @class = "btn btn-primary btn-xs" })
+
+                    }
+                    @if (User.IsInRole("tTecEdit"))
+                    {
+                        @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar " + item.Nombre, "Editar", "TipoTecnica", routeValues: new { id = item.TipoTecnicaID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-default btn-xs openModal_TipoTecnica" })
+
+                    }
+                    
+                    @if (User.IsInRole("tTecDel"))
+                    {
+                        @Html.NoEncodeActionLink("<span class='fa fa-trash'></span>", "Eliminar " + item.Nombre, "Eliminar", "TipoTecnica", routeValues: new { id = item.TipoTecnicaID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-danger btn-xs openModal_TipoTecnica" })
+
+                    }
                 </div>
             </td>
         </tr>

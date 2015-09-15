@@ -39,7 +39,11 @@
         </th>
 
         <th class="col-lg-1 col-md-1 col-sm-1 col-xs-2">
-            @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Crear Ubicación", "Crear", "Ubicacion", null, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-success btn-xs pull-right openModal_Ubicacion" })
+            @if (User.IsInRole("ubiNew"))
+            {
+                @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Crear Ubicación", "Crear", "Ubicacion", null, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-success btn-xs pull-right openModal_Ubicacion" })
+
+            }
         </th>
     </tr>
 
@@ -55,8 +59,15 @@
             </td>
             <td>
                 <div class="pull-right">
-                    @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar " + item.Nombre, "Editar", "Ubicacion", routeValues: new { id = item.UbicacionID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-default btn-xs openModal_Ubicacion" })
-                    @Html.NoEncodeActionLink("<span class='fa fa-trash'></span>", "Eliminar " + item.Nombre, "Eliminar", "Ubicacion", routeValues: new { id = item.UbicacionID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-danger btn-xs openModal_Ubicacion" })
+                    @if (User.IsInRole("ubiEdit"))
+                    {
+                        @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar " + item.Nombre, "Editar", "Ubicacion", routeValues: new { id = item.UbicacionID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-default btn-xs openModal_Ubicacion" })
+
+                    }
+                    @if (User.IsInRole("ubiDel"))
+                    {
+                        @Html.NoEncodeActionLink("<span class='fa fa-trash'></span>", "Eliminar " + item.Nombre, "Eliminar", "Ubicacion", routeValues: new { id = item.UbicacionID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-danger btn-xs openModal_Ubicacion" })
+                    }
                 </div>
             </td>
         </tr>

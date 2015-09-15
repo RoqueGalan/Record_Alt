@@ -63,7 +63,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: ListaValor/Crear
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "catNew")]
         public ActionResult Crear(Guid? id, bool EsRegistroObra = false)
         {
             if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -87,7 +87,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: ListaValor/Crear
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "catNew")]
         public ActionResult Crear([Bind(Include = "ListaValorID,Valor,Status,Temp,TipoAtributoID")] ListaValor listaValor, bool EsRegistroObra)
         {
             var lv = db.ListaValores.Select(a => new { a.ListaValorID, a.Valor, a.TipoAtributoID }).FirstOrDefault(a => a.Valor == listaValor.Valor && a.TipoAtributoID == listaValor.TipoAtributoID);
@@ -125,7 +125,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: ListaValor/Editar/5
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "catEdit")]
         public ActionResult Editar(Guid? id)
         {
             if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -140,7 +140,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: ListaValor/Editar/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "catEdit")]
         public ActionResult Editar([Bind(Include = "ListaValorID,Valor,Status,Temp,TipoAtributoID")] ListaValor listaValor)
         {
             var lv = db.ListaValores.Select(a => new { a.Valor, a.TipoAtributoID, a.ListaValorID }).FirstOrDefault(a => a.Valor == listaValor.Valor && a.TipoAtributoID == listaValor.TipoAtributoID);
@@ -169,7 +169,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: ListaValor/Eliminar/5
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "catDel")]
         public ActionResult Eliminar(Guid? id)
         {
             if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -184,7 +184,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: ListaValor/Eliminar/5
         [HttpPost, ActionName("Eliminar")]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "catDel")]
         public ActionResult EliminarConfirmado(Guid id)
         {
             string btnValue = Request.Form["accionx"];
@@ -215,7 +215,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
 
-
+        [CustomAuthorize(permiso = "")]
         public ActionResult GenerarLista(Guid? id, string Filtro = "", string TipoLista = "option")
         {
 
@@ -263,7 +263,7 @@ namespace RecordFCS_Alt.Controllers
 
         }
 
-
+        [CustomAuthorize(permiso = "")]
         public JsonResult EsUnico(string Valor, Guid? TipoAtributoID, Guid? ListaValorID)
         {
             bool x = false;
@@ -276,7 +276,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
 
-
+        [CustomAuthorize(permiso = "")]
         public ActionResult ListaString(Guid idTipoAtributo, string busqueda, bool exacta)
         {
             TempData["listaValores"] = null;
@@ -333,6 +333,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         //POST: Buscador/AgregarFiltro
+        [CustomAuthorize(permiso = "")]
         public ActionResult GenerarFiltro(Guid TipoAtributoID, string Filtro, string PalabraExacta)
         {
             var tipoAtt = db.TipoAtributos.Find(TipoAtributoID);

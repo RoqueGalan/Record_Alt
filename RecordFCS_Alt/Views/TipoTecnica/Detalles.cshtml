@@ -48,10 +48,14 @@
         <dd>
             @Html.DisplayFor(model => model.Status)
         </dd>
-        <dt>Acciones</dt>
-        <dd>
-            @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar", "Editar", "TipoTecnica", routeValues: new { id = Model.TipoTecnicaID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-default btn-xs openModal_TipoTecnica" })
-        </dd>
+        @if (User.IsInRole("tPiEdit"))
+        {
+            <dt>Acciones</dt>
+            <dd>
+                @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar", "Editar", "TipoTecnica", routeValues: new { id = Model.TipoTecnicaID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-default btn-xs openModal_TipoTecnica" })
+            </dd>
+        }
+
     </dl>
 </div>
 
@@ -59,7 +63,7 @@
 <!-- Campo que se reemplaza-->
 
 <div id="renderListaTecnica">
-    @{ Html.RenderAction("Lista", "Tecnica", new { id = Model.TipoTecnicaID}); }
+    @{ Html.RenderAction("Lista", "Tecnica", new { id = Model.TipoTecnicaID }); }
 </div>
 
 

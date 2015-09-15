@@ -107,10 +107,10 @@
                     $(renderID).load(result.url); // campo que reemplazara + accion
                     $('#alertasDiv').load('@Url.Action("_Alertas","Base")');
 
-                    $('#myModal').modal('hide');
+                    $('#miModal').modal('hide');
                 }
                 else {
-                    $('#myModalContent').html(result);
+                    $('#miModalContenido').html(result);
                     $('#alertasDiv').load('@Url.Action("_Alertas","Base")');
                 }
             },

@@ -17,7 +17,7 @@ namespace RecordFCS_Alt.Controllers
         private RecordFCSContext db = new RecordFCSContext();
 
         // GET: TipoTecnica
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "catList")]
         public ActionResult Index()
         {
             return View();
@@ -73,7 +73,7 @@ namespace RecordFCS_Alt.Controllers
 
 
         // GET: TipoTecnica/Crear
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "tTecNew")]
         public ActionResult Crear()
         {
             var tt = new TipoTecnica()
@@ -87,7 +87,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: TipoTecnica/Crear
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "tTecNew")]
         public ActionResult Crear([Bind(Include = "TipoTecnicaID,Nombre,Descripcion,Status,Temp")] TipoTecnica tipoTecnica)
         {
             //validar el nombre
@@ -113,7 +113,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: TipoTecnica/Editar/5
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "tTecEdit")]
         public ActionResult Editar(Guid? id)
         {
             if (id == null)
@@ -131,7 +131,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: TipoTecnica/Editar/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "tTecEdit")]
         public ActionResult Editar([Bind(Include = "TipoTecnicaID,Nombre,Descripcion,Status,Temp")] TipoTecnica tipoTecnica)
         {
             //validar el nombre
@@ -156,7 +156,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: TipoTecnica/Eliminar/5
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "tPiDel")]
         public ActionResult Eliminar(Guid? id)
         {
             if (id == null)
@@ -174,7 +174,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: TipoTecnica/Eliminar/5
         [HttpPost, ActionName("Eliminar")]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "tPiDel")]
         public ActionResult EliminarConfirmado(Guid id)
         {
             string btnValue = Request.Form["accionx"];

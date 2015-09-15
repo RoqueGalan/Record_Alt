@@ -17,12 +17,13 @@ namespace RecordFCS_Alt.Controllers
         private RecordFCSContext db = new RecordFCSContext();
 
         // GET: Autor
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "catList")]
         public ActionResult Index()
         {
             return View();
         }
 
+        [CustomAuthorize(permiso = "")]
         public ActionResult ListaString(string busqueda, bool exacta)
         {
             TempData["listaValores"] = null;
@@ -30,23 +31,23 @@ namespace RecordFCS_Alt.Controllers
 
 
 
-                List<Autor> listado;
+            List<Autor> listado;
 
-                if (exacta)
-                {
-                    listado = db.Autores.Where(a => a.Apellido == busqueda || a.Nombre == busqueda).OrderBy(b => b.Nombre).Take(10).ToList();
-                }
-                else
-                {
-                    listado = db.Autores.Where(a => a.Apellido.Contains(busqueda) || a.Nombre.Contains(busqueda)).OrderBy(b => b.Nombre).Take(10).ToList();
-                }
+            if (exacta)
+            {
+                listado = db.Autores.Where(a => a.Apellido == busqueda || a.Nombre == busqueda).OrderBy(b => b.Nombre).Take(10).ToList();
+            }
+            else
+            {
+                listado = db.Autores.Where(a => a.Apellido.Contains(busqueda) || a.Nombre.Contains(busqueda)).OrderBy(b => b.Nombre).Take(10).ToList();
+            }
 
-                foreach (var item in listado)
-                {
-                    lista.Add(item.Nombre + " " + item.Apellido);
-                }
-          
-            
+            foreach (var item in listado)
+            {
+                lista.Add(item.Nombre + " " + item.Apellido);
+            }
+
+
 
             TempData["listaValores"] = lista.ToList();
 
@@ -86,7 +87,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: Autor/Crear
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "catNew")]
         public ActionResult Crear(bool EsRegistroObra = false)
         {
             var autor = new Autor()
@@ -103,7 +104,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: Autor/Crear
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "catNew")]
         public ActionResult Crear([Bind(Include = "AutorID,Nombre,Apellido,LugarNacimiento,AnoNacimiento,LugarMuerte,AnoMuerte,Observaciones,Status,Temp")] Autor autor, bool EsRegistroObra)
         {
             //validar el nombre
@@ -138,7 +139,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: Autor/Editar/5
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "catEdit")]
         public ActionResult Editar(Guid? id)
         {
             if (id == null)
@@ -156,7 +157,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: Autor/Editar/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "catEdit")]
         public ActionResult Editar([Bind(Include = "AutorID,Nombre,Apellido,LugarNacimiento,AnoNacimiento,LugarMuerte,AnoMuerte,Observaciones,Status,Temp")] Autor autor)
         {
             //validar el nombre
@@ -180,7 +181,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: Autor/Eliminar/5
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "catDel")]
         public ActionResult Eliminar(Guid? id)
         {
             if (id == null)
@@ -198,7 +199,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: Autor/Eliminar/5
         [HttpPost, ActionName("Eliminar")]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "catDel")]
         public ActionResult EliminarConfirmado(Guid id)
         {
             string btnValue = Request.Form["accionx"];
@@ -228,7 +229,7 @@ namespace RecordFCS_Alt.Controllers
             return Json(new { success = true, url = url });
         }
 
-
+        [CustomAuthorize(permiso = "")]
         public ActionResult GenerarLista(string Filtro = "", string TipoLista = "option")
         {
 
@@ -259,7 +260,7 @@ namespace RecordFCS_Alt.Controllers
 
         }
 
-
+        [CustomAuthorize(permiso = "")]
         public JsonResult EsUnico(string Nombre, string Apellido, Guid? AutorID)
         {
             bool x = false;

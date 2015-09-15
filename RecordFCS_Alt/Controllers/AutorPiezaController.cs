@@ -22,7 +22,7 @@ namespace RecordFCS_Alt.Controllers
         // más información vea http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "attPNew")]
         public ActionResult Crear([Bind(Include = "PiezaID,AutorID,Status")] AutorPieza autorPieza, Guid AtributoID)
         {
 
@@ -73,7 +73,7 @@ namespace RecordFCS_Alt.Controllers
         // más información vea http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "attPEdit")]
         public ActionResult Editar(AutorPieza autorPieza, Guid AtributoID, Guid LlaveID)
         {
             string renderID = "autor_" + autorPieza.PiezaID + "_" + LlaveID; 

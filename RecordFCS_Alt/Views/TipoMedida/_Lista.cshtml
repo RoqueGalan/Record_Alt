@@ -32,7 +32,11 @@
             @Html.DisplayNameFor(model => model.FirstOrDefault().Status)
         </th>
         <th class="col-lg-1 col-md-1 col-sm-1 col-xs-2">
-            @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Crear Tipo de Médida", "Crear", "TipoMedida", null, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-success btn-xs pull-right openModal_TipoMedida" })
+            @if (User.IsInRole("tMedNew"))
+            {
+                @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Crear Tipo de Médida", "Crear", "TipoMedida", null, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-success btn-xs pull-right openModal_TipoMedida" })
+
+            }
         </th>
     </tr>
 
@@ -52,8 +56,16 @@
 
             <td>
                 <div class="pull-right">
-                    @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar " + item.Nombre, "Editar", "TipoMedida", routeValues: new { id = item.TipoMedidaID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-default btn-xs openModal_TipoMedida" })
-                    @Html.NoEncodeActionLink("<span class='fa fa-trash'></span>", "Eliminar " + item.Nombre, "Eliminar", "TipoMedida", routeValues: new { id = item.TipoMedidaID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-danger btn-xs openModal_TipoMedida" })
+                    @if (User.IsInRole("tMedEdit"))
+                    {
+                        @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar " + item.Nombre, "Editar", "TipoMedida", routeValues: new { id = item.TipoMedidaID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-default btn-xs openModal_TipoMedida" })
+
+                    }
+                    @if (User.IsInRole("tMedDel"))
+                    {
+                        @Html.NoEncodeActionLink("<span class='fa fa-trash'></span>", "Eliminar " + item.Nombre, "Eliminar", "TipoMedida", routeValues: new { id = item.TipoMedidaID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-danger btn-xs openModal_TipoMedida" })
+
+                    }
                 </div> </td>
         </tr>
     }

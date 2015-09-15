@@ -30,7 +30,10 @@
             @Html.DisplayNameFor(model => model.Status)
         </th>
         <th>
-            @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Agregar Tipo de Atributo para " + nombre, "Crear", "Atributo", new { id = id }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-success btn-xs openModal_atributo" })
+            @if (User.IsInRole("attNew"))
+            {
+                @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Agregar Tipo de Atributo para " + nombre, "Crear", "Atributo", new { id = id }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-success btn-xs openModal_atributo" })
+            }
         </th>
     </tr>
 
@@ -61,9 +64,17 @@
             @foreach (var itemTM in item.MostrarAtributos)
             {
                 <td>
-                    <a href="@Url.Action("Editar", "MostrarAtributo", new { id = itemTM.TipoMostrarID, AtributoID = itemTM.AtributoID })" title="Editar @itemTM.TipoMostrar.Nombre en @item.NombreAlterno" data-modal="" data-toggle="tooltip" class="openModal_MostrarAtributo">
+                    @if (User.IsInRole("mosAttEdit"))
+                    {
+                        <a href="@Url.Action("Editar", "MostrarAtributo", new { id = itemTM.TipoMostrarID, AtributoID = itemTM.AtributoID })" title="Editar @itemTM.TipoMostrar.Nombre en @item.NombreAlterno" data-modal="" data-toggle="tooltip" class="openModal_MostrarAtributo">
+                            @Html.DisplayFor(modelItemTM => itemTM.Status)
+                        </a>
+                    }
+                    else
+                    {
                         @Html.DisplayFor(modelItemTM => itemTM.Status)
-                    </a>
+                    }
+
 
                 </td>
 
@@ -74,11 +85,14 @@
                 @Html.DisplayFor(modelItem => item.Status)
             </td>
             <td>
-
-                @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar " + nombreAtt, "Editar", "Atributo", routeValues: new { id = item.AtributoID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-default btn-xs openModal_atributo" })
-                @Html.NoEncodeActionLink("<span class='fa fa-trash'></span>", "Eliminar " + nombreAtt + "del tipo de pieza", "Eliminar", "Atributo", routeValues: new { id = item.AtributoID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-danger btn-xs openModal_atributo" })
-
-
+                @if (User.IsInRole("attEdit"))
+                {
+                    @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar " + nombreAtt, "Editar", "Atributo", routeValues: new { id = item.AtributoID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-default btn-xs openModal_atributo" })
+                }
+                @if (User.IsInRole("attDel"))
+                {
+                    @Html.NoEncodeActionLink("<span class='fa fa-trash'></span>", "Eliminar " + nombreAtt + "del tipo de pieza", "Eliminar", "Atributo", routeValues: new { id = item.AtributoID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-danger btn-xs openModal_atributo" })
+                }
             </td>
         </tr>
     }

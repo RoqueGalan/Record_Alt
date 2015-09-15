@@ -57,7 +57,10 @@
         </th>
 
         <th class="col-lg-1 col-md-1 col-sm-1 col-xs-2">
-            @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Crear Técnica para " + nombre, "Crear", "Tecnica", new { id = TipoTecnicaID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-success btn-xs pull-right openModal_Tecnica" })
+            @if (User.IsInRole("tecNew"))
+            {
+                @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Crear Técnica para " + nombre, "Crear", "Tecnica", new { id = TipoTecnicaID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-success btn-xs pull-right openModal_Tecnica" })
+            }
         </th>
     </tr>
 
@@ -87,8 +90,16 @@
 
             <td>
                 <div class="pull-right">
-                    @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar " + item.Descripcion, "Editar", "Tecnica", routeValues: new { id = item.TecnicaID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-default btn-xs openModal_Tecnica" })
-                    @Html.NoEncodeActionLink("<span class='fa fa-trash'></span>", "Eliminar " + item.Descripcion, "Eliminar", "Tecnica", routeValues: new { id = item.TecnicaID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-danger btn-xs openModal_Tecnica" })
+                    @if (User.IsInRole("tecEdit"))
+                    {
+                        @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar " + item.Descripcion, "Editar", "Tecnica", routeValues: new { id = item.TecnicaID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-default btn-xs openModal_Tecnica" })
+
+                    }
+                    @if (User.IsInRole("tecDel"))
+                    {
+                        @Html.NoEncodeActionLink("<span class='fa fa-trash'></span>", "Eliminar " + item.Descripcion, "Eliminar", "Tecnica", routeValues: new { id = item.TecnicaID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-danger btn-xs openModal_Tecnica" })
+
+                    }
                 </div>
             </td>
         </tr>

@@ -17,7 +17,7 @@ namespace RecordFCS_Alt.Controllers
         private RecordFCSContext db = new RecordFCSContext();
 
         // GET: LetraFolio
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "leFolList")]
         public ActionResult Index()
         {
             return View();
@@ -54,7 +54,7 @@ namespace RecordFCS_Alt.Controllers
 
 
         // GET: LetraFolio/Crear
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "leFolNew")]
         public ActionResult Crear()
         {
             var lf = new LetraFolio()
@@ -68,7 +68,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: LetraFolio/Crear
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "leFolNew")]
         public ActionResult Crear([Bind(Include = "LetraFolioID,Nombre,Descripcion,Status")] LetraFolio letraFolio)
         {
             //validar el nombre
@@ -92,7 +92,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: LetraFolio/Editar/5
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "leFolEdit")]
         public ActionResult Editar(int? id)
         {
             if (id == null)
@@ -111,7 +111,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: LetraFolio/Editar/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "leFolEdit")]
         public ActionResult Editar([Bind(Include = "LetraFolioID,Nombre,Descripcion,Status")] LetraFolio letraFolio)
         {
             //validar el nombre
@@ -129,14 +129,14 @@ namespace RecordFCS_Alt.Controllers
                 AlertaInfo(string.Format("Letra de Folio: <b>{0}</b> se editó.", letraFolio.Nombre), true);
                 string url = Url.Action("Lista", "LetraFolio");
                 return Json(new { success = true, url = url });
-            
+
             }
 
             return PartialView("_Editar", letraFolio);
         }
 
         // GET: LetraFolio/Eliminar/5
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "leFolDel")]
         public ActionResult Eliminar(int? id)
         {
             if (id == null)
@@ -155,7 +155,7 @@ namespace RecordFCS_Alt.Controllers
         // POST: LetraFolio/Eliminar/5
         [HttpPost, ActionName("Eliminar")]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "leFolDel")]
         public ActionResult EliminarConfirmado(int id)
         {
             string btnValue = Request.Form["accionx"];
@@ -179,11 +179,12 @@ namespace RecordFCS_Alt.Controllers
                     AlertaDanger(string.Format("Ocurrio un error."), true);
                     break;
             }
-            
+
             string url = Url.Action("Lista", "LetraFolio");
             return Json(new { success = true, url = url });
         }
 
+        [CustomAuthorize(permiso = "")]
         public JsonResult EsUnico(string Nombre, int? LetraFolioID)
         {
             bool x = false;

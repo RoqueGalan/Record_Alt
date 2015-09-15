@@ -11,9 +11,13 @@
 
     <input id="buscar_@TipoAtributoID" type="text" placeholder="Buscar" class="form-control" />
 
-    <span class="input-group-addon">
-        <input type="checkbox" id="checkAdd_@TipoAtributoID" class="btnCheckAdd" data-toggle="tooltip" data-title="Palabra exacta">
-    </span>
+    @if (User.IsInRole("regValNew"))
+    {
+        <span class="input-group-addon">
+            <input type="checkbox" id="checkAdd_@TipoAtributoID" class="btnCheckAdd" data-toggle="tooltip" data-title="Palabra exacta">
+        </span>
+    }
+    
 
 
     <span id="btnAccion_@TipoAtributoID" name="Buscar" class="input-group-addon btn btn-default">
