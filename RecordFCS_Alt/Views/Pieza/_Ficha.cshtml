@@ -62,7 +62,7 @@
                         <tr class="@color">
                             <td>
                                 <p>
-                                    @att.NombreAlterno
+                                    <b>@att.NombreAlterno</b>
 
                                     @if (tipoAtt.EsMultipleValor)
                                     {
@@ -136,7 +136,7 @@
                                     color = lista_AttAutor.Count > 0 ? "default" : "";
                                     <tr class="@color">
                                         <td>
-                                            @att.NombreAlterno
+                                            <b>@att.NombreAlterno</b>
                                             @if (User.IsInRole("attPNew"))
                                             {
                                                 @Html.NoEncodeActionLink("<span class='fa fa-plus'><span/>", "Agregar otr@ " + att.NombreAlterno, "Crear", "AtributoPieza", new { id = Model.PiezaID, AtributoID = att.AtributoID }, new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-primary btn-xs  pull-right CrearValor" })
@@ -170,7 +170,7 @@
                                     color = Model.UbicacionID != null ? "default" : "";
                                     <tr class="@color">
                                         <td>
-                                            @att.NombreAlterno
+                                            <b>@att.NombreAlterno</b>
                                             @*@Html.NoEncodeActionLink("<span class='fa fa-plus'><span/>", "Agregar otr@ " + att.NombreAlterno, "Crear", "AtributoPieza", new { id = att.AtributoID }, new { data_modal = "", data_toggle = "tooltip", @class = "link link-success btn-xs  pull-right CrearValor" })*@
                                         </td>
                                         <td>

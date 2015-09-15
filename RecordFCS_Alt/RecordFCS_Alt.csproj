@@ -455,6 +455,7 @@
     <Content Include="Views\AtributoPieza\_CrearGenericoCampo.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\IndexUsuario.cshtml" />
+    <Content Include="Views\Home\_RedirectToLogin.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -76,7 +76,7 @@ namespace RecordFCS_Alt.Controllers
                 if (tamTicket > maxByteSize)
                 {
                     // Raise the alarm that the cookie is going to get rejected by the browser  
-                    AlertaDanger("Se supero el limite.");
+                    AlertaDanger("Se supero el limite de permisos.",true);
 
                 }
 
@@ -87,7 +87,7 @@ namespace RecordFCS_Alt.Controllers
 
                 if (usuario.Password == EncriptaPass("Record@2015"))
                 {
-                    AlertaWarning("Recuerda cambiar tu contraseña por una personal, con el fin de tener mayor seguridad.");
+                    AlertaWarning("Recuerda cambiar tu contraseña por una personal, con el fin de tener mayor seguridad.", true);
                 }
 
                 string url = Url.Action("Index", "Home");

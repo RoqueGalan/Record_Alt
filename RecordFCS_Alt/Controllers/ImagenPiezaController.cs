@@ -146,6 +146,7 @@ namespace RecordFCS_Alt.Controllers
                 db.ImagenPiezas.Add(imagenPieza);
                 db.SaveChanges();
 
+                AlertaSuccess(string.Format("Se guardo imagen <b>{0}</b>", imagenPieza.Titulo), true);
 
 
                 string url = Url.Action("Carrusel", "ImagenPieza", new { id = imagenPieza.PiezaID, status = false, tipo = "thumb" });
@@ -218,6 +219,8 @@ namespace RecordFCS_Alt.Controllers
 
                 db.Entry(imagenPieza).State = EntityState.Modified;
                 db.SaveChanges();
+
+                AlertaInfo(string.Format("Se edito imagen <b>{0}</b>", imagenPieza.Titulo), true);
 
                 string url = Url.Action("Carrusel", "ImagenPieza", new { id = imagenPieza.PiezaID, status = false, tipo = "thumb" });
                 return Json(new { success = true, url = url, modelo = "ImagenPieza", lista = "lista", idPieza = imagenPieza.PiezaID });

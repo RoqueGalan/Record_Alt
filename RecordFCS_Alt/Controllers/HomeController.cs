@@ -29,6 +29,12 @@ namespace RecordFCS_Alt.Controllers
             return View();
         }
 
+
+        public ActionResult RedirectToLogin()
+        {
+            return PartialView("_RedirectToLogin");
+        }
+
         //public ActionResult About()
         //{
         //    ViewBag.Message = "Your application description page.";
