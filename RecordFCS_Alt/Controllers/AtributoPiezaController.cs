@@ -57,7 +57,7 @@ namespace RecordFCS_Alt.Controllers
                     List<ListaValor> lista = new List<ListaValor>();
                     lista.Add(attPieza.ListaValor); //agregar valor por si no viene en los primeros 500
                     lista.AddRange(att.TipoAtributo.ListaValores.Where(a => a.Status && !String.IsNullOrWhiteSpace(a.Valor)).OrderBy(a => a.Valor).Take(100).ToList());
-                    
+
                     ViewBag.ListaValorID = new SelectList(lista, "ListaValorID", "Valor", attPieza.ListaValorID);
 
                     _vista = PartialView("_CrearGenericoLista", attPieza);
@@ -74,7 +74,8 @@ namespace RecordFCS_Alt.Controllers
                     case "Autor":
                         List<Autor> listaAutores = new List<Autor>();
 
-                        var piezaAutor = new AutorPieza() {
+                        var piezaAutor = new AutorPieza()
+                        {
                             Status = true,
                             PiezaID = pieza.PiezaID
                         };
@@ -94,10 +95,18 @@ namespace RecordFCS_Alt.Controllers
                         break;
 
                     case "TipoTecnica":
-                        //var listaTipoTecnicas = db.TipoTecnicas.Where(a => a.Status).OrderBy(a => a.Nombre).Select(a => new { Nombre = a.Nombre, a.TipoTecnicaID }).ToList();
-                        //ViewBag.TipoTecnicaID = new SelectList(listaTipoTecnicas, "TipoTecnicaID", "Nombre");
+                        var piezaTecnica = new TecnicaPieza()
+                        {
+                            Status = true,
+                            PiezaID = pieza.PiezaID
+                        };
+                        var tipoTecnicasExistentes = pieza.TecnicaPiezas.Select(a => a.TipoTecnicaID);
 
-                        //_vista = PartialView("~/Views/Tecnica/_CampoRegistro.cshtml");
+                        var listaTipoTecnicas = db.TipoTecnicas.Where(a => a.Status && !tipoTecnicasExistentes.Contains(a.TipoTecnicaID)).OrderBy(a => a.Nombre).Select(a => new { Nombre = a.Nombre, a.TipoTecnicaID }).ToList();
+
+                        ViewBag.TipoTecnicaID = new SelectList(listaTipoTecnicas, "TipoTecnicaID", "Nombre");
+
+                        _vista = PartialView("~/Views/TecnicaPieza/_Crear.cshtml", piezaTecnica);
                         break;
 
                     case "TipoMedida":
@@ -250,7 +259,7 @@ namespace RecordFCS_Alt.Controllers
         public ActionResult Editar(Guid? id, Guid? AtributoID, Guid? LLaveID)
         {
 
-            
+
             //id PiezaID
             //atributoID
             //AtributoPiezaID || TablaID
@@ -294,14 +303,14 @@ namespace RecordFCS_Alt.Controllers
                 {
                     case "Autor":
                         List<Autor> listaAutores = new List<Autor>();
-                        var piezaAutor = db.AutorPiezas.Find(id,LLaveID);
+                        var piezaAutor = db.AutorPiezas.Find(id, LLaveID);
 
                         listaAutores.Add(piezaAutor.Autor);
                         listaAutores.AddRange(db.Autores.Where(a => a.Status).OrderBy(a => a.Nombre).Take(100).ToList());
 
                         ViewBag.AutorID = new SelectList(listaAutores.Select(a => new { Nombre = a.Nombre + " " + a.Apellido, a.AutorID }), "AutorID", "Nombre", piezaAutor.Autor.AutorID);
 
-                        _vista = PartialView("~/Views/AutorPieza/_Editar.cshtml",piezaAutor);
+                        _vista = PartialView("~/Views/AutorPieza/_Editar.cshtml", piezaAutor);
 
                         break;
                     case "Ubicacion":
@@ -312,10 +321,19 @@ namespace RecordFCS_Alt.Controllers
                         break;
 
                     case "TipoTecnica":
-                        //var listaTipoTecnicas = db.TipoTecnicas.Where(a => a.Status).OrderBy(a => a.Nombre).Select(a => new { Nombre = a.Nombre, a.TipoTecnicaID }).ToList();
-                        //ViewBag.TipoTecnicaID = new SelectList(listaTipoTecnicas, "TipoTecnicaID", "Nombre");
+                        List<Tecnica> listaTecnicas = new List<Tecnica>();
+                        var piezaTecnica = db.TecnicaPiezas.Find(id, LLaveID);
 
-                        //_vista = PartialView("~/Views/Tecnica/_CampoRegistro.cshtml");
+                        //Select TipoTecnica
+                        var listaTipoTecnicas = db.TipoTecnicas.Where(a => a.TipoTecnicaID == piezaTecnica.TipoTecnicaID).OrderBy(a => a.Nombre).Select(a => new { Nombre = a.Nombre, a.TipoTecnicaID }).ToList();
+                        ViewBag.TipoTecnicaID = new SelectList(listaTipoTecnicas, "TipoTecnicaID", "Nombre", piezaTecnica.TipoTecnicaID);
+
+                        //Select Tecnica
+                        listaTecnicas.Add(piezaTecnica.Tecnica);
+                        listaTecnicas.AddRange(db.Tecnicas.Where(a => a.Status && a.TipoTecnicaID == piezaTecnica.TipoTecnicaID).OrderBy(a => a.Descripcion).Take(100).ToList());
+                        ViewBag.TecnicaID = new SelectList(listaTecnicas.Select(a => new { Nombre = a.Descripcion, a.TecnicaID }), "TecnicaID", "Nombre", piezaTecnica.TecnicaID);
+                        
+                        _vista = PartialView("~/Views/TecnicaPieza/_Editar.cshtml", piezaTecnica);
                         break;
 
                     case "TipoMedida":

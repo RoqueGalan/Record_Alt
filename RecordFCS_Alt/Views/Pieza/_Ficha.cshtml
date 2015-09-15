@@ -19,9 +19,9 @@
 
     <div class="media-left media-middle">
 
-            <div id="renderCarrusel_@Model.PiezaID" class="text-center">
-                @{ Html.RenderAction("Carrusel", "ImagenPieza", new { id = Model.PiezaID, status = false, tipo = "thumb" }); }
-            </div>
+        <div id="renderCarrusel_@Model.PiezaID" class="text-center">
+            @{ Html.RenderAction("Carrusel", "ImagenPieza", new { id = Model.PiezaID, status = false, tipo = "thumb" }); }
+        </div>
     </div>
 
 
@@ -179,8 +179,8 @@
                                                 <p id="ubicacion_@(Model.UbicacionID)" class="hover-dorado">
                                                     @if (User.IsInRole("attUbiEdit"))
                                                     {
-                                                    //Ubicacion no existe entonces crearla
-                                                        <span>Pendiente </span>
+                                                        //Ubicacion no existe entonces crearla
+                                                        <span><b class="text-danger">Pendiente (Existe)</b></span>
                                                     }
                                                     @Model.Ubicacion.Nombre
                                                 </p>
@@ -190,7 +190,7 @@
                                                 if (User.IsInRole("attUbiEdit"))
                                                 {
                                                     //Ubicacion no existe entonces crearla
-                                                    <span>Pendiente </span>
+                                                    <span><b class="text-danger">Pendiente (No existe)</b></span>
                                                 }
                                             }
                                         </td>
@@ -199,7 +199,40 @@
 
                                 break;
                             case "TipoTecnica":
-                            //multiple
+                                //multiple
+                                var lista_Tecnicas = Model.TecnicaPiezas.Where(a => a.Status).OrderBy(a => a.TipoTecnica.Nombre).ToList();
+                                color = lista_Tecnicas.Count > 0 ? "default" : "";
+                                <tr class="@color">
+                                    <td>
+                                        <b>@att.NombreAlterno</b>
+                                        @if (User.IsInRole("attPNew"))
+                                        {
+                                            @Html.NoEncodeActionLink("<span class='fa fa-plus'><span/>", "Agregar otr@ " + att.NombreAlterno, "Crear", "AtributoPieza", new { id = Model.PiezaID, AtributoID = att.AtributoID }, new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-primary btn-xs  pull-right CrearValor" })
+                                        }
+
+                                    </td>
+                                    <td>
+                                        @if (color == "default")
+                                        {
+                                            foreach (var item in lista_Tecnicas)
+                                            {
+                                                <p class="hover-dorado">
+                                                    @if (User.IsInRole("attPEdit"))
+                                                    {
+                                                        @Html.NoEncodeActionLink("<span class='fa fa-pencil'><span/>", "Editar", "Editar", "AtributoPieza", new { id = item.PiezaID, AtributoID = att.AtributoID, LlaveID = item.TipoTecnicaID }, new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-default btn-xs  pull-right EditarValor" })
+
+                                                    }
+
+                                                    <span id="tipoTecnica_@(item.PiezaID)_@(item.TipoTecnicaID)">
+                                                        <span><b>@(item.TipoTecnica.Nombre): </b></span>
+                                                        @item.Tecnica.Descripcion
+                                                    </span>
+                                                </p>
+                                            }
+                                        }
+                                    </td>
+                                </tr>
+                                        break;
                             case "TipoMedida":
                             //multimple
                             case "ImagenPieza":
@@ -208,7 +241,7 @@
                                     <td>@att.NombreAlterno</td>
                                     <td>Sin implementar</td>
                                 </tr>*@
-                                break;
+                                        break;
                         }
 
                     }

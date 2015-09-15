@@ -144,6 +144,7 @@
     <Compile Include="Controllers\PermisoController.cs" />
     <Compile Include="Controllers\PiezaController.cs" />
     <Compile Include="Controllers\TecnicaController.cs" />
+    <Compile Include="Controllers\TecnicaPiezaController.cs" />
     <Compile Include="Controllers\TipoAtributoController.cs" />
     <Compile Include="Controllers\TipoMedidaController.cs" />
     <Compile Include="Controllers\TipoMostrarController.cs" />
@@ -456,6 +457,11 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\IndexUsuario.cshtml" />
     <Content Include="Views\Home\_RedirectToLogin.cshtml" />
+    <Content Include="Views\TecnicaPieza\_Crear.cshtml" />
+    <Content Include="Views\TecnicaPieza\Delete.cshtml" />
+    <Content Include="Views\TecnicaPieza\Details.cshtml" />
+    <Content Include="Views\TecnicaPieza\_Editar.cshtml" />
+    <Content Include="Views\TecnicaPieza\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
