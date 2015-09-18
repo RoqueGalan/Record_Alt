@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using RecordFCS_Alt.Models;
+using RecordFCS_Alt.Helpers.Seguridad;
 
 namespace RecordFCS_Alt.Controllers
 {
@@ -19,6 +20,7 @@ namespace RecordFCS_Alt.Controllers
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que desea enlazarse. Para obtener 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [CustomAuthorize(permiso = "attPNew")]
         public ActionResult Crear([Bind(Include = "PiezaID,TipoTecnicaID,Status,TecnicaID")] TecnicaPieza tecnicaPieza, Guid AtributoID)
         {
             string renderID = "tipoTecnica_" + tecnicaPieza.PiezaID + "_";
@@ -65,44 +67,106 @@ namespace RecordFCS_Alt.Controllers
         // POST: TecnicaPieza/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Editar([Bind(Include = "PiezaID,TipoTecnicaID,Status,TecnicaID")] TecnicaPieza tecnicaPieza)
+        [CustomAuthorize(permiso = "attPEdit")]
+        public ActionResult Editar([Bind(Include = "PiezaID,TipoTecnicaID,Status,TecnicaID")] TecnicaPieza tecnicaPieza, Guid AtributoID, Guid LlaveID)
         {
-            if (ModelState.IsValid)
+            //validar errores y devolverlos a la vista
+
+            //llave = TipoTecnicaID
+            string renderID = "tipoTecnica_" + tecnicaPieza.PiezaID + "_" + LlaveID;
+
+            string texto = "";
+            bool guardar = false;
+
+
+            var tecnicaPiezaAnterior = db.TecnicaPiezas.Find(tecnicaPieza.PiezaID, LlaveID);
+
+            if (tecnicaPiezaAnterior == null)
             {
-                db.Entry(tecnicaPieza).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                guardar = false;
             }
-            ViewBag.PiezaID = new SelectList(db.Piezas, "PiezaID", "SubFolio", tecnicaPieza.PiezaID);
-            ViewBag.TecnicaID = new SelectList(db.Tecnicas, "TecnicaID", "ClaveSigla", tecnicaPieza.TecnicaID);
-            ViewBag.TipoTecnicaID = new SelectList(db.TipoTecnicas, "TipoTecnicaID", "Nombre", tecnicaPieza.TipoTecnicaID);
-            return View(tecnicaPieza);
+            else
+            {
+                string valor = Request.Form["id_" + AtributoID].ToString();
+
+                tecnicaPieza.TecnicaID = new Guid(valor);
+
+                //no existe el entonces actualizar el AtributoPiezaID con el ListaValorID
+                if (db.TecnicaPiezas.Where(a => a.PiezaID == tecnicaPieza.PiezaID && a.TipoTecnicaID == tecnicaPieza.TipoTecnicaID && a.TecnicaID == tecnicaPieza.TecnicaID).Count() == 0)
+                {
+                    guardar = true;
+
+                    var tecnica = db.Tecnicas.Find(tecnicaPieza.TecnicaID);
+
+                    texto = string.Format("<span><b>{0}: </b></span> {1}", tecnicaPiezaAnterior.TipoTecnica.Nombre, tecnica.Descripcion);
+
+                    AlertaSuccess(string.Format("Técnica: <b>{0}</b> se actualizo a <b>{1}</b>.", tecnicaPiezaAnterior.Tecnica.Descripcion, tecnica.Descripcion), true);
+                    tecnicaPieza.TecnicaID = tecnica.TecnicaID;
+                }
+                else
+                {
+                    guardar = false;
+                    //alerta ya existe
+                }
+
+
+            }
+
+            if (guardar)
+            {
+                db.TecnicaPiezas.Remove(tecnicaPiezaAnterior);
+                db.SaveChanges();
+                db.TecnicaPiezas.Add(tecnicaPieza);
+                db.SaveChanges();
+            }
+
+            return Json(new { success = true, renderID = renderID, texto = texto, guardar = guardar });
+
         }
 
         // GET: TecnicaPieza/Delete/5
-        public ActionResult Delete(Guid? id)
+        [CustomAuthorize(permiso = "attPDel")]
+        public ActionResult Eliminar(Guid? id, Guid? TipoTecnicaID)
         {
-            if (id == null)
+            if (id == null && TipoTecnicaID == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            TecnicaPieza tecnicaPieza = db.TecnicaPiezas.Find(id);
+            TecnicaPieza tecnicaPieza = db.TecnicaPiezas.Find(id, TipoTecnicaID);
             if (tecnicaPieza == null)
             {
                 return HttpNotFound();
             }
-            return View(tecnicaPieza);
+            return PartialView("_Eliminar", tecnicaPieza);
         }
 
         // POST: TecnicaPieza/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName("Eliminar")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(Guid id)
+        [CustomAuthorize(permiso = "attPDel")]
+        public ActionResult EliminarConfirmado(Guid id, Guid TipoTecnicaID)
         {
-            TecnicaPieza tecnicaPieza = db.TecnicaPiezas.Find(id);
-            db.TecnicaPiezas.Remove(tecnicaPieza);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            string btnValue = Request.Form["accionx"];
+
+            TecnicaPieza tecnicaPieza = db.TecnicaPiezas.Find(id, TipoTecnicaID);
+
+            var NombreTexto = tecnicaPieza.Tecnica.Descripcion;
+
+            switch (btnValue)
+            {
+                case "eliminar":
+                    db.TecnicaPiezas.Remove(tecnicaPieza);
+                    db.SaveChanges();
+                    AlertaDanger(string.Format("Se elimino <b>{0}</b>", NombreTexto), true);
+                    break;
+                default:
+                    AlertaDanger(string.Format("Ocurrio un error."), true);
+                    break;
+            }
+
+
+
+            return Json(new { success = true, guardar = false });
         }
 
         protected override void Dispose(bool disposing)

@@ -1,0 +1,110 @@
+﻿@using RecordFCS_Alt.Models.ViewModels
+@using RecordFCS_Alt.Helpers
+
+@{
+
+
+}
+
+@{
+    ViewBag.PagName = "R E P O R T E";
+    ViewBag.CtrlName = ViewBag.Titulo;
+}
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" data-toggle="tooltip" title="Cerrar">&times;</button>
+    <h4 class="modal-title" id="myModalLabel">
+        <b>@ViewBag.PagName</b>
+        <i class="text-muted text-uppercase">@ViewBag.CtrlName</i>
+    </h4>
+</div>
+
+
+<div class="modal-body">
+
+    <div class="row">
+        <table class="table table-condensed table-striped table-hover">
+            <thead>
+                <tr>
+                    <th class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                        Lista de @ViewBag.Titulo
+                        <span id="Listado-1" class="btn btn-primary btn-xs labelbtnMostrar"><i class="fa fa-caret-down "></i></span>
+                    </th>
+                    <th class="col-lg-2 col-md-2 col-sm-2 col-xs-2">Cantidad</th>
+                    <th class="col-lg-2 col-md-2 col-sm-2 col-xs-2">%</th>
+                </tr>
+            </thead>
+
+            <tbody id="TablaListado-1">
+                @foreach (var item in listaMaestra)
+                {
+                    <tr>
+                        <td>@item.Nombre</td>
+                        <td>@item.Cantidad</td>
+                        <td>@item.Porcentaje<span>%</span></td>
+                    </tr>
+                }
+            </tbody>
+
+
+
+
+
+            <tfoot>
+                <tr>
+                    <td class="text-right">REGISTRADAS</td>
+                    <td><b>@</b></td>
+                    <td></td>
+                </tr>
+
+                <tr>
+                    <td class="text-right">MULTIPLES</td>
+                    <td><b>@</b></td>
+                    <td></td>
+                </tr>
+
+                <tr>
+                    <td class="text-right">SIN REGISTRAR</td>
+                    <td><b>@</b></td>
+                    <td></td>
+                </tr>
+
+
+                <tr>
+                    <td class="text-right"><b>TOTAL</b></td>
+                    <td><h4><b>@ </b></h4></td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+
+
+
+    <script type="text/javascript">
+
+        $(function () {
+            $.ajaxSetup({ cache: false });
+
+            $('#TablaListado-1').toggle();
+            $('#TablaListado-2').toggle();
+
+            $(".labelbtnMostrar").on("click", function (e) {
+
+                var id = $(this).attr('id');
+                $('#Tabla' + id).toggle();
+                return false;
+            });
+        });
+    </script>
+
+
+</div>
+
+<div class="modal-footer">
+    <button class="btn" type="button" data-dismiss="modal">Cerrar</button>
+</div>
+
+
+<script src="~/Scripts/add.toolTip.js"></script>

@@ -11,18 +11,10 @@ using RecordFCS_Alt.Helpers.Seguridad;
 
 namespace RecordFCS_Alt.Controllers
 {
-    public class PiezaController : Controller
+    public class PiezaController : BaseController
     {
         private RecordFCSContext db = new RecordFCSContext();
 
-        // GET: Pieza
-        [CustomAuthorize(permiso = "")]
-
-        public ActionResult Index()
-        {
-            var piezas = db.Piezas.Include(p => p.Obra).Include(p => p.PiezaPadre).Include(p => p.TipoPieza).Include(p => p.Ubicacion);
-            return View(piezas.ToList());
-        }
 
         // GET: Pieza/Detalles/5
         [CustomAuthorize(permiso = "")]
@@ -180,6 +172,103 @@ namespace RecordFCS_Alt.Controllers
             return PartialView("_Ficha", pieza);
         }
 
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [CustomAuthorize(permiso = "attUbiEdit")]
+        public ActionResult CrearUbicacion([Bind(Include = "PiezaID,SubFolio,FechaRegistro,Status,ObraID,TipoPiezaID,UbicacionID,PiezaPadreID,Temp")] Pieza pieza, Guid AtributoID)
+        {
+            string renderID = "ubicacion_" + pieza.PiezaID + "_";
+
+            string texto = "";
+            bool guardar = false;
+
+            string valor = Request.Form["id_" + AtributoID].ToString();
+
+            var ubicacion = db.Ubicaciones.Find(new Guid(valor));
+
+            if (ubicacion != null)
+            {
+                texto = ubicacion.Nombre;
+                pieza.UbicacionID = ubicacion.UbicacionID;
+            }
+
+            if (ModelState.IsValid)
+            {
+                guardar = true;
+                db.Entry(pieza).State = EntityState.Modified;
+                db.SaveChanges();
+
+                renderID += ubicacion.UbicacionID;
+                texto = ubicacion.Nombre;
+                
+                AlertaSuccess(string.Format("{0}: <b>{1}</b> se creó.", "Ubicación",ubicacion.Nombre), true);
+
+                return Json(new { success = true, renderID = renderID, texto = texto, guardar = guardar });
+
+            }
+
+            ViewBag.UbicacionID = new SelectList(db.Ubicaciones.Where(a => a.Status).OrderBy(a => a.Nombre).Take(100).ToList(), "UbicacionID", "Nombre", pieza.UbicacionID);
+
+            return PartialView("_CrearUbicacion", pieza);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [CustomAuthorize(permiso = "attUbiEdit")]
+        public ActionResult EditarUbicacion([Bind(Include = "PiezaID,SubFolio,FechaRegistro,Status,ObraID,TipoPiezaID,UbicacionID,PiezaPadreID,Temp")] Pieza pieza, Guid AtributoID, Guid LlaveID)
+        {
+            //validar errores y devolverlos a la vista
+            string renderID = "ubicacion_" + pieza.PiezaID + "_" + LlaveID;
+
+            string texto = "";
+            bool guardar = false;
+
+
+            var ubicacionAnterior = db.Ubicaciones.Find(LlaveID);
+
+            if (ubicacionAnterior == null)
+            {
+                guardar = false;
+            }
+            else
+            {
+
+
+                string valor = Request.Form["id_" + AtributoID].ToString();
+                var ubicacion = db.Ubicaciones.Find(new Guid(valor));
+
+                if (ubicacion != null)
+                {
+                    texto = ubicacion.Nombre;
+                    pieza.UbicacionID = ubicacion.UbicacionID;
+                }
+
+                if (ModelState.IsValid)
+                {
+                    guardar = true;
+                    db.Entry(pieza).State = EntityState.Modified;
+                    db.SaveChanges();
+
+                    renderID += ubicacion.UbicacionID;
+
+                    texto = ubicacion.Nombre;
+                    AlertaSuccess(string.Format("{0}: <b>{1}</b> se actualizo a <b>{2}</b>.", "Ubicación", ubicacionAnterior.Nombre, ubicacion.Nombre), true);
+
+
+                    return Json(new { success = true, renderID = renderID, texto = texto, guardar = guardar });
+                }
+            }
+
+
+
+
+
+            ViewBag.UbicacionID = new SelectList(db.Ubicaciones.Where(a => a.Status).OrderBy(a => a.Nombre).Take(100).ToList(), "UbicacionID", "Nombre", pieza.UbicacionID);
+
+            return PartialView("_EditarUbicacion", pieza);
+        }
 
 
 

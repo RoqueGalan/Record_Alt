@@ -1,4 +1,7 @@
-﻿@using RecordFCS_Alt.Models
+﻿@model RecordFCS_Alt.Models.Pieza
+
+
+
 @{
     bool EsMultipleValor = ViewBag.EsMultipleValor;
     Guid AtributoID = ViewBag.AtributoID;
@@ -8,39 +11,92 @@
     string NombreAtt = ViewBag.NombreAtt;
     SelectList ListaUbicacionesID = (SelectList)ViewBag.UbicacionID;
 
+    Guid id = ViewBag.id;
+
+
+}
+
+@{
+    ViewBag.PagName = "Crear ";
+    ViewBag.CtrlName = NombreAtt;
+}
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" data-toggle="tooltip" title="Cerrar">&times;</button>
+    <h4 class="modal-title" id="myModalLabel">
+        <b>@ViewBag.PagName</b>
+        <i class="text-muted">@ViewBag.CtrlName</i>
+    </h4>
+</div>
+
+
+
+@using (Html.BeginForm("CrearUbicacion", "Pieza", FormMethod.Post, null))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.PiezaID)
+        @Html.HiddenFor(model => model.FechaRegistro)
+        @Html.HiddenFor(model => model.ObraID)
+        @Html.HiddenFor(model => model.PiezaPadreID)
+        @Html.HiddenFor(model => model.Status)
+        @Html.HiddenFor(model => model.SubFolio)
+        @Html.HiddenFor(model => model.Temp)
+        @Html.HiddenFor(model => model.TipoPiezaID)
+        @Html.Hidden("AtributoID", AtributoID)
+
+
+
+
+        <div class="input-group">
+            @Html.DropDownList("id_" + AtributoID, ListaUbicacionesID, "- Elije una opción -", htmlAttributes: new { @class = "form-control", required = "required" })
+
+            <span class="input-group-addon"></span>
+
+            <input id="buscar_@AtributoID" type="text" placeholder="Buscar valor" class="form-control" />
+
+            @if (User.IsInRole("ubiNew"))
+            {
+                <span class="input-group-addon">
+                    <input type="checkbox" id="checkAdd_@AtributoID" class="btnCheckAdd" data-toggle="tooltip" data-title="Buscar/Guardar">
+                </span>
+            }
+
+
+
+            <span id="btnAccion_@AtributoID" name="Buscar" class="input-group-addon btn btn-default">
+                <span class="fa fa-search"></span>
+            </span>
+
+
+        </div>
+
+
+
+
+    </div>
+
+
+
+    <div class="modal-footer">
+        <button class="btn" type="button" data-dismiss="modal">Cancelar</button>
+        <input class="btn btn-primary" type="submit" value="Guardar" />
+    </div>
+
 }
 
 
-<div class="input-group">
-    @Html.DropDownList("id_" + AtributoID, ListaUbicacionesID, "- Elije una ubicación -", htmlAttributes: new { @class = "form-control", required = "required" })
-
-    <span class="input-group-addon">        </span>
-
-    <input id="buscar_@AtributoID" type="text" placeholder="Buscar @NombreAtt" class="form-control" />
-
-    @if (User.IsInRole("ubiNew"))
-    {
-        <span class="input-group-addon">
-            <input type="checkbox" id="checkAdd_@AtributoID" class="btnCheckAdd" data-toggle="tooltip" data-title="Buscar/Guardar">
-        </span>
-    }
-
-
-
-    <span id="btnAccion_@AtributoID" name="Buscar" class="input-group-addon btn btn-default">
-        <span class="fa fa-search"></span>
-    </span>
-
-
-
-</div>
-@Html.ValidationMessage("id_" + AtributoID, new { @class = "text-danger" })
 
 
 
 <script type="text/javascript">
 
     $('#btnAccion_@AtributoID').on("click", function (e) {
+
+
         var attID = '@AtributoID';
         var tipoAttID = '@TipoAtributoID';
         var $inputSelect = $('#id_' + attID);
@@ -73,18 +129,23 @@
 
             $.ajaxSetup({ cache: false });
 
-            $('#miModalContenido').load(myUrl, function () {
+            $('#miModalContenidoFloat').load(myUrl, function () {
                 $('#Nombre').val($inputBuscar.val());
 
-                $('#miModal').modal({
+                $('#miModalFloat').modal({
                     backdrop: 'static',
-                    keyboard: true
+                    keyboard: true,
+
                 }, 'show');
+
+                $("#miModalFloat").css("z-index", "1500");
 
                 bindForm_ListaUbicacion(this);
             });
 
             function bindForm_ListaUbicacion(dialog) {
+
+
                 var attID = '@AtributoID';
 
                 $('form', dialog).submit(function (e) {
@@ -101,17 +162,19 @@
                             data: $(this).serialize(),
                             success: function (result) {
                                 if (result.success) {
-                                    $('#miModal').modal('hide');
+                                    $('#miModalFloat').modal('hide');
 
-                                    $('#buscar_' + attID).val(result.nombre);
+                                    $('#buscar_' + attID).val($.trim(result.nombre));
 
                                     $('#checkAdd_' + attID).trigger("click");
                                     $('#btnAccion_' + attID).trigger("click");
 
                                     $('#alertasDiv').load('/Base/_Alertas');
+                                    $("#alertasDiv").css("z-index", "2000");
+
 
                                 } else {
-                                    $('#miModalContenido').html(result);
+                                    $('#miModalContenidoFloat').html(result);
                                     bindForm_ListaUbicacion(dialog);
                                 }
                             }
@@ -136,7 +199,7 @@
             $.ajax({
                 url: myUrl,
                 type: 'POST',
-                data: { Filtro: $inputBuscar.val() },
+                data: { id: tipoAttID, Filtro: $inputBuscar.val() },
                 dataType: 'json',
                 success: function (result) {
 
@@ -144,7 +207,7 @@
                         $inputSelect.html('<option> - Elije un resultado - </option>');
 
                         for (var i = 0; i < result.length; i++) {
-                            $inputSelect.append('<option value = "' + result[i].UbicacionID + '">' + result[i].Nombre + '</option>');
+                            $inputSelect.append('<option value = "' + result[i].AutorID + '">' + result[i].Nombre + '</option>');
                         }
                     }
                     else {
@@ -162,6 +225,7 @@
     });
 
     $('#checkAdd_@AtributoID').on("click", function (e) {
+
         var attID = '@AtributoID';
         var $btnCheck = $('#checkAdd_' + attID);
         var $btn = $('#btnAccion_@AtributoID');
@@ -188,5 +252,9 @@
         }
     });
 
-
 </script>
+
+
+
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+<script src="~/Scripts/jquery.validate.js"></script>

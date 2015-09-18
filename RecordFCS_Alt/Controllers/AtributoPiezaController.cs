@@ -88,10 +88,11 @@ namespace RecordFCS_Alt.Controllers
 
                         break;
                     case "Ubicacion":
-                        //var listaUbicaciones = db.Ubicaciones.Where(a => a.Status).OrderBy(a => a.Nombre).Select(a => new { Nombre = a.Nombre, a.UbicacionID }).ToList();
-                        //ViewBag.UbicacionID = new SelectList(listaUbicaciones, "UbicacionID", "Nombre");
 
-                        //_vista = PartialView("~/Views/Ubicacion/_CampoRegistro.cshtml");
+                        var listaUbicaciones = db.Ubicaciones.Where(a => a.Status).OrderBy(a => a.Nombre).Select(a => new { Nombre = a.Nombre, a.UbicacionID }).Take(100).ToList();
+                        ViewBag.UbicacionID = new SelectList(listaUbicaciones, "UbicacionID", "Nombre");
+
+                        _vista = PartialView("~/Views/Pieza/_CrearUbicacion.cshtml",pieza);
                         break;
 
                     case "TipoTecnica":
@@ -110,14 +111,19 @@ namespace RecordFCS_Alt.Controllers
                         break;
 
                     case "TipoMedida":
-                        //var listaTipoMedidas = db.TipoMedidas.Where(a => a.Status).OrderBy(a => a.Nombre).Select(a => new { a.Nombre, a.TipoMedidaID }).ToList();
-                        //var listaUML = from UMLongitud e in Enum.GetValues(typeof(UMLongitud))
-                        //               select new { ID = e, Nombre = e.ToString() };
+                        var medidaPieza = new MedidaPieza()
+                        {
+                            Status = true,
+                            PiezaID = pieza.PiezaID
+                        };
 
-                        //ViewBag.TipoMedidaID = new SelectList(listaTipoMedidas, "TipoMedidaID", "Nombre");
-                        //ViewData["id_" + AtributoID + "_UML"] = new SelectList(listaUML, "ID", "Nombre");
+                        var tipoMedidasExistentes = pieza.MedidaPiezas.Select(a => a.TipoMedidaID);
 
-                        //_vista = PartialView("~/Views/TipoMedida/_CampoRegistro.cshtml");
+                        var listaTipoMedidas = db.TipoMedidas.Where(a => a.Status && !tipoMedidasExistentes.Contains(a.TipoMedidaID)).OrderBy(a => a.Nombre).Select(a => new { a.Nombre, a.TipoMedidaID }).ToList();
+                       
+                        ViewBag.TipoMedidaID = new SelectList(listaTipoMedidas, "TipoMedidaID", "Nombre");
+                       
+                        _vista = PartialView("~/Views/MedidaPieza/_Crear.cshtml", medidaPieza);
                         break;
 
                     default:
@@ -264,6 +270,8 @@ namespace RecordFCS_Alt.Controllers
             //atributoID
             //AtributoPiezaID || TablaID
 
+            Pieza pieza = db.Piezas.Find(id);
+
             PartialViewResult _vista = null;
 
 
@@ -314,10 +322,13 @@ namespace RecordFCS_Alt.Controllers
 
                         break;
                     case "Ubicacion":
-                        //var listaUbicaciones = db.Ubicaciones.Where(a => a.Status).OrderBy(a => a.Nombre).Select(a => new { Nombre = a.Nombre, a.UbicacionID }).ToList();
-                        //ViewBag.UbicacionID = new SelectList(listaUbicaciones, "UbicacionID", "Nombre");
 
-                        //_vista = PartialView("~/Views/Ubicacion/_CampoRegistro.cshtml");
+                        List<Ubicacion> listaUbicaciones = new List<Ubicacion>();
+                        listaUbicaciones.Add(pieza.Ubicacion);
+                        listaUbicaciones.AddRange(db.Ubicaciones.Where(a => a.Status).OrderBy(a => a.Nombre).Take(100).ToList());
+                        ViewBag.UbicacionID = new SelectList(listaUbicaciones, "UbicacionID", "Nombre",pieza.UbicacionID);
+
+                        _vista = PartialView("~/Views/Pieza/_EditarUbicacion.cshtml",pieza);
                         break;
 
                     case "TipoTecnica":
@@ -332,19 +343,14 @@ namespace RecordFCS_Alt.Controllers
                         listaTecnicas.Add(piezaTecnica.Tecnica);
                         listaTecnicas.AddRange(db.Tecnicas.Where(a => a.Status && a.TipoTecnicaID == piezaTecnica.TipoTecnicaID).OrderBy(a => a.Descripcion).Take(100).ToList());
                         ViewBag.TecnicaID = new SelectList(listaTecnicas.Select(a => new { Nombre = a.Descripcion, a.TecnicaID }), "TecnicaID", "Nombre", piezaTecnica.TecnicaID);
-                        
+
                         _vista = PartialView("~/Views/TecnicaPieza/_Editar.cshtml", piezaTecnica);
                         break;
 
                     case "TipoMedida":
-                        //var listaTipoMedidas = db.TipoMedidas.Where(a => a.Status).OrderBy(a => a.Nombre).Select(a => new { a.Nombre, a.TipoMedidaID }).ToList();
-                        //var listaUML = from UMLongitud e in Enum.GetValues(typeof(UMLongitud))
-                        //               select new { ID = e, Nombre = e.ToString() };
-
-                        //ViewBag.TipoMedidaID = new SelectList(listaTipoMedidas, "TipoMedidaID", "Nombre");
-                        //ViewData["id_" + AtributoID + "_UML"] = new SelectList(listaUML, "ID", "Nombre");
-
-                        //_vista = PartialView("~/Views/TipoMedida/_CampoRegistro.cshtml");
+                        var medidaPieza = db.MedidaPiezas.Find(id,LLaveID);
+                        ViewBag.NombreMedida = medidaPieza.TipoMedida.Nombre;
+                        _vista = PartialView("~/Views/MedidaPieza/_Editar.cshtml",medidaPieza);
                         break;
 
                     default:

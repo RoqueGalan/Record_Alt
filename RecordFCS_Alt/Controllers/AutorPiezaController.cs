@@ -15,11 +15,7 @@ namespace RecordFCS_Alt.Controllers
     {
         private RecordFCSContext db = new RecordFCSContext();
 
-
-
         // POST: AutorPieza/Create
-        // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que desea enlazarse. Para obtener 
-        // más información vea http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [CustomAuthorize(permiso = "attPNew")]
@@ -31,29 +27,29 @@ namespace RecordFCS_Alt.Controllers
             string texto = "";
             bool guardar = false;
 
-                string valor = Request.Form["id_" + AtributoID].ToString();
+            string valor = Request.Form["id_" + AtributoID].ToString();
 
-                autorPieza.AutorID = new Guid(valor);
+            autorPieza.AutorID = new Guid(valor);
 
-                //no existe el ListaValorID entonces actualizar el AtributoPiezaID con el ListaValorID
-                if (db.AutorPiezas.Where(a => a.PiezaID == autorPieza.PiezaID && a.AutorID == autorPieza.AutorID).Count() == 0)
-                {
-                    guardar = true;
+            //no existe el ListaValorID entonces actualizar el AtributoPiezaID con el ListaValorID
+            if (db.AutorPiezas.Where(a => a.PiezaID == autorPieza.PiezaID && a.AutorID == autorPieza.AutorID).Count() == 0)
+            {
+                guardar = true;
 
-                    var autor = db.Autores.Find(autorPieza.AutorID);
+                var autor = db.Autores.Find(autorPieza.AutorID);
 
-                    texto = autor.Nombre + " " + autor.Apellido;
+                texto = autor.Nombre + " " + autor.Apellido;
 
-                    AlertaSuccess(string.Format("Autor: <b>{0}</b> se agregó.", autor.Nombre + "" + autor.Apellido), true);
-                    autorPieza.AutorID = autor.AutorID;
+                AlertaSuccess(string.Format("Autor: <b>{0}</b> se agregó.", autor.Nombre + "" + autor.Apellido), true);
+                autorPieza.AutorID = autor.AutorID;
 
-                }
-                else
-                {
-                    guardar = false;
-                    //alerta ya existe
-                }
-            
+            }
+            else
+            {
+                guardar = false;
+                //alerta ya existe
+            }
+
 
             if (guardar)
             {
@@ -67,23 +63,22 @@ namespace RecordFCS_Alt.Controllers
 
         }
 
-  
+
         // POST: AutorPieza/Edit/5
-        // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que desea enlazarse. Para obtener 
-        // más información vea http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [CustomAuthorize(permiso = "attPEdit")]
         public ActionResult Editar(AutorPieza autorPieza, Guid AtributoID, Guid LlaveID)
         {
-            string renderID = "autor_" + autorPieza.PiezaID + "_" + LlaveID; 
+            //validar errores y devolverlos a la vista
+            string renderID = "autor_" + autorPieza.PiezaID + "_" + LlaveID;
 
             string texto = "";
             bool guardar = false;
 
 
             var autorPiezaAnterior = db.AutorPiezas.Find(autorPieza.PiezaID, LlaveID);
-            
+
             if (autorPiezaAnterior == null)
             {
                 guardar = false;
@@ -95,14 +90,18 @@ namespace RecordFCS_Alt.Controllers
 
                 autorPieza.AutorID = new Guid(valor);
 
+                guardar = true;
+
                 //no existe el ListaValorID entonces actualizar el AtributoPiezaID con el ListaValorID
                 if (db.AutorPiezas.Where(a => a.PiezaID == autorPieza.PiezaID && a.AutorID == autorPieza.AutorID).Count() == 0)
                 {
-                    guardar = true;
 
                     var autor = db.Autores.Find(autorPieza.AutorID);
 
-                    texto = autor.Nombre + " " + autor.Apellido;
+                    var textoNombreAutor = autor.Nombre + " " + autor.Apellido;
+                    var textoPrefijo = autorPieza.Prefijo == "" || autorPieza == null ? "" : autorPieza.Prefijo + ": ";
+
+                    texto = string.Format("<span><b>{0}</b></span>{1}", textoPrefijo, textoNombreAutor);
 
                     AlertaSuccess(string.Format("Autor: <b>{0}</b> se actualizo a <b>{1}</b>.", autorPiezaAnterior.Autor.Nombre + "" + autorPiezaAnterior.Autor.Apellido, autor.Nombre + " " + autor.Apellido), true);
                     autorPieza.AutorID = autor.AutorID;
@@ -110,8 +109,9 @@ namespace RecordFCS_Alt.Controllers
                 }
                 else
                 {
-                    guardar = false;
                     //alerta ya existe
+                    AlertaSuccess(string.Format("Autor: <b>{0}</b> se actualizo.", autorPiezaAnterior.Autor.Nombre + "" + autorPiezaAnterior.Autor.Apellido), true);
+
                 }
             }
 
@@ -124,8 +124,53 @@ namespace RecordFCS_Alt.Controllers
             }
 
 
-            return Json(new { success = true, renderID = renderID, texto = texto, guardar = guardar });
+            return Json(new { success = true, renderID = renderID, texto = texto, guardar = guardar, tipo = "Autor" });
         }
+
+
+        [CustomAuthorize(permiso = "attPDel")]
+        public ActionResult Eliminar(Guid? id, Guid? AutorID)
+        {
+            if (id == null && AutorID == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            AutorPieza autorPieza = db.AutorPiezas.Find(id, AutorID);
+            if (autorPieza == null)
+            {
+                return HttpNotFound();
+            }
+
+            return PartialView("_Eliminar", autorPieza);
+        }
+
+        [HttpPost, ActionName("Eliminar")]
+        [ValidateAntiForgeryToken]
+        [CustomAuthorize(permiso = "attPDel")]
+        public ActionResult EliminarConfirmado(Guid id, Guid AutorID)
+        {
+            string btnValue = Request.Form["accionx"];
+
+            AutorPieza autorPieza = db.AutorPiezas.Find(id, AutorID);
+
+            var NombreTexto = autorPieza.Autor.Nombre + " " + autorPieza.Autor.Apellido;
+
+            switch (btnValue)
+            {
+                case "eliminar":
+                    db.AutorPiezas.Remove(autorPieza);
+                    db.SaveChanges();
+                    AlertaDanger(string.Format("Se elimino <b>{0}</b>", NombreTexto), true);
+                    break;
+                default:
+                    AlertaDanger(string.Format("Ocurrio un error."), true);
+                    break;
+            }
+
+            return Json(new { success = true, guardar = false });
+        }
+
+
 
 
         protected override void Dispose(bool disposing)

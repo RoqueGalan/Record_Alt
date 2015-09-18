@@ -14,11 +14,12 @@
             </div>
 
             <a href="@Url.Action("Index","Home")" data-toggle="tooltip" class="navbar-brand">
-                <img src="~/Content/img/home/carrusel/logoRecordFCS.png" alt="Fundación Carlos Slim" class="imgSaludo" />
+                @*<img src="~/Content/img/home/carrusel/logoRecordFCS.png" alt="Fundación Carlos Slim" class="imgSaludo" />*@
+                <img src="~/Content/img/recordFCSLogo2.png" alt="Record Fundación Carlos Slim" class="imgSaludo" />
             </a>
         </div>
-      
 
+        
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="navbar-collapse-1">
 
@@ -35,12 +36,18 @@
                                 {
                                     @Html.MenuItemIcon("<i class='fa fa-search'></i> Buscador Avanzado", "Buscador Avanzado", "Index", "Buscador")
                                 }
+                                
+                                    @if (User.IsInRole("repList"))
+                                    {
+                                        @Html.MenuItemIcon("<i class='fa fa-pie-chart'></i> Reportes", "Reportes", "Index", "Reporte");
+                                    }
+
                                 @*@Html.MenuItemIcon("<i class='fa fa-list'></i> Listados", "Listados", "Index", "Listado")*@
-                                @*@Html.MenuItemIcon("<i class='fa fa-list-alt'></i> Reportes", "Reportes", "Index", "Reporte")*@
-                            </ul>
-                        </li>
+                                    @*@Html.MenuItemIcon("<i class='fa fa-list-alt'></i> Reportes", "Reportes", "Index", "Reporte")*@
+                                </ul>
+                            </li>
                     }
-                    
+
                     @if (User.IsInRole("verCtrlO"))
                     {
                         <li class="dropdown">
@@ -49,6 +56,14 @@
                                 @if (User.IsInRole("oNew"))
                                 {
                                     @Html.MenuItemIcon("<i class='fa fa-edit'></i> Registro de Obra", "Registro de Obra", "Registrar", "Obra")
+                                }
+                                @if (User.IsInRole("MovReg"))
+                                {
+                                    @Html.MenuItemIcon("<i class='fa fa-exchange'></i> Movimientos", "Registro de movimientos", "Index", "Movimiento")
+                                }
+                                @if (User.IsInRole("GuiList"))
+                                {
+                                    @Html.MenuItemIcon("<i class='fa fa-list-ol'></i> Guiones", "Guiones", "Index", "Guion")
                                 }
 
                             </ul>
@@ -149,21 +164,21 @@
 
 
                 </ul>
-                            //fin barra izquierda
+                    //fin barra izquierda
 
-                            //barra derecha
-                            <ul class="nav navbar-nav navbar-right">
-                                <li class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="text-primary"><i class="fa fa-male"></i> Hola, </span>@User.Nombre<span class="text-primary">! <span class="caret"></span></span></a>
-                                    <ul class="dropdown-menu" role="menu">
-                                        @if (User.IsInRole("usrDeta"))
-                                        {
-                                            @Html.MenuItemIcon("<i class='fa fa-street-view'></i> Mi Perfil", "Mi Perfil", "Detalles", "Usuario", new { id = User.UsuarioID })
-                                        }
-                                        @Html.MenuItemIcon("<i class='fa fa-user-times'></i> Cerrar Sesión", "Cerrar Sesión", "CerrarSesion", "Usuario")
-                                    </ul>
-                                </li>
+                    //barra derecha
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="text-primary"><i class="fa fa-male"></i> Hola, </span>@User.Nombre<span class="text-primary">! <span class="caret"></span></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                @if (User.IsInRole("usrDeta"))
+                                {
+                                    @Html.MenuItemIcon("<i class='fa fa-street-view'></i> Mi Perfil", "Mi Perfil", "Detalles", "Usuario", new { id = User.UsuarioID })
+                                }
+                                @Html.MenuItemIcon("<i class='fa fa-user-times'></i> Cerrar Sesión", "Cerrar Sesión", "CerrarSesion", "Usuario")
                             </ul>
+                        </li>
+                    </ul>
                 //fin barra derecha
             }
             else

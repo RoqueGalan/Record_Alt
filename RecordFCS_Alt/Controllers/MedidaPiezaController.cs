@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using RecordFCS_Alt.Models;
+using RecordFCS_Alt.Helpers.Seguridad;
 
 namespace RecordFCS_Alt.Controllers
 {
@@ -14,115 +15,107 @@ namespace RecordFCS_Alt.Controllers
     {
         private RecordFCSContext db = new RecordFCSContext();
 
-        // GET: MedidaPieza
-        public ActionResult Index()
-        {
-            var medidaPiezas = db.MedidaPiezas.Include(m => m.Pieza).Include(m => m.TipoMedida);
-            return View(medidaPiezas.ToList());
-        }
-
-        // GET: MedidaPieza/Detalles/5
-        public ActionResult Details(Guid? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            MedidaPieza medidaPieza = db.MedidaPiezas.Find(id);
-            if (medidaPieza == null)
-            {
-                return HttpNotFound();
-            }
-            return View(medidaPieza);
-        }
-
-        // GET: MedidaPieza/Create
-        public ActionResult Create()
-        {
-            ViewBag.PiezaID = new SelectList(db.Piezas, "PiezaID", "SubFolio");
-            ViewBag.TipoMedidaID = new SelectList(db.TipoMedidas, "TipoMedidaID", "Nombre");
-            return View();
-        }
-
         // POST: MedidaPieza/Create
-        // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que desea enlazarse. Para obtener 
-        // más información vea http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "PiezaID,TipoMedidaID,Altura,Anchura,Profundidad,Diametro,Diametro2,UMLongitud,Peso,UMMasa,Otra,Status,Temp")] MedidaPieza medidaPieza)
+        [CustomAuthorize(permiso = "attPNew")]
+        public ActionResult Crear([Bind(Include = "PiezaID,TipoMedidaID,Altura,Anchura,Profundidad,Diametro,Diametro2,UMLongitud,Peso,UMMasa,Otra,Status,Temp")] MedidaPieza medidaPieza, Guid AtributoID)
         {
+            string renderID = "tipoMedida_" + medidaPieza.PiezaID + "_";
+
+            var tipoMedida = db.TipoMedidas.Find(medidaPieza.TipoMedidaID);
+            string texto = "";
             if (ModelState.IsValid)
             {
-                medidaPieza.PiezaID = Guid.NewGuid();
                 db.MedidaPiezas.Add(medidaPieza);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+
+                AlertaSuccess(string.Format("Médida: <b>{0}</b> se agregó.", tipoMedida.Nombre), true);
+
+                return Json(new { success = true, renderID = renderID, texto = texto, guardar = true });
+
             }
 
-            ViewBag.PiezaID = new SelectList(db.Piezas, "PiezaID", "SubFolio", medidaPieza.PiezaID);
-            ViewBag.TipoMedidaID = new SelectList(db.TipoMedidas, "TipoMedidaID", "Nombre", medidaPieza.TipoMedidaID);
-            return View(medidaPieza);
+            var pieza = db.Piezas.Find(medidaPieza.PiezaID);
+            var tipoMedidasExistentes = pieza.MedidaPiezas.Select(a => a.TipoMedidaID);
+
+            ViewBag.TipoMedidaID = new SelectList(db.TipoMedidas.Where(a => a.Status && !tipoMedidasExistentes.Contains(a.TipoMedidaID)).OrderBy(a => a.Nombre).ToList(), "TipoMedidaID", "Nombre", medidaPieza.TipoMedidaID);
+            return PartialView("_Crear", medidaPieza);
         }
 
-        // GET: MedidaPieza/Edit/5
-        public ActionResult Edit(Guid? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            MedidaPieza medidaPieza = db.MedidaPiezas.Find(id);
-            if (medidaPieza == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.PiezaID = new SelectList(db.Piezas, "PiezaID", "SubFolio", medidaPieza.PiezaID);
-            ViewBag.TipoMedidaID = new SelectList(db.TipoMedidas, "TipoMedidaID", "Nombre", medidaPieza.TipoMedidaID);
-            return View(medidaPieza);
-        }
 
         // POST: MedidaPieza/Edit/5
-        // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que desea enlazarse. Para obtener 
-        // más información vea http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "PiezaID,TipoMedidaID,Altura,Anchura,Profundidad,Diametro,Diametro2,UMLongitud,Peso,UMMasa,Otra,Status,Temp")] MedidaPieza medidaPieza)
+        [CustomAuthorize(permiso = "attPEdit")]
+        public ActionResult Editar(MedidaPieza medidaPieza, Guid AtributoID, Guid LlaveID)
         {
+            string renderID = "tipoMedida_" + medidaPieza.PiezaID + "_" + LlaveID;
+
+            string texto = "";
+            bool guardar = false;
+            var tipoMedida = db.TipoMedidas.Find(medidaPieza.TipoMedidaID);
+
+
             if (ModelState.IsValid)
             {
+                guardar = true;
                 db.Entry(medidaPieza).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+
+                AlertaSuccess(string.Format("Médida: <b>{0}</b> se actualizo.", tipoMedida.Nombre), true);
+
+                //realizar logica de mostrar medidas
+                texto = "Falta implementar la logica de mostrar medidas";
+                return Json(new { success = true, renderID = renderID, texto = texto, guardar = guardar, tipo = "Autor" });
             }
-            ViewBag.PiezaID = new SelectList(db.Piezas, "PiezaID", "SubFolio", medidaPieza.PiezaID);
-            ViewBag.TipoMedidaID = new SelectList(db.TipoMedidas, "TipoMedidaID", "Nombre", medidaPieza.TipoMedidaID);
-            return View(medidaPieza);
+
+            ViewBag.NombreMedida = tipoMedida.Nombre;
+            return PartialView("_Editar", medidaPieza);
         }
 
         // GET: MedidaPieza/Delete/5
-        public ActionResult Delete(Guid? id)
+        [CustomAuthorize(permiso = "attPDel")]
+        public ActionResult Eliminar(Guid? id, Guid? TipoMedidaID)
         {
-            if (id == null)
+            if (id == null && TipoMedidaID == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            MedidaPieza medidaPieza = db.MedidaPiezas.Find(id);
+            MedidaPieza medidaPieza = db.MedidaPiezas.Find(id, TipoMedidaID);
             if (medidaPieza == null)
             {
                 return HttpNotFound();
             }
-            return View(medidaPieza);
+
+            return PartialView("_Eliminar", medidaPieza);
         }
 
         // POST: MedidaPieza/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName("Eliminar")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(Guid id)
+        [CustomAuthorize(permiso = "attPDel")]
+        public ActionResult EliminarConfirmado(Guid id, Guid TipoMedidaID)
         {
-            MedidaPieza medidaPieza = db.MedidaPiezas.Find(id);
-            db.MedidaPiezas.Remove(medidaPieza);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            string btnValue = Request.Form["accionx"];
+
+            MedidaPieza medidaPieza = db.MedidaPiezas.Find(id, TipoMedidaID);
+
+            var NombreTexto = medidaPieza.TipoMedida.Nombre;
+
+            switch (btnValue)
+            {
+                case "eliminar":
+                    db.MedidaPiezas.Remove(medidaPieza);
+                    db.SaveChanges();
+                    AlertaDanger(string.Format("Se elimino <b>{0}</b>", NombreTexto), true);
+                    break;
+                default:
+                    AlertaDanger(string.Format("Ocurrio un error."), true);
+                    break;
+            }
+
+            return Json(new { success = true, guardar = false });
         }
 
         protected override void Dispose(bool disposing)

@@ -5,57 +5,103 @@
     <h3>Acciones Rápidas</h3>
 </div>
 
-<div class="row">
-    <div class="col-md-4 text-center">
-        @if (User.IsInRole("oNew"))
-        {
-            <a href="@Url.Action("Registrar","Obra")" class="link link-success animated zoomInLeft">
-                <span class="fa-stack fa-7x">
-                    <i class="fa fa-circle fa-stack-2x"></i>
-                    <i class="fa fa-edit fa-stack-1x fa-inverse"></i>
-                </span>
-                <h3 class="">Registrar Obra</h3>
-            </a>
-        }
-    </div>
-
-    <div class="col-md-4 text-center">
-        @if (User.IsInRole("verBusca"))
-        {
-            <a href="@Url.Action("Index","Buscador")" class="link link-info  animated zoomInUp">
-                <span class="fa-stack fa-7x">
-                    <i class="fa fa-circle fa-stack-2x"></i>
-                    <i class="fa fa-search fa-stack-1x fa-inverse"></i>
-                </span>
-                <h3 class="">Buscador</h3>
-            </a>
-        }
-    </div>
-
-    <div class="col-md-4 text-center">
-        @if (User.IsInRole("usrLis"))
-        {
-            <a href="@Url.Action("Index", "Usuario")" class="link link-inverse animated zoomInRight">
-                <span class="fa-stack fa-7x">
-                    <i class="fa fa-circle fa-stack-2x"></i>
-                    <i class="fa fa-users fa-stack-1x fa-inverse"></i>
-                </span>
-                <h3 class="">Usuarios</h3>
-            </a>
-        }
-        else
-        {
-            if (User.IsInRole("usrDeta"))
-            {
-                <a href="@Url.Action("Detalles", "Usuario", new { id = User.UsuarioID })" class="link link-inverse">
-                    <span class="fa-stack fa-7x">
-                        <i class="fa fa-circle fa-stack-2x"></i>
-                        <i class="fa fa-street-view fa-stack-1x fa-inverse"></i>
-                    </span>
-                    <h3 class="">Mis Datos</h3>
-                </a>
-            }
-        }
-
-    </div>
+<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 text-center">
+    @if (User.IsInRole("oNew"))
+    {
+        <a href="@Url.Action("Registrar","Obra")" class="link link-success animated zoomInLeft">
+            <span class="fa-stack fa-6x">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-edit fa-stack-1x fa-inverse"></i>
+            </span>
+            <h3 class="">Registrar Obra</h3>
+        </a>
+    }
 </div>
+
+<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 text-center">
+    @if (User.IsInRole("verBusca"))
+    {
+        <a href="@Url.Action("Index","Buscador")" class="link link-info  animated zoomInUp">
+            <span class="fa-stack fa-6x">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-search fa-stack-1x fa-inverse"></i>
+            </span>
+            <h3 class="">Buscador</h3>
+        </a>
+    }
+</div>
+
+<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 text-center">
+    @if (User.IsInRole("usrLis"))
+    {
+        <a href="@Url.Action("Index", "Usuario")" class="link link-inverse animated zoomInRight">
+            <span class="fa-stack fa-6x">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-users fa-stack-1x fa-inverse"></i>
+            </span>
+            <h3 class="">Usuarios</h3>
+        </a>
+    }
+    else
+    {
+        if (User.IsInRole("usrDeta"))
+        {
+            <a href="@Url.Action("Detalles", "Usuario", new { id = User.UsuarioID })" class="link link-inverse">
+                <span class="fa-stack fa-6x">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-street-view fa-stack-1x fa-inverse"></i>
+                </span>
+                <h3 class="">Mis Datos</h3>
+            </a>
+        }
+    }
+
+</div>
+
+
+<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 text-center">
+    @if (User.IsInRole("repList"))
+    {
+        <a href="@Url.Action("Index","Reporte")" class="link link-success animated zoomInLeft">
+            <span class="fa-stack fa-6x">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-pie-chart fa-stack-1x fa-inverse"></i>
+            </span>
+            <h3 class="">Reportes</h3>
+        </a>
+    }
+</div>
+
+
+
+<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 text-center">
+    @if (User.IsInRole("MovReg"))
+    {
+        <a href="@Url.Action("Index","Movimiento")" class="link link-success animated zoomInLeft">
+            <span class="fa-stack fa-6x">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-exchange fa-stack-1x fa-inverse"></i>
+            </span>
+            <h3 class="">Movimientos</h3>
+        </a>
+    }
+</div>
+
+
+<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 text-center">
+    @if (User.IsInRole("GuiList"))
+    {
+        <a href="@Url.Action("Index","Guion")" class="link link-success animated zoomInLeft">
+            <span class="fa-stack fa-6x">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-list-ol fa-stack-1x fa-inverse"></i>
+            </span>
+            <h3 class="">Guiones</h3>
+        </a>
+    }
+</div>
+
+
+
+
+

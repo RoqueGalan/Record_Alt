@@ -5,7 +5,7 @@ using System.Web;
 
 namespace RecordFCS_Alt.Models.ViewsModel
 {
-    public class ObraReporteBasico
+    public class ItemObraReporte
     {
         public Guid ObraID { get; set; }
         public string Clave { get; set; }

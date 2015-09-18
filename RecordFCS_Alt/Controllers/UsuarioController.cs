@@ -120,20 +120,32 @@ namespace RecordFCS_Alt.Controllers
 
         // GET: Usuario/Lista
         [CustomAuthorize(permiso = "")]
-        public ActionResult Lista(int? pagina)
+        public ActionResult Lista(string FiltroActual, string Busqueda, int? Pagina)
         {
-            var usuarios = db.Usuarios.OrderBy(a => a.Nombre);
+            if (Busqueda != null) Pagina = 1;
+            else Busqueda = FiltroActual;
 
-            ViewBag.totalRegistros = usuarios.Count();
+            ViewBag.FiltroActual = Busqueda;
+
+            var lista = db.Usuarios.Select(a => a);
+
+            if (!String.IsNullOrEmpty(Busqueda))
+            {
+                Busqueda = Busqueda.ToLower();
+                lista = lista.Where(a => a.Nombre.ToLower().Contains(Busqueda) || a.Apellido.ToLower().Contains(Busqueda) || a.UserName.ToLower().Contains(Busqueda));
+            }
+
+            lista = lista.OrderBy(a => a.Nombre).ThenBy(a=> a.Apellido);
+
 
             //paginador
-            int pagTamano = 50;
-            int pagIndex = 1;
-            pagIndex = pagina.HasValue ? Convert.ToInt32(pagina) : 1;
+            int registrosPorPagina = 25;
+            int pagActual = 1;
+            pagActual = Pagina.HasValue ? Convert.ToInt32(Pagina) : 1;
 
-            IPagedList<Usuario> paginaUsuarios = usuarios.ToPagedList(pagIndex, pagTamano);
+            IPagedList<Usuario> listaPagina = lista.ToPagedList(pagActual, registrosPorPagina);
 
-            return PartialView("_Lista", paginaUsuarios);
+            return PartialView("_Lista", listaPagina);
         }
 
         // GET: Usuario/Detalles/5

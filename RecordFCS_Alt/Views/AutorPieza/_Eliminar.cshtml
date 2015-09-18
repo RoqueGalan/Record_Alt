@@ -1,0 +1,56 @@
+﻿@model RecordFCS_Alt.Models.AutorPieza
+@{
+    ViewBag.PagName = "Eliminar Autor";
+    ViewBag.CtrlName = Model.Autor.Nombre + Model.Autor.Apellido;
+}
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" data-toggle="tooltip" title="Cerrar">&times;</button>
+    <h4 class="modal-title" id="myModalLabel">
+        <b>@ViewBag.PagName</b>
+        <i class="text-muted">@ViewBag.CtrlName</i>
+    </h4>
+</div>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.AutorID)
+    @Html.HiddenFor(model => model.PiezaID)
+    
+    <div class="modal-body">
+        <div class="text-center">
+            <h3>
+                ¿Quieres
+                <b class="text-danger">
+                    ELIMINAR
+                </b>
+                el Autor de la pieza?
+            </h3>
+
+            <p>
+                @Html.DisplayFor(model => model.Autor.Nombre)
+                @Html.DisplayFor(model => model.Autor.Apellido)
+            </p>
+            <p>---</p>
+            <p>Por favor confirma la acción:</p>
+
+            <label class="text-danger">
+                Eliminar
+            </label>
+            <input type="radio" name="accionx" value="eliminar" class="form-control" />
+
+
+        </div>
+    </div>
+
+    <div class="modal-footer">
+
+        <button class="btn" type="button" data-dismiss="modal">Cancelar</button>
+        <input class="btn btn-danger" type="submit" value="Confirmar" />
+
+    </div>
+
+}
+
+<script src="~/Scripts/add.toolTip.js"></script>

@@ -143,6 +143,7 @@
     <Compile Include="Controllers\ObraController.cs" />
     <Compile Include="Controllers\PermisoController.cs" />
     <Compile Include="Controllers\PiezaController.cs" />
+    <Compile Include="Controllers\ReporteController.cs" />
     <Compile Include="Controllers\TecnicaController.cs" />
     <Compile Include="Controllers\TecnicaPiezaController.cs" />
     <Compile Include="Controllers\TipoAtributoController.cs" />
@@ -196,9 +197,9 @@
     <Compile Include="Models\ViewModels\itemListaBasicaDefault.cs" />
     <Compile Include="Models\ViewModels\itemPiezaGenerica.cs" />
     <Compile Include="Models\ViewModels\itemPiezaGenericaCampo.cs" />
-    <Compile Include="Models\ViewModels\ItemReporteBasico.cs" />
+    <Compile Include="Models\ViewModels\ItemReporte.cs" />
     <Compile Include="Models\ViewModels\Item_Ficha.cs" />
-    <Compile Include="Models\ViewModels\ObraReporteBasico.cs" />
+    <Compile Include="Models\ViewModels\ItemObraReporte.cs" />
     <Compile Include="Models\ViewModels\OpcionesImprimir.cs" />
     <Compile Include="Models\ViewModels\PiezaEnCarrito.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -232,11 +233,16 @@
     <Content Include="Content\img\home\carrusel\logo_cehm.png" />
     <Content Include="Content\img\home\carrusel\logo_fcs.png" />
     <Content Include="Content\img\home\carrusel\logo_soumaya.png" />
+    <Content Include="Content\img\home\logoCEHMCS.png" />
+    <Content Include="Content\img\home\logoFCS.png" />
+    <Content Include="Content\img\home\logoSoumayaFCS.png" />
     <Content Include="Content\img\listado\bgMS_color.png" />
     <Content Include="Content\img\listado\bgMS_gris.png" />
     <Content Include="Content\img\listado\headFCS_plano.png" />
     <Content Include="Content\img\listado\headMS_plano.gif" />
     <Content Include="Content\img\logoFundacionCarlosSlim.png" />
+    <Content Include="Content\img\recordFCSLogo.png" />
+    <Content Include="Content\img\recordFCSLogo2.png" />
     <Content Include="Content\img\Site.css" />
     <Content Include="Content\list_Etiqueta.css" />
     <Content Include="Content\PagedList.css" />
@@ -403,11 +409,6 @@
     <Content Include="Views\Ubicacion\_CampoRegistro.cshtml" />
     <Content Include="Views\Tecnica\_CampoRegistro.cshtml" />
     <Content Include="Views\Tecnica\_ListaSelect.cshtml" />
-    <Content Include="Views\MedidaPieza\Create.cshtml" />
-    <Content Include="Views\MedidaPieza\Delete.cshtml" />
-    <Content Include="Views\MedidaPieza\Details.cshtml" />
-    <Content Include="Views\MedidaPieza\Edit.cshtml" />
-    <Content Include="Views\MedidaPieza\Index.cshtml" />
     <Content Include="Views\TipoMedida\_CampoRegistro.cshtml" />
     <Content Include="Views\ImagenPieza\_Crear.cshtml" />
     <Content Include="Views\ImagenPieza\_Eliminar.cshtml" />
@@ -458,10 +459,16 @@
     <Content Include="Views\Home\IndexUsuario.cshtml" />
     <Content Include="Views\Home\_RedirectToLogin.cshtml" />
     <Content Include="Views\TecnicaPieza\_Crear.cshtml" />
-    <Content Include="Views\TecnicaPieza\Delete.cshtml" />
-    <Content Include="Views\TecnicaPieza\Details.cshtml" />
+    <Content Include="Views\TecnicaPieza\_Eliminar.cshtml" />
     <Content Include="Views\TecnicaPieza\_Editar.cshtml" />
-    <Content Include="Views\TecnicaPieza\Index.cshtml" />
+    <Content Include="Views\AutorPieza\_Eliminar.cshtml" />
+    <Content Include="Views\MedidaPieza\_Crear.cshtml" />
+    <Content Include="Views\MedidaPieza\_Editar.cshtml" />
+    <Content Include="Views\MedidaPieza\_Eliminar.cshtml" />
+    <Content Include="Views\Pieza\_CrearUbicacion.cshtml" />
+    <Content Include="Views\Pieza\_EditarUbicacion.cshtml" />
+    <Content Include="Views\Reporte\Index.cshtml" />
+    <Content Include="Views\Reporte\_ReporteLista.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

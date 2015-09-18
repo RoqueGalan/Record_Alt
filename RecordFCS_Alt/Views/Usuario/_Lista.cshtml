@@ -2,14 +2,25 @@
 @using PagedList.Mvc;
 @using RecordFCS_Alt.Helpers
 
-<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
-<div id="contentPager" class="text-center">
-    @Html.PagedListPager(Model, pagina => Url.Action("Lista", new { pagina = pagina }))
+<div class="col-lg-4 col-md-5 col-sm-7">
+    @using (Html.BeginForm("Lista", "Usuario", FormMethod.Get, new { id = "FormBusqueda" }))
+    {
+        <div class="form-group">
+            <div class="input-group input-group-sm">
+                @Html.TextBox("Busqueda", ViewBag.FiltroActual as string, new { @Class = "form-control", placeholder = "Buscar por..." })
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="submit"><span class="fa fa-search"></span></button>
+                </span>
+            </div>
+        </div>
+    }
 </div>
 
-<p class="text-right">Total de Registros <span class="badge">@ViewBag.totalRegistros</span></p>
-
+<div class="pull-right">
+    Total de Registros:
+    <span class="badge" data-toggle="tooltip" title="Total de registros">@Model.TotalItemCount</span>
+</div>
 
 <table class="table table-hover table-condensed">
     <tr>
@@ -78,17 +89,17 @@
 
 </table>
 
-<div id="contentPager" class="text-center">
-    @Html.PagedListPager(Model, pagina => Url.Action("Lista", new { pagina = pagina }))
-    Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) de @Model.PageCount
+<div id="contentPager" class="text-center center-block">
+    @Html.PagedListPager(Model, pagina => Url.Action("Lista", new { pagina = pagina, FiltroActual = ViewBag.FiltroActual }), new PagedListRenderOptions { LinkToFirstPageFormat = "<< Inicio", LinkToPreviousPageFormat = "< Anterior", LinkToNextPageFormat = "Siguiente >", LinkToLastPageFormat = "Final >>", UlElementClasses = new[] { "pagination", "pagination-sm" } })
 </div>
 
 
-@* ! @Script.Render is not supported in partials - for extensions see: http://stackoverflow.com/a/13765578/209259
 
-    @Scripts.Render("~/bundles/modalform")
+<script src="~/Scripts/add.toolTip.js"></script>
 
-*@
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
 
 <script type="text/javascript">
     $(function () {
@@ -96,9 +107,9 @@
 
         $("a[data-modal].Usuario").on("click", function (e) {
 
-            $('#myModalContent').load(this.href, function () {
-                $('#myModal').modal({
-                    /*backdrop: 'static',*/
+            $('#miModalContenido').load(this.href, function () {
+                $('#miModal').modal({
+                    backdrop: 'static',
                     keyboard: true
                 }, 'show');
                 bindForm_Usuario(this);
@@ -108,24 +119,35 @@
     });
 
     function bindForm_Usuario(dialog) {
-        $('form', dialog).submit(function () {
-            $.ajax({
-                url: this.action,
-                type: this.method,
-                data: $(this).serialize(),
-                success: function (result) {
-                    if (result.success) {
-                        $('#myModal').modal('hide');
-                        $('#replacetarget').load(result.url); //  Campo que actualizara
-                        $('#alertasDiv').load('@Url.Action("_Alertas","Base")');
+        $('form', dialog).submit(function (e) {
 
-                    } else {
-                        $('#myModalContent').html(result);
-                        $('#alertasDiv').load('@Url.Action("_Alertas","Base")');
-                        bindForm_Usuario(dialog);
+            e.preventDefault();
+            var validarOK = false;
+            validarOK = $(this).validate().valid();
+            if (validarOK) {
+
+                $.ajax({
+                    url: this.action,
+                    type: this.method,
+                    data: $(this).serialize(),
+                    success: function (result) {
+                        if (result.success) {
+                            $('#miModal').modal('hide');
+                            if ($('#replacetarget').length)
+                                $('#replacetarget').load(result.url); //  Campo que actualizara
+                            else
+                                window.location.reload();
+
+                            $('#alertasDiv').load('@Url.Action("_Alertas","Base")');
+
+                        } else {
+                            $('#miModalContenido').html(result);
+                            $('#alertasDiv').load('@Url.Action("_Alertas","Base")');
+                            bindForm_Usuario(dialog);
+                        }
                     }
-                }
-            });
+                });
+            }
             return false;
         });
     }
@@ -148,4 +170,27 @@
             return false;
         });
     });
+
+
+
+
+    //Buscador carga vista parcial en el div
+    $(function () {
+        $.ajaxSetup({ cache: false });
+
+        $('#FormBusqueda').submit(function (e) {
+
+            e.preventDefault();
+            $.ajax({
+                url: this.action,
+                type: this.method,
+                data: $(this).serialize(),
+                success: function (result) {
+                    $('#replacetarget').html(result);
+                }
+            });
+            return false;
+        });
+    });
+
 </script>

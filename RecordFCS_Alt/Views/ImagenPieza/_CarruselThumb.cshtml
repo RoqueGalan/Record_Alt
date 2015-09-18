@@ -7,6 +7,7 @@
     int NoImagenes = Model.Count();
     string CarruselID = ViewBag.CarruselID;
     string active = "active";
+    bool esCompleta = ViewBag.esCompleta;
 }
 
 
@@ -20,7 +21,7 @@
                 <div class="thumbnail img-thumbnail">
                     <img src="holder.js/250x200/text:404" alt="Sin Imagen" class="media-object imagenMini">
 
-                    @if (User.IsInRole("imgNew"))
+                    @if (User.IsInRole("imgNew") && esCompleta)
                     {
                         <div class="caption text-center">
 
@@ -56,17 +57,20 @@
 
                             <div>
 
-                                @if (User.IsInRole("imgNew"))
+                                @if (esCompleta)
                                 {
-                                    @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Nueva Imagen", "Crear", "ImagenPieza", new { id = item.PiezaID }, htmlAttributes: new { data_modal = "", @class = "link link-success btn-xs ModalImagen" })
-                                }
-                                @if (User.IsInRole("imgEdit"))
-                                {
-                                    @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar Imagen", "Editar", "ImagenPieza", new { id = item.ImagenPiezaID }, htmlAttributes: new { data_modal = "", @class = "link link-info btn-xs ModalImagen" })
-                                }
-                                @if (User.IsInRole("imgDel"))
-                                {
-                                    @Html.NoEncodeActionLink("<span class='fa fa-trash'></span>", "Eliminar Imagen", "Eliminar", "ImagenPieza", new { id = item.ImagenPiezaID }, htmlAttributes: new { data_modal = "", @class = "link link-danger btn-xs ModalImagen" })
+                                    if (User.IsInRole("imgNew"))
+                                    {
+                                        @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Nueva Imagen", "Crear", "ImagenPieza", new { id = item.PiezaID }, htmlAttributes: new { data_modal = "", @class = "link link-success btn-xs ModalImagen" })
+                                    }
+                                    if (User.IsInRole("imgEdit"))
+                                    {
+                                        @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar Imagen", "Editar", "ImagenPieza", new { id = item.ImagenPiezaID }, htmlAttributes: new { data_modal = "", @class = "link link-info btn-xs ModalImagen" })
+                                    }
+                                    if (User.IsInRole("imgDel"))
+                                    {
+                                        @Html.NoEncodeActionLink("<span class='fa fa-trash'></span>", "Eliminar Imagen", "Eliminar", "ImagenPieza", new { id = item.ImagenPiezaID }, htmlAttributes: new { data_modal = "", @class = "link link-danger btn-xs ModalImagen" })
+                                    }
                                 }
 
                             </div>
@@ -90,12 +94,11 @@
         <ol class="carousel-indicators">
             @{active = "active";}
 
-
             @for (int i = 0; i < NoImagenes; i++)
             {
                 <li data-target="#@CarruselID" data-slide-to="@i" class="@active"></li>
 
-                ViewBag.active = "";
+                active = "";
             }
 
         </ol>
@@ -118,7 +121,7 @@
         $("a[data-modal].ModalImagen").on("click", function (e) {
             $('#miModalContenido').load(this.href, function () {
                 $('#miModal').modal({
-                    /*backdrop: 'static',*/
+                    backdrop: 'static',
                     keyboard: true
                 }, 'show');
             });

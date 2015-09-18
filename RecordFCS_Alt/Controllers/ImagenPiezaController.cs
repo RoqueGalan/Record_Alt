@@ -19,7 +19,7 @@ namespace RecordFCS_Alt.Controllers
         private RecordFCSContext db = new RecordFCSContext();
         
         [CustomAuthorize(permiso = "")]
-        public ActionResult Carrusel(Guid? id, bool status = false, string tipo = "original")
+        public ActionResult Carrusel(Guid? id, bool status = false, string tipo = "original", bool esCompleta = true)
         {
             if (id == null) { return new HttpStatusCodeResult(HttpStatusCode.BadRequest); }
 
@@ -51,6 +51,8 @@ namespace RecordFCS_Alt.Controllers
             ViewBag.NoImagenes = pieza.ImagenPiezas.Count;
 
             ViewBag.CarruselID = "Carrusel_" + id;
+
+            ViewBag.esCompleta = esCompleta;
 
             return PartialView(vista, pieza.ImagenPiezas);
         }

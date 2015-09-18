@@ -1,4 +1,4 @@
-﻿@model RecordFCS_Alt.Models.TecnicaPieza
+﻿@model RecordFCS_Alt.Models.Pieza
 
 @{
     bool EsMultipleValor = ViewBag.EsMultipleValor;
@@ -7,7 +7,7 @@
     Guid TipoAtributoID = ViewBag.TipoAtributoID;
     string TipoInput = ViewBag.TipoInput;
     string NombreAtt = ViewBag.NombreAtt;
-    SelectList ListaTecnicasID = (SelectList)ViewBag.TecnicaID;
+    SelectList ListaUbicacionesID = (SelectList)ViewBag.UbicacionID;
 
     Guid id = ViewBag.id;
     Guid LLaveID = ViewBag.LLaveID;
@@ -21,8 +21,6 @@
 }
 
 
-
-
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true" data-toggle="tooltip" title="Cerrar">&times;</button>
     <h4 class="modal-title" id="myModalLabel">
@@ -32,7 +30,7 @@
 </div>
 
 
-@using (Html.BeginForm("Editar", "TecnicaPieza", FormMethod.Post, null))
+@using (Html.BeginForm("EditarUbicacion", "Pieza", FormMethod.Post, null))
 {
     <div class="modal-body">
 
@@ -41,33 +39,32 @@
         <div class="form-horizontal">
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             @Html.HiddenFor(model => model.PiezaID)
+            @Html.HiddenFor(model => model.FechaRegistro)
+            @Html.HiddenFor(model => model.ObraID)
+            @Html.HiddenFor(model => model.PiezaPadreID)
             @Html.HiddenFor(model => model.Status)
+            @Html.HiddenFor(model => model.SubFolio)
+            @Html.HiddenFor(model => model.Temp)
+            @Html.HiddenFor(model => model.TipoPiezaID)
             @Html.Hidden("LLaveID", LLaveID)
             @Html.Hidden("AtributoID", AtributoID)
 
-            <div>
-                @Html.DropDownList("TipoTecnicaID", null, "- Elije una opción -", htmlAttributes: new { @class = "form-control", required = "required" })
-            </div>
 
-            <br />
 
             <div class="input-group">
-                @Html.DropDownList("id_" + AtributoID, ListaTecnicasID, "- Elije una opción -", htmlAttributes: new { @class = "form-control", required = "required" })
+                @Html.DropDownList("id_" + AtributoID, ListaUbicacionesID, "- Elije una opción -", htmlAttributes: new { @class = "form-control", required = "required" })
 
                 <span class="input-group-addon"></span>
 
                 <input id="buscar_@AtributoID" type="text" placeholder="Buscar valor" class="form-control" />
 
-                @if (User.IsInRole("catNew"))
+                @if (User.IsInRole("ubiNew"))
                 {
                     <span class="input-group-addon">
                         <input type="checkbox" id="checkAdd_@AtributoID" class="btnCheckAdd" data-toggle="tooltip" data-title="Buscar/Guardar">
                     </span>
                 }
-                else
-                {
-                    <input type="hidden" id="checkAdd_@AtributoID" class="btnCheckAdd" data-toggle="tooltip" data-title="Buscar/Guardar">
-                }
+
 
 
                 <span id="btnAccion_@AtributoID" name="Buscar" class="input-group-addon btn btn-default">
@@ -78,16 +75,11 @@
             </div>
 
         </div>
-
-
     </div>
 
 
+
     <div class="modal-footer">
-        @if (User.IsInRole("attPDel"))
-        {
-            <button class="btn btn-danger pull-left" type="button" id="btnDel">Eliminar</button>
-        }
         <button class="btn" type="button" data-dismiss="modal">Cancelar</button>
         <input class="btn btn-primary" type="submit" value="Guardar" />
     </div>
@@ -95,94 +87,13 @@
 }
 
 
-<script type="text/javascript">
-
-    $('#btnDel').on("click", function (e) {
-
-        var PiezaID = $('#PiezaID').val();
-        var LLaveID = $('#LLaveID').val();
-
-        var myUrl = "@Url.Action("Eliminar","TecnicaPieza",null)" + "/" + PiezaID + "?TipoTecnicaID=" + LLaveID;
-        $('#miModalContenidoFloat').load(myUrl, function () {
-            $('#miModalFloat').modal({
-                backdrop: 'static',
-                keyboard: true
-            }, 'show');
-            $("#miModalFloat").css("z-index", "1500");
-
-            bindForm_EliminarAtt(this);
-        });
-
-
-        return false;
-    });
-
-
-    function bindForm_EliminarAtt(dialog) {
-
-        $('form', dialog).submit(function (e) {
-
-            $.ajax({
-                url: this.action,
-                type: this.method,
-                data: $(this).serialize(),
-                success: function (result) {
-                    if (result.success) {
-
-                        window.location.reload();
-                        return false;
-
-                    } else {
-                        $('#miModalContenidoFloat').html(result);
-                        bindForm_EliminarAtt(dialog);
-                    }
-                }
-            });
-
-            return false;
-        });
-    }
-
-</script>
-
-
 
 
 <script type="text/javascript">
-
-    $('#TipoTecnicaID').on('change', function (e) {
-
-        var attID = '@AtributoID';
-
-        var $inputBuscar = $('#buscar_' + attID);
-
-        var $inputSelectPadre = $('#TipoTecnicaID');
-        var $itemSelectedPadre = $inputSelectPadre.find('option:selected');
-
-        $inputBuscar.val('');
-
-
-        if ($itemSelectedPadre.val() == "") {
-            $('#id_' + attID).html('<option value = ""> - Elije una opción -</option>');
-
-        } else {
-
-            //extraer los valores de tipo tecnica
-            if ($('#checkAdd_' + attID).is(':checked')) {
-
-                $('#checkAdd_' + attID).trigger("click");
-            }
-
-
-            $('#btnAccion_' + attID).trigger("click");
-        }
-
-
-    });
-
-
 
     $('#btnAccion_@AtributoID').on("click", function (e) {
+
+
         var attID = '@AtributoID';
         var tipoAttID = '@TipoAtributoID';
         var $inputSelect = $('#id_' + attID);
@@ -191,11 +102,6 @@
         var $inputBuscar = $('#buscar_' + attID);
 
         var $btn = $('#btnAccion_@AtributoID');
-
-
-        var $inputSelectPadre = $('#TipoTecnicaID');
-        var $itemSelectedPadre = $inputSelectPadre.find('option:selected');
-
 
         /*
         Elemento Seleccionado:
@@ -216,31 +122,27 @@
         if ($btn.attr("name") == "Agregar") {
             //alert("entro a agregar");
 
-            if ($itemSelectedPadre.val() != "") {
+            var myUrl = '@Url.Action("Crear", "Ubicacion", new { EsRegistroObra = true })';
 
-                var myUrl = '@Url.Action("Crear", "Tecnica", null)';
+            $.ajaxSetup({ cache: false });
 
-                myUrl += '/' + $inputSelectPadre.val() + '?EsRegistroObra=true';
+            $('#miModalContenidoFloat').load(myUrl, function () {
+                $('#Nombre').val($inputBuscar.val());
 
-                $.ajaxSetup({ cache: false });
+                $('#miModalFloat').modal({
+                    backdrop: 'static',
+                    keyboard: true,
 
-                $('#miModalContenidoFloat').load(myUrl, function () {
-                    $('#Descripcion').val($inputBuscar.val());
+                }, 'show');
 
-                    $('#miModalFloat').modal({
-                        backdrop: 'static',
-                        keyboard: true
-                    }, 'show');
+                $("#miModalFloat").css("z-index", "1500");
 
-                    $("#miModalFloat").css("z-index", "1500");
+                bindForm_ListaUbicacion(this);
+            });
 
-                    bindForm_ListaTecnica(this);
+            function bindForm_ListaUbicacion(dialog) {
 
-                });
 
-            };
-
-            function bindForm_ListaTecnica(dialog) {
                 var attID = '@AtributoID';
 
                 $('form', dialog).submit(function (e) {
@@ -259,7 +161,7 @@
                                 if (result.success) {
                                     $('#miModalFloat').modal('hide');
 
-                                    $('#buscar_' + attID).val(result.descripcion);
+                                    $('#buscar_' + attID).val($.trim(result.nombre));
 
                                     $('#checkAdd_' + attID).trigger("click");
                                     $('#btnAccion_' + attID).trigger("click");
@@ -267,9 +169,10 @@
                                     $('#alertasDiv').load('/Base/_Alertas');
                                     $("#alertasDiv").css("z-index", "2000");
 
+
                                 } else {
                                     $('#miModalContenidoFloat').html(result);
-                                    bindForm_ListaTecnica(dialog);
+                                    bindForm_ListaUbicacion(dialog);
                                 }
                             }
                         });
@@ -286,44 +189,40 @@
 
             $.ajaxSetup({ cache: false });
 
-            var myUrl = '@Url.Action("GenerarLista","Tecnica",null)';
+            var myUrl = '@Url.Action("GenerarLista","Ubicacion",null)';
 
-            $inputSelect.html('<option value = ""> Cargando... </option>');
+            $inputSelect.html('<option> Cargando... </option>');
+
             $.ajax({
                 url: myUrl,
                 type: 'POST',
-                data: { id: $inputSelectPadre.val(), Filtro: $inputBuscar.val() },
+                data: { id: tipoAttID, Filtro: $inputBuscar.val() },
                 dataType: 'json',
                 success: function (result) {
 
                     if (result.length) {
-                        $inputSelect.val('');
-                        $itemSelected.val('');
-                        $itemSelected.text('');
-                        $inputSelect.html('<option value = ""> - Elije un resultado - </option>');
+                        $inputSelect.html('<option> - Elije un resultado - </option>');
 
                         for (var i = 0; i < result.length; i++) {
-                            $inputSelect.append('<option value = "' + result[i].TecnicaID + '">' + result[i].Descripcion + '</option>');
+                            $inputSelect.append('<option value = "' + result[i].AutorID + '">' + result[i].Nombre + '</option>');
                         }
                     }
                     else {
-                        $inputSelect.html('<option value = ""> - Sin resultados - </option>');
+                        $inputSelect.html('<option> - Sin resultados - </option>');
                     }
 
 
                 }
             });
 
+            $inputSelect.focus();
 
         }
 
-        $itemSelected.val('');
-        $inputSelect.val('');
-
-        $inputSelect.focus();
     });
 
     $('#checkAdd_@AtributoID').on("click", function (e) {
+
         var attID = '@AtributoID';
         var $btnCheck = $('#checkAdd_' + attID);
         var $btn = $('#btnAccion_@AtributoID');
@@ -350,11 +249,8 @@
         }
     });
 
-
-
-
-
 </script>
+
 
 
 <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
