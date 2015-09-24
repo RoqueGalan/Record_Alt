@@ -17,7 +17,7 @@ namespace RecordFCS_Alt.Controllers
         private RecordFCSContext db = new RecordFCSContext();
 
 
-        // GET: AtributoPieza/Create
+        // GET: AtributoPieza/Crear
         [CustomAuthorize(permiso = "attPNew")]
         public ActionResult Crear(Guid? id, Guid? AtributoID)
         {
@@ -169,7 +169,7 @@ namespace RecordFCS_Alt.Controllers
             return _vista;
         }
 
-        // POST: AtributoPieza/Create
+        // POST: AtributoPieza/Crear
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que desea enlazarse. Para obtener 
         // más información vea http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -260,7 +260,7 @@ namespace RecordFCS_Alt.Controllers
 
         }
 
-        // GET: AtributoPieza/Edit/5
+        // GET: AtributoPieza/Editar/5
         [CustomAuthorize(permiso = "attPEdit")]
         public ActionResult Editar(Guid? id, Guid? AtributoID, Guid? LLaveID)
         {
@@ -397,7 +397,7 @@ namespace RecordFCS_Alt.Controllers
             return _vista;
         }
 
-        // POST: AtributoPieza/Edit/5
+        // POST: AtributoPieza/Editar/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         [CustomAuthorize(permiso = "attPEdit")]

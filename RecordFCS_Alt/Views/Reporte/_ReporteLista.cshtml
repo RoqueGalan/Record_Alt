@@ -1,9 +1,13 @@
-﻿@using RecordFCS_Alt.Models.ViewModels
+﻿@using RecordFCS_Alt.Models.ViewsModel
 @using RecordFCS_Alt.Helpers
 
 @{
-
-
+    int totalPiezasObligatorias = ViewBag.totalPiezasObligatorias;
+    int subTotalPiezasConCampo = ViewBag.subTotalPiezasConCampo;
+    int subTotalPiezasSinCampo = ViewBag.subTotalPiezasSinCampo;
+    int subTotalPiezasMultiples = ViewBag.subTotalPiezasMultiples;
+    List<ItemReporte> listaMaestra = ViewBag.listaMaestra;
+    List<ItemObraReporte> listaObraSinCampo = ViewBag.listaObraSinCampo;
 }
 
 @{
@@ -24,59 +28,117 @@
 
     <div class="row">
         <table class="table table-condensed table-striped table-hover">
-            <thead>
-                <tr>
-                    <th class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                        Lista de @ViewBag.Titulo
-                        <span id="Listado-1" class="btn btn-primary btn-xs labelbtnMostrar"><i class="fa fa-caret-down "></i></span>
-                    </th>
-                    <th class="col-lg-2 col-md-2 col-sm-2 col-xs-2">Cantidad</th>
-                    <th class="col-lg-2 col-md-2 col-sm-2 col-xs-2">%</th>
-                </tr>
-            </thead>
-
-            <tbody id="TablaListado-1">
-                @foreach (var item in listaMaestra)
-                {
+            @if (listaMaestra.Count > 0)
+            {
+                <thead>
                     <tr>
-                        <td>@item.Nombre</td>
-                        <td>@item.Cantidad</td>
-                        <td>@item.Porcentaje<span>%</span></td>
+                        <th class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                            Registradas
+                            <span id="Listado-1" class="btn btn-primary btn-xs labelbtnMostrar"><i class="fa fa-caret-down "></i></span>
+                        </th>
+                        <th class="col-lg-2 col-md-2 col-sm-2 col-xs-2"></th>
+                        <th class="col-lg-2 col-md-2 col-sm-2 col-xs-2"></th>
                     </tr>
-                }
-            </tbody>
+                </thead>
 
-
-
-
-
+                <tbody id="TablaListado-1">
+                    <tr>
+                        <td><b>@ViewBag.Titulo</b></td>
+                        <td><b>Cantidad</b></td>
+                        <td><b>%</b></td>
+                    </tr>
+                    @foreach (var item in listaMaestra)
+                    {
+                        <tr>
+                            <td>@item.Nombre</td>
+                            <td>@item.Cantidad</td>
+                            <td>@item.Porcentaje<span>%</span></td>
+                        </tr>
+                    }
+                </tbody>
+            }
             <tfoot>
                 <tr>
-                    <td class="text-right">REGISTRADAS</td>
-                    <td><b>@</b></td>
-                    <td></td>
+                    <td class="col-lg-8 col-md-8 col-sm-8 col-xs-8 text-right">REGISTRADAS</td>
+                    <td class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><b>@subTotalPiezasConCampo</b></td>
+                    <td class="col-lg-2 col-md-2 col-sm-2 col-xs-2"></td>
                 </tr>
 
                 <tr>
                     <td class="text-right">MULTIPLES</td>
-                    <td><b>@</b></td>
+                    <td><b>@subTotalPiezasMultiples</b></td>
                     <td></td>
                 </tr>
 
+            </tfoot>
+
+        </table>
+
+        <!--TABLA SIN REGISTRO-->
+        @if (listaObraSinCampo.Count > 0)
+        {
+            <table class="table table-condensed table-striped table-hover">
+
+                <thead>
+                    <tr>
+                        <th class="col-lg-3 col-md-3 col-sm-3 col-xs-4">
+                            Sin registro
+                            <span id="Listado-2" class="btn btn-primary btn-xs labelbtnMostrar"><i class="fa fa-caret-down "></i></span>
+                        </th>
+                        <th class="col-lg-9 col-md-9 col-sm-9 col-xs-8">
+                    </tr>
+                </thead>
+
+                <tbody id="TablaListado-2">
+                    <tr>
+                        <td><b>No. Inventario</b></td>
+                        <td><b>Título</b> <span class="text-muted">Solo se muestran las primeras 100</span></td>
+                    </tr>
+                    @foreach (var item in listaObraSinCampo)
+                    {
+                        <tr>
+                            <td>
+                                @if (User.IsInRole("verFichComp"))
+                                {
+                                    <a href="@Url.Action("Detalles", "Obra", new  {id = item.ObraID })" data-toggle="tooltip" title="Abrir Ficha Completa" target="_blank">@item.Clave</a>
+                                }
+                                else
+                                {
+                                    @item.Clave
+                                }
+                            </td>
+                            <td>@item.Titulo</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        <!--TABLA TOTALES-->
+
+        <table class="table table-condensed table-striped table-hover">
+
+            <tfoot>
                 <tr>
-                    <td class="text-right">SIN REGISTRAR</td>
-                    <td><b>@</b></td>
-                    <td></td>
+                    <td class="col-lg-8 col-md-8 col-sm-8 col-xs-8 text-right">
+                        SIN REGISTRAR
+                    </td>
+                    <th class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                        <b>@subTotalPiezasSinCampo</b>
+                    </th>
+                    <th class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+
+                    </th>
                 </tr>
 
 
                 <tr>
-                    <td class="text-right"><b>TOTAL</b></td>
-                    <td><h4><b>@ </b></h4></td>
+                    <td class="text-right"><h4><b>TOTAL</b></h4></td>
+                    <td><h4><b>@totalPiezasObligatorias </b></h4></td>
                     <td></td>
                 </tr>
             </tfoot>
         </table>
+
     </div>
 
 

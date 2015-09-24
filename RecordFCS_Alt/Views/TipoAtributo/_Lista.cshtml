@@ -33,6 +33,27 @@
         </th>
     </tr>
 
+    <!-- TipoMovimiento-->
+    @if (User.IsInRole("tMovList"))
+    {
+        <tr>
+            <td></td>
+            <td>
+                Tipo de Movimiento de obra
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+                <div class="pull-right btn-group">
+                    @Html.NoEncodeActionLink("<span class='fa fa-gear'></span>", "Configurar Tipo de Movimiento", "Index", "TipoMovimiento", null, htmlAttributes: new { data_toggle = "tooltip", @class = "btn btn-primary btn-xs" })
+
+                </div>
+            </td>
+        </tr>
+    }
+    
     <!-- LetraFolio-->
     @if (User.IsInRole("leFolList"))
     {

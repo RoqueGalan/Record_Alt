@@ -15,7 +15,7 @@ namespace RecordFCS_Alt.Controllers
     {
         private RecordFCSContext db = new RecordFCSContext();
 
-        // POST: MedidaPieza/Create
+        // POST: MedidaPieza/Crear
         [HttpPost]
         [ValidateAntiForgeryToken]
         [CustomAuthorize(permiso = "attPNew")]
@@ -44,7 +44,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
 
-        // POST: MedidaPieza/Edit/5
+        // POST: MedidaPieza/Editar/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         [CustomAuthorize(permiso = "attPEdit")]
@@ -74,7 +74,7 @@ namespace RecordFCS_Alt.Controllers
             return PartialView("_Editar", medidaPieza);
         }
 
-        // GET: MedidaPieza/Delete/5
+        // GET: MedidaPieza/Eliminar/5
         [CustomAuthorize(permiso = "attPDel")]
         public ActionResult Eliminar(Guid? id, Guid? TipoMedidaID)
         {
@@ -91,7 +91,7 @@ namespace RecordFCS_Alt.Controllers
             return PartialView("_Eliminar", medidaPieza);
         }
 
-        // POST: MedidaPieza/Delete/5
+        // POST: MedidaPieza/Eliminar/5
         [HttpPost, ActionName("Eliminar")]
         [ValidateAntiForgeryToken]
         [CustomAuthorize(permiso = "attPDel")]

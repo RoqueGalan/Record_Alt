@@ -1,4 +1,12 @@
 ﻿@using RecordFCS_Alt.Helpers
+@using RecordFCS_Alt.Models
+
+@{
+    List<LetraFolio> listaLetras = ViewBag.listaLetras;
+    SelectList ListaLetraFolioID = (SelectList)ViewBag.LetraFolioID;
+
+}
+
 
 @using (Html.BeginForm("MostrarResultados", "Buscador", FormMethod.Post, new { id = "FormFiltros", name = "FormFiltros" }))
 {
@@ -8,13 +16,12 @@
         </div>
 
         <!-- Lista de Filtros Dinamicos-->
-        <ul class="list-group" id="filtrosBusqueda">
-        </ul>
+        <ul class="list-group" id="filtrosBusqueda"></ul>
 
         <!-- Filtros Estaticos -->
         <ul class="list-group">
 
-            @*<li class="list-group-item  badge-muted">
+            <li class="list-group-item  badge-muted">
                 <div class="form-group-sm">
                     <div class="text-center">
                         <small>
@@ -25,10 +32,13 @@
                             <i class="fa fa-question text-muted" data-toggle="tooltip" data-original-title="Combinación de coma y guión EJEM: Folio1, Folio2-Folio9"></i>
                         </small>
                     </div>
-
-                    <input type="text" id="claves" name="claves" value="" class="form-control" />
+                    <div class="input-group">
+                        @Html.DropDownList("LetraFolioID", ListaLetraFolioID, null, htmlAttributes: new { @class = "form-control" })
+                        <span class="input-group-addon"></span>
+                        <input type="text" id="claves" name="claves" value="" class="form-control" />
+                    </div>
                 </div>
-            </li>*@
+            </li>
 
             <li class="list-group-item  badge-muted">
                 <div class="form-group-sm">

@@ -1,9 +1,9 @@
-﻿@model PagedList.IPagedList<RecordFCS_Alt.Models.TipoMedida>
+﻿@model PagedList.IPagedList<RecordFCS_Alt.Models.TipoMovimiento>
 @using PagedList.Mvc;
 @using RecordFCS_Alt.Helpers
 
 <div class="col-lg-4 col-md-5 col-sm-7">
-    @using (Html.BeginForm("Lista", "TipoMedida", FormMethod.Get, new { id = "FormBusqueda" }))
+    @using (Html.BeginForm("Lista", "TipoMovimiento", FormMethod.Get, new { id = "FormBusqueda" }))
     {
         <div class="form-group">
             <div class="input-group input-group-sm">
@@ -16,10 +16,12 @@
     }
 </div>
 
+
 <div class="pull-right">
     Total de Registros:
     <span class="badge" data-toggle="tooltip" title="Total de registros">@Model.TotalItemCount</span>
 </div>
+
 
 
 <table class="table table-hover table-condensed">
@@ -32,38 +34,34 @@
             @Html.DisplayNameFor(model => model.FirstOrDefault().Status)
         </th>
         <th class="col-lg-1 col-md-1 col-sm-1 col-xs-2">
-            @if (User.IsInRole("tMedNew"))
+            @if (User.IsInRole("tMovNew"))
             {
-                @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Crear Tipo de Médida", "Crear", "TipoMedida", null, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-success btn-xs pull-right openModal_TipoMedida" })
-
+                @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Crear Tipo de Movimiento", "Crear", "TipoMovimiento", null, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-success btn-xs pull-right openModal_TipoMovimiento" })
             }
         </th>
     </tr>
+
+
 
     @foreach (var item in Model)
     {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Nombre)
-                <small class="text-muted">
-                    @Html.DisplayFor(modelItem => item.Descripcion)
-                </small>
             </td>
-
             <td>
                 @Html.DisplayFor(modelItem => item.Status)
             </td>
-
             <td>
                 <div class="pull-right">
-                    @if (User.IsInRole("tMedEdit"))
+                    @if (User.IsInRole("tMovEdit"))
                     {
-                        @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar " + item.Nombre, "Editar", "TipoMedida", routeValues: new { id = item.TipoMedidaID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-default btn-xs openModal_TipoMedida" })
+                        @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar " + item.Nombre, "Editar", "TipoMovimiento", routeValues: new { id = item.TipoMovimientoID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-default btn-xs openModal_TipoMovimiento" })
 
                     }
-                    @if (User.IsInRole("tMedDel"))
+                    @if (User.IsInRole("tMovDel"))
                     {
-                        @Html.NoEncodeActionLink("<span class='fa fa-trash'></span>", "Eliminar " + item.Nombre, "Eliminar", "TipoMedida", routeValues: new { id = item.TipoMedidaID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-danger btn-xs openModal_TipoMedida" })
+                        @Html.NoEncodeActionLink("<span class='fa fa-trash'></span>", "Eliminar " + item.Nombre, "Eliminar", "TipoMovimiento", routeValues: new { id = item.TipoMovimientoID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-danger btn-xs openModal_TipoMovimiento" })
 
                     }
                 </div>
@@ -72,9 +70,6 @@
     }
 
 </table>
-
-
-
 
 
 <div id="contentPager" class="text-center center-block">
@@ -86,4 +81,4 @@
 
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
-<script src="~/Scripts/TipoMedidaLista.js"></script>
+<script src="~/Scripts/TipoMovimientoLista.js"></script>

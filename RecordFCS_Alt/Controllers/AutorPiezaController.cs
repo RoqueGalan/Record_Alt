@@ -15,7 +15,7 @@ namespace RecordFCS_Alt.Controllers
     {
         private RecordFCSContext db = new RecordFCSContext();
 
-        // POST: AutorPieza/Create
+        // POST: AutorPieza/Crear
         [HttpPost]
         [ValidateAntiForgeryToken]
         [CustomAuthorize(permiso = "attPNew")]
@@ -64,7 +64,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
 
-        // POST: AutorPieza/Edit/5
+        // POST: AutorPieza/Editar/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         [CustomAuthorize(permiso = "attPEdit")]

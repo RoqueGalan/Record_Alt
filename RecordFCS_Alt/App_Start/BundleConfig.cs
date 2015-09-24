@@ -30,7 +30,12 @@ namespace RecordFCS_Alt
                      "~/Content/site.css",
                      "~/Content/alertas.css",
                      "~/Content/css/font-awesome.css",
-                     "~/Content/bootstrap-subMenus.css"));
+                     "~/Content/bootstrap-subMenus.css",
+                     "~/Content/bootstrap-datetimepicker.css"));
+
+            bundles.Add(new ScriptBundle("~/bundles/datetime").Include(
+                "~/Scripts/moment*",
+                "~/Scripts/bootstrap-datetimepicker*"));
         }
     }
 }

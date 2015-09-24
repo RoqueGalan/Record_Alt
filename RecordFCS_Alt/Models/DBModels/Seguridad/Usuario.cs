@@ -48,5 +48,7 @@ namespace RecordFCS_Alt.Models
         public virtual ICollection<Permiso> Permisos { get; set; }
         //public virtual ICollection<log_Historial> Historial { get; set; }
 
+        //public virtual ICollection<MovimientoAutorizacion> Autorizaciones { get; set; }
+
     }
 }

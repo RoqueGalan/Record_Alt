@@ -16,7 +16,7 @@ namespace RecordFCS_Alt.Controllers
         private RecordFCSContext db = new RecordFCSContext();
 
 
-        // POST: TecnicaPieza/Create
+        // POST: TecnicaPieza/Crear
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que desea enlazarse. Para obtener 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -64,7 +64,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
 
-        // POST: TecnicaPieza/Edit/5
+        // POST: TecnicaPieza/Editar/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         [CustomAuthorize(permiso = "attPEdit")]
@@ -124,7 +124,7 @@ namespace RecordFCS_Alt.Controllers
 
         }
 
-        // GET: TecnicaPieza/Delete/5
+        // GET: TecnicaPieza/Eliminar/5
         [CustomAuthorize(permiso = "attPDel")]
         public ActionResult Eliminar(Guid? id, Guid? TipoTecnicaID)
         {
@@ -140,7 +140,7 @@ namespace RecordFCS_Alt.Controllers
             return PartialView("_Eliminar", tecnicaPieza);
         }
 
-        // POST: TecnicaPieza/Delete/5
+        // POST: TecnicaPieza/Eliminar/5
         [HttpPost, ActionName("Eliminar")]
         [ValidateAntiForgeryToken]
         [CustomAuthorize(permiso = "attPDel")]

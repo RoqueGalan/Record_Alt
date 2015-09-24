@@ -58,6 +58,10 @@ namespace RecordFCS_Alt.Models
         //  videos
         //  audio
 
+
+
+        public virtual ICollection<MovimientoPieza> MovimientoPiezas { get; set; }
+
     }
 
 

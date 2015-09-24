@@ -33,7 +33,7 @@ namespace RecordFCS_Alt.Controllers
             return View(pieza);
         }
 
-        // GET: Pieza/Create
+        // GET: Pieza/Crear
         [CustomAuthorize(permiso = "")]
 
         public ActionResult Create()
@@ -45,7 +45,7 @@ namespace RecordFCS_Alt.Controllers
             return View();
         }
 
-        // POST: Pieza/Create
+        // POST: Pieza/Crear
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que desea enlazarse. Para obtener 
         // más información vea http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -69,7 +69,7 @@ namespace RecordFCS_Alt.Controllers
             return View(pieza);
         }
 
-        // GET: Pieza/Edit/5
+        // GET: Pieza/Editar/5
         [CustomAuthorize(permiso = "")]
 
         public ActionResult Edit(Guid? id)
@@ -90,7 +90,7 @@ namespace RecordFCS_Alt.Controllers
             return View(pieza);
         }
 
-        // POST: Pieza/Edit/5
+        // POST: Pieza/Editar/5
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que desea enlazarse. Para obtener 
         // más información vea http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -112,7 +112,7 @@ namespace RecordFCS_Alt.Controllers
             return View(pieza);
         }
 
-        // GET: Pieza/Delete/5
+        // GET: Pieza/Eliminar/5
         [CustomAuthorize(permiso = "")]
 
         public ActionResult Delete(Guid? id)
@@ -129,8 +129,8 @@ namespace RecordFCS_Alt.Controllers
             return View(pieza);
         }
 
-        // POST: Pieza/Delete/5
-        [HttpPost, ActionName("Delete")]
+        // POST: Pieza/Eliminar/5
+        [HttpPost, ActionName("Eliminar")]
         [ValidateAntiForgeryToken]
         [CustomAuthorize(permiso = "")]
 

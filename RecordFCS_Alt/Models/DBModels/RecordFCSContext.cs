@@ -48,6 +48,16 @@ namespace RecordFCS_Alt.Models
         public DbSet<Usuario> Usuarios { get; set; }
 
 
+        // movimientos
+        public DbSet<TipoMovimiento> TipoMovimientos { get; set; }
+        public DbSet<Movimiento> Movimientos { get; set; }
+        public DbSet<MovimientoAutorizacion> MovimientoAutorizaciones { get; set; }
+        public DbSet<MovimientoExposicion> MovimientoExposiciones { get; set; }
+        public DbSet<MovimientoPieza> MovimientoPiezas { get; set; }
+        public DbSet<MovimientoResponsable> MovimientoResponsables { get; set; }
+        public DbSet<MovimientoSeguro> MovimientoSeguros { get; set; }
+        public DbSet<MovimientoSolicitante> MovimientoSolicitante { get; set; }
+        public DbSet<MovimientoTransporte> MovimientoTransporte { get; set; }
 
 
 
@@ -73,5 +83,7 @@ namespace RecordFCS_Alt.Models
                 WithRequired(b => b.TipoObra).
                 WillCascadeOnDelete(false);
         }
+
+
     }
 }

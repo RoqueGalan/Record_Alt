@@ -23,6 +23,8 @@ namespace RecordFCS_Alt.Models
 
         //Virtuales
         public virtual ICollection<Pieza> Piezas { get; set; }
+        public virtual ICollection<Movimiento> Movimientos { get; set; }
+
     }
 
     public class UbicacionMetadata

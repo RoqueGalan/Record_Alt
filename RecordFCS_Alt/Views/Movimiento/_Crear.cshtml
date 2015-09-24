@@ -1,0 +1,672 @@
+﻿@model RecordFCS_Alt.Models.Movimiento
+
+
+
+<h1 class="text-center text-capitalize"><b>Movimiento: </b>@Model.TipoMovimiento.Nombre</h1>
+
+@*
+
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.FechaSalida, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.FechaSalida, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.FechaSalida, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.FechaRet, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.FechaRet, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.FechaRet, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+
+
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Observaciones, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Observaciones, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Observaciones, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.MovimientoSolicitanteID, "MovimientoSolicitanteID", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("MovimientoSolicitanteID", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.MovimientoSolicitanteID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.MovimientoResponsableID, "MovimientoResponsableID", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("MovimientoResponsableID", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.MovimientoResponsableID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.MovimientoExposicionID, "MovimientoExposicionID", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("MovimientoExposicionID", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.MovimientoExposicionID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.MovimientoAutorizacionID, "MovimientoAutorizacionID", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("MovimientoAutorizacionID", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.MovimientoAutorizacionID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.MovimientoTransporteID, "MovimientoTransporteID", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("MovimientoTransporteID", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.MovimientoTransporteID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.MovimientoSeguroID, "MovimientoSeguroID", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("MovimientoSeguroID", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.MovimientoSeguroID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+*@
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    </div>
+
+    @Html.HiddenFor(model => model.HaciaExposicion)
+    @Html.HiddenFor(model => model.EstadoMovimiento)
+    @Html.HiddenFor(model => model.FechaRegistro)
+    @Html.HiddenFor(model => model.FolioMovimiento)
+    @Html.HiddenFor(model => model.TipoMovimientoID)
+
+    <ul class="nav nav-tabs">
+
+        <li class="active"><a data-toggle="tab" href="#origenDestinoDIV"><i class="fa fa-globe"></i> Origen/Destino</a></li>
+
+        @{
+
+    if (Model.MovimientoSolicitante != null)
+    {
+        <li><a data-toggle="tab" href="#solicitanteDIV"><i class="fa fa-user"></i> Solicitante</a></li>
+    }
+
+    if (Model.MovimientoExposicion != null)
+    {
+        <li><a data-toggle="tab" href="#exposicionDIV"><i class="fa fa-object-group"></i> Exposición</a></li>
+    }
+
+    if (Model.MovimientoResponsable != null)
+    {
+        <li><a data-toggle="tab" href="#responsableDIV"><i class="fa fa-male"></i> Responsable</a></li>
+    }
+
+    if (Model.MovimientoAutorizacion != null)
+    {
+        <li><a data-toggle="tab" href="#autorizacionDIV"><i class="fa fa-thumbs-up"></i> Autorización</a></li>
+
+    }
+    if (Model.MovimientoTransporte != null)
+    {
+        <li><a data-toggle="tab" href="#transporteDIV"><i class="fa fa-truck"></i> Transporte</a></li>
+
+    }
+    if (Model.MovimientoSeguro != null)
+    {
+        <li><a data-toggle="tab" href="#seguroDIV"><i class="fa fa-newspaper-o"></i> Seguro</a></li>
+
+    }
+
+    <li><a data-toggle="tab" href="#piezasDIV"><i class="fa fa-list-ol"></i> Piezas</a></li>
+            <li><a data-toggle="tab" href="#guardarDIV"><i class="fa fa-save"></i> Guardar</a></li>
+        }
+
+    </ul>
+
+    <div class="tab-content">
+
+        @{
+            <div id="origenDestinoDIV" class="tab-pane fade in active">
+
+                <h3>Origen/Destino</h3>
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="text-center">
+                            <span class="fa fa-globe fa-10x"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-10">
+                        <div class="form-horizontal">
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.UbicacionOrigenID, "Ubicación de Origen", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    <div class="input-group">
+                                        @Html.DropDownList("UbicacionOrigenID", null, "- Origen -", htmlAttributes: new { @class = "form-control enGuardar", required = "required" })
+                                        <span class="input-group-addon"></span>
+                                        <input id="buscar_UbicacionOrigenID" type="text" placeholder="Buscar ubicación" class="form-control" />
+                                        <span id="btnAccion_UbicacionOrigenID" name="Buscar" class="input-group-addon btn btn-primary">
+                                            <span class="fa fa-search"></span>
+                                        </span>
+                                    </div>
+
+                                    <p class="help-block">NOTA: Al seleccionar la ubicación origen, solo se mostratan las Obras/Piezas que coincidan con la misma.</p>
+                                    @Html.ValidationMessageFor(model => model.UbicacionOrigenID, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.UbicacionDestinoID, "Ubicación de Destino", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    <div class="input-group">
+                                        @Html.DropDownList("UbicacionDestinoID", null, " - Destino -", htmlAttributes: new { @class = "form-control enGuardar", required = "required" })
+                                        <span class="input-group-addon"></span>
+                                        <input id="buscar_UbicacionDestinoID" type="text" placeholder="Buscar ubicación" class="form-control" />
+                                        @if (User.IsInRole("ubiNew"))
+                                        {
+                                            <span class="input-group-addon">
+                                                <input type="checkbox" id="checkAdd_UbicacionDestinoID" class="btnCheckAdd" data-toggle="tooltip" data-title="Buscar/Guardar">
+                                            </span>
+                                        }
+                                        <span id="btnAccion_UbicacionDestinoID" name="Buscar" class="input-group-addon btn btn-primary">
+                                            <span class="fa fa-search"></span>
+                                        </span>
+
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.UbicacionDestinoID, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.FechaHoraMovimiento, "Fecha y Hora del Movimiento", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    <div class="input-group date" id="FechaHoraMovimientoDTP">
+                                        @Html.EditorFor(model => model.FechaHoraMovimiento, new { htmlAttributes = new { @class = "form-control enGuardar" } })
+
+                                        <div class="btn btn-primary input-group-addon" data-toggle="tooltip" title="Abrir calendario">
+                                            <span class="fa fa-calendar"></span>
+                                        </div>
+
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.FechaHoraMovimiento, "", new { @class = "text-danger" })
+                                </div>
+
+                                <script type="text/javascript">
+                                    $(function () {
+                                        var hoy = new Date();
+
+                                        var mes = hoy.getMonth() + 1;
+                                        var dia = hoy.getDate();
+
+                                        var fechaLimite = hoy.getFullYear() + '/' +
+                                            (mes < 10 ? '0' : '') + mes + '/' +
+                                            (dia < 10 ? '0' : '') + dia;
+
+                                        $('#FechaHoraMovimientoDTP').datetimepicker({
+                                            defaultDate: "@Model.FechaHoraMovimiento",
+                                            minDate: fechaLimite, //limitar que no se seleccione fechas pasadas a hoy
+                                            format: "DD/MM/YYYY hh:mm A", //formato: dia/mes/año hora:minuto AM/PM
+                                            //disabledDates: [
+                                            //    moment("12/25/2013"),
+                                            //    new Date(2013, 11 - 1, 21),
+                                            //    "11/22/2013 00:53"
+                                            //],
+                                            toolbarPlacement: 'top',
+                                            showTodayButton: true,
+                                            showClose: true,
+                                            ignoreReadonly: true,
+                                            useCurrent: false //Important! See issue #1075
+                                        });
+
+                                        $('#FechaHoraMovimientoDTP').on("dp.change", function (e) {
+                                            $('#FechaHoraMovimiento').trigger("input");
+                                        });
+
+                                        $('#FechaHoraMovimientoDTP').on("dp.update", function (e) {
+                                            $('#FechaHoraMovimiento').trigger("input");
+                                        });
+
+                                    });
+                                </script>
+
+                                <script type="text/javascript">
+                                    $('#btnAccion_UbicacionDestinoID').on("click", function (e) {
+                                        BtnAccion('UbicacionDestinoID');
+
+                                    })
+
+                                    $('#btnAccion_UbicacionOrigenID').on("click", function (e) {
+                                        BtnAccion('UbicacionOrigenID');
+                                    })
+
+
+
+                                    function BtnAccion(attID) {
+                                        var $inputSelect = $('#' + attID);
+                                        var $itemSelected = $inputSelect.find('option:selected');
+                                        var $btnCheck = $('#checkAdd_' + attID);
+                                        var $inputBuscar = $('#buscar_' + attID);
+
+                                        var $btn = $('#btnAccion_' + attID);
+
+                                        if ($btn.attr("name") == "Agregar") {
+                                            //alert("entro a agregar");
+
+                                            var myUrl = '@Url.Action("Crear", "Ubicacion", new { EsRegistroObra = true })';
+
+                                            $.ajaxSetup({ cache: false });
+
+                                            $('#miModalContenido').load(myUrl, function () {
+                                                $('#Nombre').val($inputBuscar.val());
+
+                                                $('#miModal').modal({
+                                                    backdrop: 'static',
+                                                    keyboard: true
+                                                }, 'show');
+
+                                                bindForm_ListaUbicacion(this, attID);
+                                            });
+
+                                            function bindForm_ListaUbicacion(dialog, attID) {
+
+                                                $('form', dialog).submit(function (e) {
+
+                                                    var validarOK = false;
+
+
+                                                    validarOK = $(this).validate().valid();
+
+                                                    if (validarOK) {
+                                                        $.ajax({
+                                                            url: this.action,
+                                                            type: this.method,
+                                                            data: $(this).serialize(),
+                                                            success: function (result) {
+                                                                if (result.success) {
+                                                                    $('#miModal').modal('hide');
+
+                                                                    $('#buscar_' + attID).val(result.nombre);
+
+                                                                    $('#checkAdd_' + attID).trigger("click");
+                                                                    $('#btnAccion_' + attID).trigger("click");
+
+                                                                    $('#alertasDiv').load('/Base/_Alertas');
+
+                                                                } else {
+                                                                    $('#miModalContenido').html(result);
+                                                                    bindForm_ListaUbicacion(dialog);
+                                                                }
+                                                            }
+                                                        });
+                                                    }
+                                                    return false;
+                                                });
+
+                                            }
+
+                                            //mostrar modal para confirmar el campo que se va agregar
+
+                                        }
+                                        else {
+
+                                            $.ajaxSetup({ cache: false });
+
+                                            var myUrl = '@Url.Action("GenerarLista","Ubicacion",null)';
+
+                                            $inputSelect.html('<option> Cargando... </option>');
+
+                                            $.ajax({
+                                                url: myUrl,
+                                                type: 'POST',
+                                                data: { Filtro: $inputBuscar.val() },
+                                                dataType: 'json',
+                                                success: function (result) {
+
+                                                    if (result.length) {
+                                                        $inputSelect.html('<option> - Elije un resultado - </option>');
+
+                                                        for (var i = 0; i < result.length; i++) {
+                                                            $inputSelect.append('<option value = "' + result[i].UbicacionID + '">' + result[i].Nombre + '</option>');
+                                                        }
+                                                    }
+                                                    else {
+                                                        $inputSelect.html('<option> - Sin resultados - </option>');
+                                                    }
+
+
+                                                }
+                                            });
+
+                                            $inputSelect.focus();
+
+                                        }
+                                    };
+
+
+
+                                    $('#checkAdd_UbicacionDestinoID').on("click", function (e) {
+                                        BtnCheck('UbicacionDestinoID');
+                                    })
+
+                                    $('#checkAdd_UbicacionOrigenID').on("click", function (e) {
+                                        BtnCheck('UbicacionOrigenID');
+                                    })
+
+
+                                    function BtnCheck(attID) {
+                                        var $btnCheck = $('#checkAdd_' + attID);
+                                        var $btn = $('#btnAccion_' + attID);
+                                        var $inputBuscar = $('#buscar_' + attID);
+
+
+                                        if ($btnCheck.is(':checked')) {
+                                            $btn.attr("name", "Agregar");
+                                            $btn.html('<span class="fa fa-floppy-o"></span>');
+                                            $btn.removeClass("btn-default");
+                                            $btn.addClass("btn-success");
+
+                                            $inputBuscar.attr("placeholder", "Guardar valor");
+
+                                        }
+                                        else {
+                                            $btn.attr("name", "Buscar");
+                                            $btn.html('<span class="fa fa-search"></span>');
+                                            $btn.removeClass("btn-success");
+                                            $btn.addClass("btn-default");
+
+                                            $inputBuscar.attr("placeholder", "Buscar valor");
+
+                                        }
+                                    };
+
+                                </script>
+
+                                <script type="text/javascript">
+                                    $('#UbicacionOrigenID').on("change", function (e) {
+
+                                        //$(this).val(""); //resetear SELECT
+
+                                        if ($(this).val() == $('#UbicacionDestinoID').val()) {
+                                            $('#UbicacionDestinoID').val("");
+                                        }
+
+                                    });
+
+                                    $('#UbicacionDestinoID').on("change", function (e) {
+                                        if ($(this).val() == $('#UbicacionOrigenID').val()) {
+                                            $(this).val("");
+                                        }
+                                    });
+
+                                </script>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.ColeccionTexto, "Colección", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.ColeccionTexto, new { htmlAttributes = new { @class = "form-control enGuardar" } })
+                                    @Html.ValidationMessageFor(model => model.ColeccionTexto, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+    if (Model.MovimientoSolicitante != null)
+    {
+        <div id="solicitanteDIV" class="tab-pane fade">
+            <h3>Solicitante</h3>
+
+            <p>Nombre</p>
+            <p>Cargo </p>
+            <p>Para la Institución </p>
+            <p>Representante </p>
+            <p>Cargo </p>
+            <p>Sede </p>
+            <p>País / Estado </p>
+            <p>Petición Recibida</p>
+            <p>Dict. Cond. espacio</p>
+            <p>Carta aceptación </p>
+            <p>Contrato comodato </p>
+            <p>Revisión Guión </p>
+            <p>Condición Conservación </p>
+            <p>Facility Report </p>
+            <p>Dict. de seguridad </p>
+            <p>Lista avalúo </p>
+            <p>Trámites de fianza </p>
+            <p>Póliza de Seguro </p>
+            <p>Cartas entr. y recep. </p>
+
+
+        </div>
+    }
+
+    if (Model.MovimientoExposicion != null)
+    {
+        <div id="exposicionDIV" class="tab-pane fade">
+            <h3>Exposición</h3>
+
+            <p>Nombre 1</p>
+            <p>Nombre 2</p>
+            <p>Fecha</p>
+
+
+        </div>
+    }
+
+    if (Model.MovimientoResponsable != null)
+    {<div id="responsableDIV" class="tab-pane fade">
+        <h3>Responsable</h3>
+
+        <p>Nombre </p>
+        <p>Institución  </p>
+        <p>Fecha Salida </p>
+
+
+    </div>
+    }
+
+    if (Model.MovimientoAutorizacion != null)
+    {
+        <div id="autorizacionDIV" class="tab-pane fade">
+            <h3>Autorización</h3>
+
+            <p>Nombre 1</p>
+            <p>Nombre 2</p>
+            <p>Fecha</p>
+
+
+        </div>
+    }
+    if (Model.MovimientoTransporte != null)
+    {
+        <div id="transporteDIV" class="tab-pane fade">
+            <h3>Transporte</h3>
+
+            <p>Empresa </p>
+            <p>Recorrido </p>
+            <p>Horarios </p>
+            <p>Notas </p>
+
+
+        </div>
+    }
+    if (Model.MovimientoSeguro != null)
+    {
+        <div id="seguroDIV" class="tab-pane fade">
+            <h3>Seguro</h3>
+
+            <p>Asegurador </p>
+            <p>N° Poliza</p>
+            <p>Fecha inicial</p>
+            <p>Fecha final</p>
+
+
+        </div>
+    }
+
+
+    <div id="piezasDIV" class="tab-pane fade">
+        <h3>Piezas</h3>
+
+        <p>Opciones de agregar piezas</p>
+        <p>Resultado de piezas</p>
+        <p>Lista de Piezas</p>
+
+    </div>
+
+            <div id="guardarDIV" class="tab-pane fade">
+                <h3>Guardar</h3>
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="text-center">
+                            <span class="fa fa-save fa-10x"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-10">
+                        <div class="form-horizontal">
+                            <p>Se guardaran las siguientes opciones</p>
+
+                            <ul id="listaGuardar">
+                                @*<li id="text_UbicacionOrigenID">1</li>
+                                    <li id="text_UbicacionDestinoID">2</li>
+                                    <li id="text_FechaMovimiento">3</li>*@
+                            </ul>
+
+
+
+                            <p>Observaciones </p>
+                            <p>GUARDAR</p>
+
+                        </div>
+                    </div>
+                </div>
+
+                <script type="text/javascript">
+
+
+
+                    $('.enGuardar').on("change", function (e) {
+                        enGuardarActivar(this);
+                    });
+                    $('.enGuardar').on("paste", function (e) {
+                        enGuardarActivar(this);
+                    });
+                    $('.enGuardar').on("input", function (e) {
+                        enGuardarActivar(this);
+                    });
+                    $('.enGuardar').on("onkeyup", function (e) {
+                        enGuardarActivar(this);
+                    });
+                    $('.enGuardar').on("focusout", function (e) {
+                        enGuardarActivar(this);
+                    });
+
+                    function enGuardarActivar(objeto) {
+
+                        var $id = objeto.id;
+                        var es = "";
+                        var textoValor = "";
+                        var selectValor = "";
+
+                        if ($(objeto).is("input"))
+                            es = "input";
+                        else if ($(objeto).is("select"))//.is('input:text'))
+                            es = "select";
+
+
+                        var $label = $("label[for='" + $id + "']");
+                        var $ul = $('#listaGuardar');
+                        var $liItem = $('#texto_' + $id);
+
+
+
+
+
+                        switch (es) {
+                            case "input":
+                                textoValor = $(objeto).val();
+                                break;
+                            case "select":
+                                $('#' + $id + ' option:selected').each(function () {
+                                    selectValor = $(this)[0].value == "0" || $(this)[0].value == 0 || $(this)[0].value == "" ? "" : $(this)[0].value;
+                                    textoValor = selectValor == "" ? "" : $(this)[0].text;
+                                });
+
+
+                                break;
+                        }
+
+                        //si textovalor == "";
+
+                        var liHTML = "";
+
+
+                        if ($liItem.length) {
+                            textoValor == "" ? $liItem.remove() : $liItem.html('<b>' + $label.text() + ': </b>' + textoValor + '</li>');
+                        }
+                        else {
+                            if (textoValor != "") {
+                                $ul.append('<li id="texto_' + $id + '"><b>' + $label.text() + ': </b>' + textoValor + '</li>');
+                            }
+
+                        }
+
+                    };
+
+
+                </script>
+
+            </div>
+        }
+
+    </div>
+}
+
+
+
+<script type="text/javascript">
+
+    $(function () {
+        $('#FechaHoraMovimiento').trigger("input");
+        $('#ColeccionTexto').trigger('input');
+    });
+
+</script>
+
+
+<script src="~/Scripts/add.toolTip.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>

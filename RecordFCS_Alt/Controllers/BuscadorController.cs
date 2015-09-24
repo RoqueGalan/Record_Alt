@@ -28,6 +28,10 @@ namespace RecordFCS_Alt.Controllers
         public ActionResult MenuFiltros(string rutaVista = "_ResultadosBusqueda")
         {
             ViewBag.rutaVista = rutaVista;
+            var listaLetras = db.LetraFolios.Select(a => new { a.LetraFolioID, Nombre = a.Nombre, a.Status }).Where(a => a.Status).OrderBy(a => a.Nombre);
+            ViewBag.LetraFolioID = new SelectList(listaLetras, "LetraFolioID", "Nombre", listaLetras.FirstOrDefault().LetraFolioID);
+
+
             return PartialView("_MenuFiltros");
         }
 
@@ -114,16 +118,19 @@ namespace RecordFCS_Alt.Controllers
             //campo de Claves
             if (!String.IsNullOrEmpty(Request["claves"]))
             {
-                List<string> listaClaves = new List<string>();
-                string[] clavesForm = Request["claves"].Split(',');
+                int LetraFolioID = Convert.ToInt32(Request["LetraFolioID"].ToString());
+                var letra = db.LetraFolios.Find(LetraFolioID);
 
-                foreach (var claves in clavesForm)
+                List<int> listaClaves = new List<int>();
+                string[] listaClavesFormTemp = Request["claves"].Split(',');
+
+                foreach (var clavesTemp in listaClavesFormTemp)
                 {
-                    if (claves.Contains("-"))
+                    if (clavesTemp.Contains("-"))
                     {
-                        string[] clave = claves.Split('-');
-                        var claveInicio = Convert.ToInt32(clave[0]);
-                        var claveFinal = Convert.ToInt32(clave[1]);
+                        string[] claveTemp = clavesTemp.Split('-');
+                        var claveInicio = Convert.ToInt32(claveTemp[0]);
+                        var claveFinal = Convert.ToInt32(claveTemp[1]);
                         int temp = 0;
 
                         if (claveInicio > claveFinal)
@@ -135,18 +142,18 @@ namespace RecordFCS_Alt.Controllers
 
                         for (int i = claveInicio; i <= claveFinal; i++)
                         {
-                            listaClaves.Add(i.ToString());
+                            listaClaves.Add(i);
                         }
 
                     }
                     else
                     {
-                        listaClaves.Add(claves);
+                        listaClaves.Add(Convert.ToInt32(clavesTemp));
                     }
 
                     //listaPiezas = listaPiezas.Where(a => listaClaves.Any(b => b == a.Obra.Clave));
 
-                    //listaPiezas = listaPiezas.Where(a => listaClaves.Contains(a.Obra.Clave));
+                    listaPiezas = listaPiezas.Where(a => a.Obra.LetraFolioID == letra.LetraFolioID && listaClaves.Contains(a.Obra.NumeroFolio));
                 }
 
             }

@@ -1,6 +1,11 @@
 ﻿
 /*img { -ms-interpolation-mode: bicubic; }*/
-
+.day.disabled, 
+.month.disabled,
+.year.disabled,
+.decade.disabled{
+    color: #e6e6e6 !important;
+}
 body {
     padding-top: 5px;
     padding-bottom: 5px;
