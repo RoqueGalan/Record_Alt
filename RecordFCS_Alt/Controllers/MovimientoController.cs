@@ -49,7 +49,7 @@ namespace RecordFCS_Alt.Controllers
             if (esOK)
             {
 
-                int UltimoFolioMov  = db.Movimientos.Select(a=> a.FolioMovimiento).OrderByDescending(a=> a).FirstOrDefault();
+                int UltimoFolioMov = db.Movimientos.Select(a => a.FolioMovimiento).OrderByDescending(a => a).FirstOrDefault();
 
                 var mov = new Movimiento()
                 {
@@ -115,9 +115,14 @@ namespace RecordFCS_Alt.Controllers
                     mov.FechaHoraMovimiento = DateTime.Now;
 
                     var listaUbicaciones = db.Ubicaciones.Where(a => a.Status).Select(a => new { a.Nombre, a.UbicacionID }).OrderBy(a => a.Nombre);
+                    var listaUsuarios = db.Usuarios.Where(a => a.Status).Select(a => new { Nombre = a.Nombre + " " + a.Apellido, a.UsuarioID }).OrderBy(a => a.Nombre);
 
 
                     ViewBag.NombreMovimiento = tipoMov.Nombre.ToLower();
+
+                    ViewBag.MovimientoAutorizacion_Usuario1ID = new SelectList(listaUsuarios, "UsuarioID", "Nombre");
+                    ViewBag.MovimientoAutorizacion_Usuario2ID = new SelectList(listaUsuarios, "UsuarioID", "Nombre");
+
 
                     ViewBag.UbicacionDestinoID = new SelectList(listaUbicaciones, "UbicacionID", "Nombre");
                     ViewBag.UbicacionOrigenID = new SelectList(listaUbicaciones, "UbicacionID", "Nombre");

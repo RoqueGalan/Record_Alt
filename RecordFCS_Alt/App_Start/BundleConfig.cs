@@ -25,6 +25,8 @@ namespace RecordFCS_Alt
                       "~/Scripts/holder.js",
                       "~/Scripts/respond.js"));
 
+
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                      "~/Content/theme.css",
                      "~/Content/site.css",
@@ -36,6 +38,7 @@ namespace RecordFCS_Alt
             bundles.Add(new ScriptBundle("~/bundles/datetime").Include(
                 "~/Scripts/moment*",
                 "~/Scripts/bootstrap-datetimepicker*"));
+
         }
     }
 }

@@ -16,16 +16,18 @@
 @Html.HiddenFor(model => model)
 
 <div class="btn-group btn-group-xs" data-toggle="buttons">
-    <label class="btn btn-default @yesSelected ">
+    
+    <label class="btn btn-check @yesSelected ">
         <input type="radio" class="bool-@htmlField" onchange="javascript:$('#@htmlField').val(true);" />  Si
     </label>
-    <label class="btn btn-default @noSelected">
+    
+    <label class="btn btn-check @noSelected">
         <input type="radio" class="bool-@htmlField" onchange="javascript:$('#@htmlField').val(false);" /> No
     </label>
 
     @if (ViewData.ModelMetadata.IsNullableValueType)
     {
-        <label class="btn btn-default @noSelection">
+        <label class="btn btn-check @noSelection">
             <input type="radio" class="bool-@htmlField" onclick="javascript:$('#@htmlField').val('');" />Sin Definir
         </label>
 

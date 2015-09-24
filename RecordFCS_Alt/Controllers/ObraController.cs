@@ -114,19 +114,10 @@ namespace RecordFCS_Alt.Controllers
                 return HttpNotFound();
 
 
-            switch (letra.Nombre)
-            {
-                case "A":
-                    InicioFolio = 4368;
-                    break;
-                case "H":
-                    InicioFolio = 1;
-                    break;
-                default:
-                    InicioFolio = 1;
-                    break;
-            }
+            //buscar el ultimo numero del folio subido
 
+
+            InicioFolio = db.Obras.Where(a => a.LetraFolioID == letra.LetraFolioID).Select(a=> a.NumeroFolio).OrderByDescending(a=> a).FirstOrDefault();
 
             var obra = new Obra()
             {

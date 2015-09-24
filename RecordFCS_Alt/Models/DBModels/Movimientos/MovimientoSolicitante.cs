@@ -13,11 +13,11 @@ namespace RecordFCS_Alt.Models
         public int MovimientoSolicitanteID { get; set; }
 
 
-        public string Nombre { get; set; }
-        public string Puesto { get; set; }
+        public string NombreSolicitante { get; set; }
+        public string CargoSolicitante { get; set; }
         public string ParaInstitucion { get; set; }
-        public string Representante { get; set; }
-        public string Cargo { get; set; }
+        public string NombreRepresentante { get; set; }
+        public string CargoRepresentante { get; set; }
         public string Sede { get; set; }
         public string PaisEstado { get; set; }
         public bool PeticionRecibida { get; set; }

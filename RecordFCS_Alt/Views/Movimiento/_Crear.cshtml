@@ -1,7 +1,6 @@
 ﻿@model RecordFCS_Alt.Models.Movimiento
 
 
-
 <h1 class="text-center text-capitalize"><b>Movimiento: </b>@Model.TipoMovimiento.Nombre</h1>
 
 @*
@@ -115,7 +114,7 @@
 
     if (Model.MovimientoSolicitante != null)
     {
-        <li><a data-toggle="tab" href="#solicitanteDIV"><i class="fa fa-user"></i> Solicitante</a></li>
+        <li><a data-toggle="tab" href="#solicitanteDIV"><i class="fa fa-file-text-o"></i> Solicitante</a></li>
     }
 
     if (Model.MovimientoExposicion != null)
@@ -152,75 +151,76 @@
 
     <div class="tab-content">
 
-        @{
-            <div id="origenDestinoDIV" class="tab-pane fade in active">
 
-                <h3>Origen/Destino</h3>
-                <div class="row">
-                    <div class="col-md-2">
-                        <div class="text-center">
-                            <span class="fa fa-globe fa-10x"></span>
-                        </div>
+        <div id="origenDestinoDIV" class="tab-pane fade in active">
+
+            <h3>Origen/Destino</h3>
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="text-center">
+                        <span class="fa fa-globe fa-10x"></span>
                     </div>
+                </div>
 
-                    <div class="col-md-10">
-                        <div class="form-horizontal">
+                <div class="col-md-10">
+                    <div class="form-horizontal">
 
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.UbicacionOrigenID, "Ubicación de Origen", htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    <div class="input-group">
-                                        @Html.DropDownList("UbicacionOrigenID", null, "- Origen -", htmlAttributes: new { @class = "form-control enGuardar", required = "required" })
-                                        <span class="input-group-addon"></span>
-                                        <input id="buscar_UbicacionOrigenID" type="text" placeholder="Buscar ubicación" class="form-control" />
-                                        <span id="btnAccion_UbicacionOrigenID" name="Buscar" class="input-group-addon btn btn-primary">
-                                            <span class="fa fa-search"></span>
-                                        </span>
-                                    </div>
-
-                                    <p class="help-block">NOTA: Al seleccionar la ubicación origen, solo se mostratan las Obras/Piezas que coincidan con la misma.</p>
-                                    @Html.ValidationMessageFor(model => model.UbicacionOrigenID, "", new { @class = "text-danger" })
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.UbicacionOrigenID, "Ubicación de Origen", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                <div class="input-group">
+                                    @Html.DropDownList("UbicacionOrigenID", null, "- Origen -", htmlAttributes: new { @class = "form-control enGuardar", required = "required" })
+                                    <span class="input-group-addon"></span>
+                                    <input id="buscar_UbicacionOrigenID" type="text" placeholder="Buscar ubicación" class="form-control" />
+                                    <span id="btnAccion_UbicacionOrigenID" name="Buscar" class="input-group-addon btn btn-primary">
+                                        <span class="fa fa-search"></span>
+                                    </span>
                                 </div>
-                            </div>
 
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.UbicacionDestinoID, "Ubicación de Destino", htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    <div class="input-group">
-                                        @Html.DropDownList("UbicacionDestinoID", null, " - Destino -", htmlAttributes: new { @class = "form-control enGuardar", required = "required" })
-                                        <span class="input-group-addon"></span>
-                                        <input id="buscar_UbicacionDestinoID" type="text" placeholder="Buscar ubicación" class="form-control" />
-                                        @if (User.IsInRole("ubiNew"))
+                                <p class="help-block">NOTA: Al seleccionar la ubicación origen, solo se mostratan las Obras/Piezas que coincidan con la misma.</p>
+                                @Html.ValidationMessageFor(model => model.UbicacionOrigenID, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.UbicacionDestinoID, "Ubicación de Destino", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                <div class="input-group">
+                                    @Html.DropDownList("UbicacionDestinoID", null, " - Destino -", htmlAttributes: new { @class = "form-control enGuardar", required = "required" })
+                                    <span class="input-group-addon"></span>
+                                    <input id="buscar_UbicacionDestinoID" type="text" placeholder="Buscar ubicación" class="form-control" />
+                                    @if (User.IsInRole("ubiNew"))
                                         {
-                                            <span class="input-group-addon">
-                                                <input type="checkbox" id="checkAdd_UbicacionDestinoID" class="btnCheckAdd" data-toggle="tooltip" data-title="Buscar/Guardar">
-                                            </span>
-                                        }
-                                        <span id="btnAccion_UbicacionDestinoID" name="Buscar" class="input-group-addon btn btn-primary">
-                                            <span class="fa fa-search"></span>
+                                        <span class="input-group-addon">
+                                            <input type="checkbox" id="checkAdd_UbicacionDestinoID" class="btnCheckAdd" data-toggle="tooltip" data-title="Buscar/Guardar">
                                         </span>
+                                        }
+                                    <span id="btnAccion_UbicacionDestinoID" name="Buscar" class="input-group-addon btn btn-primary">
+                                        <span class="fa fa-search"></span>
+                                    </span>
 
-                                    </div>
-                                    @Html.ValidationMessageFor(model => model.UbicacionDestinoID, "", new { @class = "text-danger" })
                                 </div>
+                                @Html.ValidationMessageFor(model => model.UbicacionDestinoID, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.FechaHoraMovimiento, "Fecha y Hora del Movimiento", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                <div class="input-group date" id="FechaHoraMovimientoDTP">
+                                    @Html.EditorFor(model => model.FechaHoraMovimiento, new { htmlAttributes = new { @class = "form-control enGuardar", required = "required", readOnly = "" } })
+
+                                    <div class="btn btn-primary input-group-addon" data-toggle="tooltip" title="Abrir calendario">
+                                        <span class="fa fa-calendar"></span>
+                                    </div>
+
+                                </div>
+                                @Html.ValidationMessageFor(model => model.FechaHoraMovimiento, "", new { @class = "text-danger" })
                             </div>
 
-
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.FechaHoraMovimiento, "Fecha y Hora del Movimiento", htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    <div class="input-group date" id="FechaHoraMovimientoDTP">
-                                        @Html.EditorFor(model => model.FechaHoraMovimiento, new { htmlAttributes = new { @class = "form-control enGuardar" } })
-
-                                        <div class="btn btn-primary input-group-addon" data-toggle="tooltip" title="Abrir calendario">
-                                            <span class="fa fa-calendar"></span>
-                                        </div>
-
-                                    </div>
-                                    @Html.ValidationMessageFor(model => model.FechaHoraMovimiento, "", new { @class = "text-danger" })
-                                </div>
-
-                                <script type="text/javascript">
+                            <script type="text/javascript">
                                     $(function () {
                                         var hoy = new Date();
 
@@ -256,9 +256,9 @@
                                         });
 
                                     });
-                                </script>
+                            </script>
 
-                                <script type="text/javascript">
+                            <script type="text/javascript">
                                     $('#btnAccion_UbicacionDestinoID').on("click", function (e) {
                                         BtnAccion('UbicacionDestinoID');
 
@@ -408,9 +408,9 @@
                                         }
                                     };
 
-                                </script>
+                            </script>
 
-                                <script type="text/javascript">
+                            <script type="text/javascript">
                                     $('#UbicacionOrigenID').on("change", function (e) {
 
                                         //$(this).val(""); //resetear SELECT
@@ -427,14 +427,507 @@
                                         }
                                     });
 
-                                </script>
+                            </script>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.ColeccionTexto, "Colección", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.ColeccionTexto, new { htmlAttributes = new { @class = "form-control enGuardar", required = "required" } })
+                                @Html.ValidationMessageFor(model => model.ColeccionTexto, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @if (Model.MovimientoSolicitante != null)
+        {
+            <div id="solicitanteDIV" class="tab-pane fade">
+                <h3>Solicitante</h3>
+
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="text-center">
+                            <span class="fa fa-file-text-o fa-10x"></span>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-10">
+                        <div class="form-horizontal">
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.MovimientoSolicitante.NombreSolicitante, "Solicitante", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.MovimientoSolicitante.NombreSolicitante, new { htmlAttributes = new { @class = "form-control enGuardar", required = "required" } })
+                                    @Html.ValidationMessageFor(model => model.MovimientoSolicitante.NombreSolicitante, "", new { @class = "text-danger" })
+                                </div>
                             </div>
 
                             <div class="form-group">
-                                @Html.LabelFor(model => model.ColeccionTexto, "Colección", htmlAttributes: new { @class = "control-label col-md-2" })
+                                @Html.LabelFor(model => model.MovimientoSolicitante.CargoSolicitante, "Cargo", htmlAttributes: new { @class = "control-label col-md-2" })
                                 <div class="col-md-10">
-                                    @Html.EditorFor(model => model.ColeccionTexto, new { htmlAttributes = new { @class = "form-control enGuardar" } })
-                                    @Html.ValidationMessageFor(model => model.ColeccionTexto, "", new { @class = "text-danger" })
+                                    @Html.EditorFor(model => model.MovimientoSolicitante.CargoSolicitante, new { htmlAttributes = new { @class = "form-control enGuardar", required = "required" } })
+                                    @Html.ValidationMessageFor(model => model.MovimientoSolicitante.CargoSolicitante, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.MovimientoSolicitante.ParaInstitucion, "Para la Institución", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.MovimientoSolicitante.ParaInstitucion, new { htmlAttributes = new { @class = "form-control enGuardar", required = "required" } })
+                                    @Html.ValidationMessageFor(model => model.MovimientoSolicitante.ParaInstitucion, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.MovimientoSolicitante.NombreRepresentante, "Representante", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.MovimientoSolicitante.NombreRepresentante, new { htmlAttributes = new { @class = "form-control enGuardar", required = "required" } })
+                                    @Html.ValidationMessageFor(model => model.MovimientoSolicitante.NombreRepresentante, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.MovimientoSolicitante.CargoRepresentante, "Cargo", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.MovimientoSolicitante.CargoRepresentante, new { htmlAttributes = new { @class = "form-control enGuardar", required = "required" } })
+                                    @Html.ValidationMessageFor(model => model.MovimientoSolicitante.CargoRepresentante, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.MovimientoSolicitante.Sede, "Sede", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.MovimientoSolicitante.Sede, new { htmlAttributes = new { @class = "form-control enGuardar" } })
+                                    @Html.ValidationMessageFor(model => model.MovimientoSolicitante.Sede, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.MovimientoSolicitante.PaisEstado, "País / Estado", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.MovimientoSolicitante.PaisEstado, new { htmlAttributes = new { @class = "form-control enGuardar" } })
+                                    @Html.ValidationMessageFor(model => model.MovimientoSolicitante.PaisEstado, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                @Html.LabelFor(model => model.MovimientoSolicitante.PeticionRecibida, "Petición Recibida", htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    <div class="checkbox">
+                                        @Html.EditorFor(model => model.MovimientoSolicitante.PeticionRecibida)
+                                        @Html.ValidationMessageFor(model => model.MovimientoSolicitante.PeticionRecibida, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group col-md-6">
+                                @Html.LabelFor(model => model.MovimientoSolicitante.DictCondEspacio, "Dict. Cond. espacio", htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    <div class="checkbox">
+                                        @Html.EditorFor(model => model.MovimientoSolicitante.DictCondEspacio)
+                                        @Html.ValidationMessageFor(model => model.MovimientoSolicitante.DictCondEspacio, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+                            <div class="form-group col-md-6">
+                                @Html.LabelFor(model => model.MovimientoSolicitante.CartaAceptacion, "Carta aceptación", htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    <div class="checkbox">
+                                        @Html.EditorFor(model => model.MovimientoSolicitante.CartaAceptacion)
+                                        @Html.ValidationMessageFor(model => model.MovimientoSolicitante.CartaAceptacion, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                @Html.LabelFor(model => model.MovimientoSolicitante.ContratoComodato, "Contrato comodato", htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    <div class="checkbox">
+                                        @Html.EditorFor(model => model.MovimientoSolicitante.ContratoComodato)
+                                        @Html.ValidationMessageFor(model => model.MovimientoSolicitante.ContratoComodato, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                @Html.LabelFor(model => model.MovimientoSolicitante.RevisionGuion, "Revisión Guión", htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    <div class="checkbox">
+                                        @Html.EditorFor(model => model.MovimientoSolicitante.RevisionGuion)
+                                        @Html.ValidationMessageFor(model => model.MovimientoSolicitante.RevisionGuion, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                @Html.LabelFor(model => model.MovimientoSolicitante.CondicionConservacion, "Condición Conservación", htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    <div class="checkbox">
+                                        @Html.EditorFor(model => model.MovimientoSolicitante.CondicionConservacion)
+                                        @Html.ValidationMessageFor(model => model.MovimientoSolicitante.CondicionConservacion, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                @Html.LabelFor(model => model.MovimientoSolicitante.FacilityReport, "Facility Report", htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    <div class="checkbox">
+                                        @Html.EditorFor(model => model.MovimientoSolicitante.FacilityReport)
+                                        @Html.ValidationMessageFor(model => model.MovimientoSolicitante.FacilityReport, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                @Html.LabelFor(model => model.MovimientoSolicitante.DicSeguridad, "Dict. de seguridad", htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    <div class="checkbox">
+                                        @Html.EditorFor(model => model.MovimientoSolicitante.DicSeguridad)
+                                        @Html.ValidationMessageFor(model => model.MovimientoSolicitante.DicSeguridad, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group col-md-6">
+                                @Html.LabelFor(model => model.MovimientoSolicitante.ListaAvaluo, "Lista avalúo", htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    <div class="checkbox">
+                                        @Html.EditorFor(model => model.MovimientoSolicitante.ListaAvaluo)
+                                        @Html.ValidationMessageFor(model => model.MovimientoSolicitante.ListaAvaluo, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                @Html.LabelFor(model => model.MovimientoSolicitante.TramiteFianza, "Trámites de fianza", htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    <div class="checkbox">
+                                        @Html.EditorFor(model => model.MovimientoSolicitante.TramiteFianza)
+                                        @Html.ValidationMessageFor(model => model.MovimientoSolicitante.TramiteFianza, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                @Html.LabelFor(model => model.MovimientoSolicitante.PolizaSeguro, "Póliza de Seguro", htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    <div class="checkbox">
+                                        @Html.EditorFor(model => model.MovimientoSolicitante.PolizaSeguro)
+                                        @Html.ValidationMessageFor(model => model.MovimientoSolicitante.PolizaSeguro, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                @Html.LabelFor(model => model.MovimientoSolicitante.CartasEntradaSalida, "Cartas entr. y recep.", htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    <div class="checkbox">
+                                        @Html.EditorFor(model => model.MovimientoSolicitante.CartasEntradaSalida)
+                                        @Html.ValidationMessageFor(model => model.MovimientoSolicitante.CartasEntradaSalida, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        }
+
+        @if (Model.MovimientoExposicion != null)
+        {
+            <div id="exposicionDIV" class="tab-pane fade">
+                <h3>Exposición</h3>
+
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="text-center">
+                            <span class="fa fa-object-group fa-10x"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-10">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.MovimientoExposicion.Titulo, "Titulo de exposición", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.MovimientoExposicion.Titulo, new { htmlAttributes = new { @class = "form-control enGuardar", required = "required" } })
+                                    @Html.ValidationMessageFor(model => model.MovimientoExposicion.Titulo, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.MovimientoExposicion.Curador, "Curador de exposición", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.MovimientoExposicion.Curador, new { htmlAttributes = new { @class = "form-control enGuardar", required = "required" } })
+                                    @Html.ValidationMessageFor(model => model.MovimientoExposicion.Curador, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.MovimientoExposicion.FechaInicial, "Fecha Inicial de exposición", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    <div class="input-group date" id="MovimientoExposicion_FechaInicialDTP">
+                                        @Html.EditorFor(model => model.MovimientoExposicion.FechaInicial, new { htmlAttributes = new { @class = "form-control enGuardar", required = "required", readOnly = "" } })
+
+                                        <div class="btn btn-primary input-group-addon" data-toggle="tooltip" title="Abrir calendario">
+                                            <span class="fa fa-calendar"></span>
+                                        </div>
+
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.MovimientoExposicion.FechaInicial, "", new { @class = "text-danger" })
+                                </div>
+
+                                <script type="text/javascript">
+                                    $(function () {
+                                        var hoy = new Date();
+
+                                        var mes = hoy.getMonth() + 1;
+                                        var dia = hoy.getDate();
+
+                                        var fechaLimite = hoy.getFullYear() + '/' +
+                                            (mes < 10 ? '0' : '') + mes + '/' +
+                                            (dia < 10 ? '0' : '') + dia;
+
+                                        $('#MovimientoExposicion_FechaInicialDTP').datetimepicker({
+                                            defaultDate: fechaLimite,
+                                            minDate: fechaLimite, //limitar que no se seleccione fechas pasadas a hoy
+                                            format: "DD/MM/YYYY hh:mm A", //formato: dia/mes/año hora:minuto AM/PM
+                                            //disabledDates: [
+                                            //    moment("12/25/2013"),
+                                            //    new Date(2013, 11 - 1, 21),
+                                            //    "11/22/2013 00:53"
+                                            //],
+                                            toolbarPlacement: 'top',
+                                            showTodayButton: true,
+                                            showClose: true,
+                                            ignoreReadonly: true,
+                                            useCurrent: false //Important! See issue #1075
+                                        });
+
+                                        $('#MovimientoExposicion_FechaInicialDTP').on("dp.change", function (e) {
+                                            $('#MovimientoExposicion_FechaInicial').trigger("input");
+                                        });
+
+                                        $('#MovimientoExposicion_FechaInicialDTP').on("dp.update", function (e) {
+                                            $('#MovimientoExposicion_FechaInicial').trigger("input");
+                                        });
+
+                                    });
+                                </script>
+
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.MovimientoExposicion.FechaFinal, "Fecha Final de exposición", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    <div class="input-group date" id="MovimientoExposicion_FechaFinalDTP">
+                                        @Html.EditorFor(model => model.MovimientoExposicion.FechaFinal, new { htmlAttributes = new { @class = "form-control enGuardar", required = "required", readOnly = "" } })
+
+                                        <div class="btn btn-primary input-group-addon" data-toggle="tooltip" title="Abrir calendario">
+                                            <span class="fa fa-calendar"></span>
+                                        </div>
+
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.MovimientoExposicion.FechaFinal, "", new { @class = "text-danger" })
+                                </div>
+
+                                <script type="text/javascript">
+                                    $(function () {
+
+                                        $('#MovimientoExposicion_FechaFinalDTP').datetimepicker({
+                                            format: "DD/MM/YYYY hh:mm A", //formato: dia/mes/año hora:minuto AM/PM
+                                            toolbarPlacement: 'top',
+                                            showClose: true,
+                                            ignoreReadonly: true,
+                                            useCurrent: false //Important! See issue #1075
+                                        });
+
+                                        $('#MovimientoExposicion_FechaFinalDTP').on("dp.change", function (e) {
+                                            $('#MovimientoExposicion_FechaFinal').trigger("input");
+                                        });
+
+                                        $('#MovimientoExposicion_FechaFinalDTP').on("dp.update", function (e) {
+                                            $('#MovimientoExposicion_FechaFinal').trigger("input");
+                                        });
+
+
+                                        $("#MovimientoExposicion_FechaInicialDTP").on("dp.change", function (e) {
+                                            $('#MovimientoExposicion_FechaFinalDTP').data("DateTimePicker").minDate(e.date);
+                                        });
+
+                                        $("#MovimientoExposicion_FechaFinalDTP").on("dp.change", function (e) {
+                                            $('#MovimientoExposicion_FechaInicialDTP').data("DateTimePicker").maxDate(e.date);
+                                        });
+
+                                        $('#MovimientoExposicion_FechaFinalDTP').data("DateTimePicker").minDate($("#MovimientoExposicion_FechaInicial").val());
+
+
+                                    });
+                                </script>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+        }
+
+        @if (Model.MovimientoResponsable != null)
+        {
+            <div id="responsableDIV" class="tab-pane fade">
+                <h3>Responsable</h3>
+
+                <div class="row">
+
+                    <div class="col-md-2">
+                        <div class="text-center">
+                            <span class="fa fa-male fa-10x"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-10">
+
+                        <div class="form-horizontal">
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.MovimientoResponsable.Nombre, "Nombre del responsable", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.MovimientoResponsable.Nombre, new { htmlAttributes = new { @class = "form-control enGuardar", required = "required" } })
+                                    @Html.ValidationMessageFor(model => model.MovimientoResponsable.Nombre, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.MovimientoResponsable.Institucion, "Institución", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.MovimientoResponsable.Institucion, new { htmlAttributes = new { @class = "form-control enGuardar", required = "required" } })
+                                    @Html.ValidationMessageFor(model => model.MovimientoResponsable.Institucion, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.MovimientoResponsable.FechaSalida, "Fecha de Salida", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    <div class="input-group date" id="MovimientoResponsable_FechaSalidaDTP">
+                                        @Html.EditorFor(model => model.MovimientoResponsable.FechaSalida, new { htmlAttributes = new { @class = "form-control enGuardar", required = "required", readOnly = "" } })
+
+                                        <div class="btn btn-primary input-group-addon" data-toggle="tooltip" title="Abrir calendario">
+                                            <span class="fa fa-calendar"></span>
+                                        </div>
+
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.MovimientoResponsable.FechaSalida, "", new { @class = "text-danger" })
+                                </div>
+
+                                <script type="text/javascript">
+                                    $(function () {
+                                        var hoy = new Date();
+
+                                        var mes = hoy.getMonth() + 1;
+                                        var dia = hoy.getDate();
+
+                                        var fechaLimite = hoy.getFullYear() + '/' +
+                                            (mes < 10 ? '0' : '') + mes + '/' +
+                                            (dia < 10 ? '0' : '') + dia;
+
+                                        $('#MovimientoResponsable_FechaSalidaDTP').datetimepicker({
+                                            //defaultDate: "@Model.FechaHoraMovimiento",
+                                            minDate: fechaLimite, //limitar que no se seleccione fechas pasadas a hoy
+                                            format: "DD/MM/YYYY hh:mm A", //formato: dia/mes/año hora:minuto AM/PM
+                                            //disabledDates: [
+                                            //    moment("12/25/2013"),
+                                            //    new Date(2013, 11 - 1, 21),
+                                            //    "11/22/2013 00:53"
+                                            //],
+                                            toolbarPlacement: 'top',
+                                            showTodayButton: true,
+                                            showClose: true,
+                                            ignoreReadonly: true,
+                                            useCurrent: false //Important! See issue #1075
+                                        });
+
+                                        $('#MovimientoResponsable_FechaSalidaDTP').on("dp.change", function (e) {
+                                            $('#MovimientoResponsable_FechaSalida').trigger("input");
+                                        });
+
+                                        $('#MovimientoResponsable_FechaSalidaDTP').on("dp.update", function (e) {
+                                            $('#MovimientoResponsable_FechaSalida').trigger("input");
+                                        });
+
+                                    });
+                                </script>
+
+                              
+
+                             
+                            </div>
+
+                   
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        }
+
+        @if (Model.MovimientoAutorizacion != null)
+        {
+            <div id="autorizacionDIV" class="tab-pane fade">
+                <h3>Autorización</h3>
+                <div class="row">
+
+                    <div class="col-md-2">
+                        <div class="text-center">
+                            <span class="fa fa-thumbs-up fa-10x"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-10">
+
+                        <div class="form-horizontal">
+
+                            <div class="form-group">
+
+                                @Html.LabelFor(model => model.MovimientoAutorizacion.Usuario1ID, "Autorización 1", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.DropDownList("MovimientoAutorizacion_Usuario1ID", null, "- Seleccione Autorización 1 -", htmlAttributes: new { @class = "form-control enGuardar", required = "required" })
+
+                                    @Html.ValidationMessageFor(model => model.MovimientoAutorizacion.Usuario1ID, "", new { @class = "text-danger" })
+                                    @Html.HiddenFor(model => model.MovimientoAutorizacion.FechaAutorizacion1)
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+
+                                @Html.LabelFor(model => model.MovimientoAutorizacion.Usuario2ID, "Autorización 2", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.DropDownList("MovimientoAutorizacion_Usuario2ID", null, "- Seleccione Autorización 2 -", htmlAttributes: new { @class = "form-control enGuardar", required = "required" })
+
+                                    @Html.ValidationMessageFor(model => model.MovimientoAutorizacion.Usuario2ID, "", new { @class = "text-danger" })
+                                    @Html.HiddenFor(model => model.MovimientoAutorizacion.FechaAutorizacion2)
                                 </div>
                             </div>
 
@@ -442,139 +935,232 @@
                     </div>
                 </div>
             </div>
+        }
 
-    if (Model.MovimientoSolicitante != null)
-    {
-        <div id="solicitanteDIV" class="tab-pane fade">
-            <h3>Solicitante</h3>
-
-            <p>Nombre</p>
-            <p>Cargo </p>
-            <p>Para la Institución </p>
-            <p>Representante </p>
-            <p>Cargo </p>
-            <p>Sede </p>
-            <p>País / Estado </p>
-            <p>Petición Recibida</p>
-            <p>Dict. Cond. espacio</p>
-            <p>Carta aceptación </p>
-            <p>Contrato comodato </p>
-            <p>Revisión Guión </p>
-            <p>Condición Conservación </p>
-            <p>Facility Report </p>
-            <p>Dict. de seguridad </p>
-            <p>Lista avalúo </p>
-            <p>Trámites de fianza </p>
-            <p>Póliza de Seguro </p>
-            <p>Cartas entr. y recep. </p>
-
-
-        </div>
-    }
-
-    if (Model.MovimientoExposicion != null)
-    {
-        <div id="exposicionDIV" class="tab-pane fade">
-            <h3>Exposición</h3>
-
-            <p>Nombre 1</p>
-            <p>Nombre 2</p>
-            <p>Fecha</p>
-
-
-        </div>
-    }
-
-    if (Model.MovimientoResponsable != null)
-    {<div id="responsableDIV" class="tab-pane fade">
-        <h3>Responsable</h3>
-
-        <p>Nombre </p>
-        <p>Institución  </p>
-        <p>Fecha Salida </p>
-
-
-    </div>
-    }
-
-    if (Model.MovimientoAutorizacion != null)
-    {
-        <div id="autorizacionDIV" class="tab-pane fade">
-            <h3>Autorización</h3>
-
-            <p>Nombre 1</p>
-            <p>Nombre 2</p>
-            <p>Fecha</p>
-
-
-        </div>
-    }
-    if (Model.MovimientoTransporte != null)
-    {
-        <div id="transporteDIV" class="tab-pane fade">
-            <h3>Transporte</h3>
-
-            <p>Empresa </p>
-            <p>Recorrido </p>
-            <p>Horarios </p>
-            <p>Notas </p>
-
-
-        </div>
-    }
-    if (Model.MovimientoSeguro != null)
-    {
-        <div id="seguroDIV" class="tab-pane fade">
-            <h3>Seguro</h3>
-
-            <p>Asegurador </p>
-            <p>N° Poliza</p>
-            <p>Fecha inicial</p>
-            <p>Fecha final</p>
-
-
-        </div>
-    }
-
-
-    <div id="piezasDIV" class="tab-pane fade">
-        <h3>Piezas</h3>
-
-        <p>Opciones de agregar piezas</p>
-        <p>Resultado de piezas</p>
-        <p>Lista de Piezas</p>
-
-    </div>
-
-            <div id="guardarDIV" class="tab-pane fade">
-                <h3>Guardar</h3>
+        @if (Model.MovimientoTransporte != null)
+        {
+            <div id="transporteDIV" class="tab-pane fade">
+                <h3>Transporte</h3>
                 <div class="row">
+
                     <div class="col-md-2">
                         <div class="text-center">
-                            <span class="fa fa-save fa-10x"></span>
+                            <span class="fa fa-truck fa-10x"></span>
                         </div>
                     </div>
 
                     <div class="col-md-10">
+
                         <div class="form-horizontal">
-                            <p>Se guardaran las siguientes opciones</p>
 
-                            <ul id="listaGuardar">
-                                @*<li id="text_UbicacionOrigenID">1</li>
-                                    <li id="text_UbicacionDestinoID">2</li>
-                                    <li id="text_FechaMovimiento">3</li>*@
-                            </ul>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.MovimientoTransporte.EmpresaNombre, "Empresa de transporte", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.MovimientoTransporte.EmpresaNombre, new { htmlAttributes = new { @class = "form-control enGuardar", required = "required" } })
+                                    @Html.ValidationMessageFor(model => model.MovimientoTransporte.EmpresaNombre, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
 
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.MovimientoTransporte.Recorrido, "Recorrido", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.MovimientoTransporte.Recorrido, new { htmlAttributes = new { @class = "form-control enGuardar", required = "required" } })
+                                    @Html.ValidationMessageFor(model => model.MovimientoTransporte.Recorrido, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
 
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.MovimientoTransporte.Horario, "Horarios", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.MovimientoTransporte.Horario, new { htmlAttributes = new { @class = "form-control enGuardar" } })
+                                    @Html.ValidationMessageFor(model => model.MovimientoTransporte.Horario, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
 
-                            <p>Observaciones </p>
-                            <p>GUARDAR</p>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.MovimientoTransporte.Nota, "Notas", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.MovimientoTransporte.Nota, new { htmlAttributes = new { @class = "form-control enGuardar" } })
+                                    @Html.ValidationMessageFor(model => model.MovimientoTransporte.Nota, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
 
                         </div>
                     </div>
                 </div>
+            </div>
+        }
 
-                <script type="text/javascript">
+        @if (Model.MovimientoSeguro != null)
+        {
+            <div id="seguroDIV" class="tab-pane fade">
+                <h3>Seguro</h3>
+
+                <div class="row">
+
+                    <div class="col-md-2">
+                        <div class="text-center">
+                            <span class="fa fa-truck fa-10x"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-10">
+
+                        <div class="form-horizontal">
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.MovimientoSeguro.AseguradorNombre, "Asegurador", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.MovimientoSeguro.AseguradorNombre, new { htmlAttributes = new { @class = "form-control enGuardar", required = "required" } })
+                                    @Html.ValidationMessageFor(model => model.MovimientoSeguro.AseguradorNombre, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.MovimientoSeguro.NoPoliza, "N° Poliza", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.MovimientoSeguro.NoPoliza, new { htmlAttributes = new { @class = "form-control enGuardar", required = "required" } })
+                                    @Html.ValidationMessageFor(model => model.MovimientoSeguro.NoPoliza, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.MovimientoSeguro.FechaInicial, "Fecha Inicial de seguro", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    <div class="input-group date" id="MovimientoSeguro_FechaInicialDTP">
+                                        @Html.EditorFor(model => model.MovimientoSeguro.FechaInicial, new { htmlAttributes = new { @class = "form-control enGuardar", required = "required", readOnly = "" } })
+
+                                        <div class="btn btn-primary input-group-addon" data-toggle="tooltip" title="Abrir calendario">
+                                            <span class="fa fa-calendar"></span>
+                                        </div>
+
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.MovimientoSeguro.FechaInicial, "", new { @class = "text-danger" })
+                                </div>
+
+                                <script type="text/javascript">
+                                    $(function () {
+
+                                        $('#MovimientoSeguro_FechaInicialDTP').datetimepicker({
+                                            format: "DD/MM/YYYY hh:mm A", //formato: dia/mes/año hora:minuto AM/PM
+                                            //disabledDates: [
+                                            //    moment("12/25/2013"),
+                                            //    new Date(2013, 11 - 1, 21),
+                                            //    "11/22/2013 00:53"
+                                            //],
+                                            toolbarPlacement: 'top',
+                                            showTodayButton: true,
+                                            showClose: true,
+                                            ignoreReadonly: true,
+                                            useCurrent: false //Important! See issue #1075
+                                        });
+
+                                        $('#MovimientoSeguro_FechaInicialDTP').on("dp.change", function (e) {
+                                            $('#MovimientoSeguro_FechaInicial').trigger("input");
+                                        });
+
+                                        $('#MovimientoSeguro_FechaInicialDTP').on("dp.update", function (e) {
+                                            $('#MovimientoSeguro_FechaInicial').trigger("input");
+                                        });
+
+                                    });
+                                </script>
+
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.MovimientoSeguro.FechaFinal, "Fecha Final del seguro", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    <div class="input-group date" id="MovimientoSeguro_FechaFinalDTP">
+                                        @Html.EditorFor(model => model.MovimientoSeguro.FechaFinal, new { htmlAttributes = new { @class = "form-control enGuardar", required = "required", readOnly = "" } })
+
+                                        <div class="btn btn-primary input-group-addon" data-toggle="tooltip" title="Abrir calendario">
+                                            <span class="fa fa-calendar"></span>
+                                        </div>
+
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.MovimientoSeguro.FechaFinal, "", new { @class = "text-danger" })
+                                </div>
+
+                                <script type="text/javascript">
+                                    $(function () {
+
+                                        $('#MovimientoSeguro_FechaFinalDTP').datetimepicker({
+                                            format: "DD/MM/YYYY hh:mm A", //formato: dia/mes/año hora:minuto AM/PM
+                                            toolbarPlacement: 'top',
+                                            showTodayButton: true,
+                                            showClose: true,
+                                            ignoreReadonly: true,
+                                            useCurrent: false //Important! See issue #1075
+                                        });
+
+                                        $('#MovimientoSeguro_FechaFinalDTP').on("dp.change", function (e) {
+                                            $('#MovimientoSeguro_FechaFinal').trigger("input");
+                                        });
+
+                                        $('#MovimientoSeguro_FechaFinalDTP').on("dp.update", function (e) {
+                                            $('#MovimientoSeguro_FechaFinal').trigger("input");
+                                        });
+
+
+                                        $("#MovimientoSeguro_FechaInicialDTP").on("dp.change", function (e) {
+                                            $('#MovimientoSeguro_FechaFinalDTP').data("DateTimePicker").minDate(e.date);
+                                        });
+                                        $("#MovimientoSeguro_FechaFinalDTP").on("dp.change", function (e) {
+                                            $('#MovimientoSeguro_FechaInicialDTP').data("DateTimePicker").maxDate(e.date);
+                                        });
+
+                                    });
+                                </script>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+
+        <div id="piezasDIV" class="tab-pane fade">
+            <h3>Piezas</h3>
+
+            <p>Opciones de agregar piezas</p>
+            <p>Resultado de piezas</p>
+            <p>Lista de Piezas</p>
+
+        </div>
+
+        <div id="guardarDIV" class="tab-pane fade">
+            <h3>Guardar</h3>
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="text-center">
+                        <span class="fa fa-save fa-10x"></span>
+                    </div>
+                </div>
+
+                <div class="col-md-10">
+                    <div class="form-horizontal">
+                        <p>Se guardaran las siguientes opciones</p>
+
+                        <ul id="listaGuardar">
+                            @*<li id="text_UbicacionOrigenID">1</li>
+                                <li id="text_UbicacionDestinoID">2</li>
+                                <li id="text_FechaMovimiento">3</li>*@
+                        </ul>
+
+
+
+                        <p>Observaciones </p>
+                        <p>GUARDAR</p>
+
+                    </div>
+                </div>
+            </div>
+
+            <script type="text/javascript">
 
 
 
@@ -647,14 +1233,13 @@
                     };
 
 
-                </script>
+            </script>
 
-            </div>
-        }
+        </div>
+
 
     </div>
 }
-
 
 
 <script type="text/javascript">
