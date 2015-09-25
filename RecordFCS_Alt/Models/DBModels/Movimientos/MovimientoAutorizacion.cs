@@ -19,9 +19,13 @@ namespace RecordFCS_Alt.Models
         public Guid? Usuario2ID { get; set; }
 
 
-        public string FechaAutorizacion1 { get; set; }
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm t}", ApplyFormatInEditMode = true)]
+        public DateTime FechaAutorizacion1 { get; set; }
 
-        public string FechaAutorizacion2 { get; set; }
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm t}", ApplyFormatInEditMode = true)]
+        public DateTime FechaAutorizacion2 { get; set; }
 
 
         //virtual

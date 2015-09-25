@@ -10,6 +10,7 @@ using RecordFCS_Alt.Models;
 using PagedList;
 using RecordFCS_Alt.Helpers.Seguridad;
 
+
 namespace RecordFCS_Alt.Controllers
 {
     public class ListaValorController : BaseController

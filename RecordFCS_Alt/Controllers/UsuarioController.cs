@@ -14,6 +14,7 @@ using RecordFCS_Alt.Helpers.Seguridad;
 using Newtonsoft.Json;
 using System.Text.RegularExpressions;
 
+
 namespace RecordFCS_Alt.Controllers
 {
     public class UsuarioController : BaseController
@@ -305,9 +306,9 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // POST: Usuario/Eliminar/5
-        [HttpPost, ActionName("Eliminar,usrAllEdit")]
+        [HttpPost, ActionName("Eliminar")]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize(permiso = "usrDel")]
+        [CustomAuthorize(permiso = "usrDel,usrAllEdit")]
         public ActionResult EliminarConfirmado(Guid id)
         {
             string btnValue = Request.Form["accionx"];

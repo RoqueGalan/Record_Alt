@@ -254,6 +254,7 @@
     <Content Include="Content\img\listado\headFCS_plano.png" />
     <Content Include="Content\img\listado\headMS_plano.gif" />
     <Content Include="Content\img\logoFundacionCarlosSlim.png" />
+    <None Include="Content\img\pieza\thumb\fileDummy" />
     <Content Include="Content\img\recordFCSLogo.png" />
     <Content Include="Content\img\recordFCSLogo2.png" />
     <Content Include="Content\img\Site.css" />
@@ -500,10 +501,10 @@
     <Content Include="Views\Movimiento\Edit.cshtml" />
     <Content Include="Views\Movimiento\Index.cshtml" />
     <Content Include="Views\Movimiento\_Error.cshtml" />
+    <Content Include="Views\Movimiento\_CrearLista.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Content\img\pieza\thumb\" />
     <Folder Include="Views\MigracionCEHM\" />
   </ItemGroup>
   <ItemGroup>

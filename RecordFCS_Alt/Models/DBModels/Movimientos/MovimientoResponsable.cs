@@ -17,7 +17,10 @@ namespace RecordFCS_Alt.Models
 
         public string Nombre { get; set; }
         public string Institucion { get; set; }
-        public string FechaSalida { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm t}", ApplyFormatInEditMode = true)]
+        public DateTime FechaSalida { get; set; }
 
         //public virtual Movimiento Movimiento { get; set; }
 

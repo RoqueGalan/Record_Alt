@@ -15,8 +15,14 @@ namespace RecordFCS_Alt.Models
 
         public string Titulo { get; set; }
         public string Curador { get; set; }
-        public string FechaInicial { get; set; }
-        public string FechaFinal { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm t}", ApplyFormatInEditMode = true)]
+        public DateTime FechaInicial { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm t}", ApplyFormatInEditMode = true)]
+        public DateTime FechaFinal { get; set; }
 
     }
 }
