@@ -162,6 +162,8 @@ namespace RecordFCS_Alt.Controllers
 
             var listaAttributosFichaCompleta = pieza.TipoPieza.Atributos.Where(a => a.Status && a.MostrarAtributos.Any(b => b.TipoMostrar.Nombre == tipo && b.Status) && a.TipoAtributo.Status).OrderBy(a => a.Orden).ToList();
 
+            pieza.TipoPieza.TipoPiezasHijas = pieza.TipoPieza.TipoPiezasHijas.Where(a=> a.Status).OrderBy(a=> a.Orden).ToList();
+
             ViewBag.listaAttributosFichaCompleta = listaAttributosFichaCompleta;
 
 

@@ -20,7 +20,7 @@
     <div class="media-left media-middle">
 
         <div id="renderCarrusel_@Model.PiezaID" class="text-center">
-            @{ Html.RenderAction("Carrusel", "ImagenPieza", new { id = Model.PiezaID, status = false, tipo = "thumb", esCompleta = esCompleta}); }
+            @{ Html.RenderAction("Carrusel", "ImagenPieza", new { id = Model.PiezaID, status = false, tipo = "thumb", esCompleta = esCompleta }); }
         </div>
     </div>
 
@@ -42,7 +42,30 @@
                                 <a href="@Url.Action("Detalles", "Obra", new  {id = Model.ObraID })" class="btn btn-primary btn-xs pull-right" data-toggle="tooltip" title="Abrir Ficha Completa" target="_blank"><span class='fa fa-pencil'></span></a>
                             }
                         }
+                        else
+                        {
+                            if (Model.TipoPieza.TipoPiezasHijas.Count > 0)
+                            {
+                                string textoNueva = Model.TipoPieza.EsPrincipal ? "Agregar pieza en obra" : "Agregar pieza en " + Model.TipoPieza.Nombre;
 
+
+                                <div class="btn-group pull-right">
+                                    <button class="btn btn-success btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <span class='fa fa-plus'></span> @textoNueva <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><p>Selecciona el tipo de pieza</p></li>
+                                        @foreach (var item in Model.TipoPieza.TipoPiezasHijas)
+                                        {
+                                            <li><a href="#">@item.Nombre</a></li>
+
+                                        }
+                                    </ul>
+                                </div>
+
+                                @*@Html.NoEncodeActionLink(" " + textoNueva, textoNueva, "Crear", "Pieza", new { id = Model.PiezaID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-success btn-xs pull-right openModal_NewPieza" })*@
+                            }
+                        }
                     </th>
                 </tr>
 

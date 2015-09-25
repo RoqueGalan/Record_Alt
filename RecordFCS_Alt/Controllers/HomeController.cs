@@ -13,6 +13,8 @@ namespace RecordFCS_Alt.Controllers
     {
         private RecordFCSContext db = new RecordFCSContext();
 
+
+       
         public ActionResult Index(string mensaje = "")
         {
             //string FullName = User.Nombre + " " + User.Apellido;

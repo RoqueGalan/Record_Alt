@@ -254,7 +254,7 @@
     <Content Include="Content\img\listado\headFCS_plano.png" />
     <Content Include="Content\img\listado\headMS_plano.gif" />
     <Content Include="Content\img\logoFundacionCarlosSlim.png" />
-    <None Include="Content\img\pieza\thumb\fileDummy" />
+    <Content Include="Content\img\pieza\thumb\fileDummy.txt" />
     <Content Include="Content\img\recordFCSLogo.png" />
     <Content Include="Content\img\recordFCSLogo2.png" />
     <Content Include="Content\img\Site.css" />

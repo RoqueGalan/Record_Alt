@@ -125,7 +125,7 @@ namespace RecordFCS_Alt.Controllers
                 TipoObra tipoObra = db.TipoObras.Find(id);
                 if (tipoObra == null)
                     return HttpNotFound();
-
+                tp.Prefijo = "A";
                 tp.TipoObraID = tipoObra.TipoObraID;
                 tp.Orden = tipoObra.TipoPiezas.Where(a => a.EsPrincipal).Count() + 1;
                 tp.Status = true;
@@ -138,8 +138,22 @@ namespace RecordFCS_Alt.Controllers
                 if (tipoPiezaPadre == null)
                     return HttpNotFound();
 
+
+                tp.Orden = tipoPiezaPadre.TipoPiezasHijas.Count;
+
+                if  (tp.Orden > 0)
+                {
+                    string ultimaLetra = tipoPiezaPadre.TipoPiezasHijas.Select(a => a.Prefijo).OrderByDescending(a => a).FirstOrDefault();
+                    tp.Prefijo = IncrementarLetra(ultimaLetra);
+                    tp.Orden++;
+                }
+                else
+                {
+                    tp.Orden = 1;
+                    tp.Prefijo = "A";
+                }
+
                 tp.TipoObraID = tipoPiezaPadre.TipoObraID;
-                tp.Orden = tipoPiezaPadre.TipoPiezasHijas.Count + 1;
                 tp.TipoPiezaPadreID = tipoPiezaPadre.TipoPiezaID;
                 tp.Status = true;
                 tp.EsPrincipal = false;
@@ -311,6 +325,47 @@ namespace RecordFCS_Alt.Controllers
         }
 
 
+
+        public string IncrementarLetra(string texto)
+        {
+            string TextoRegresar = "";
+
+            texto = texto.ToLower();
+
+            if (texto == null || texto.Trim().Length == 0)
+                TextoRegresar = "a";
+            else
+            {
+                texto = texto.Trim();
+                string alphaNum = "abcdefghijklmnopqrstuvwxyz";
+                var coleccion = texto.ToLower().Trim().ToCharArray().Reverse().ToList();
+                bool isNextInr = true;
+                int l = coleccion.Count() - 1, i = 0;
+                while (isNextInr && i < coleccion.Count())
+                {
+                    isNextInr = false;
+                    switch (coleccion[i])
+                    {
+                        case 'z':
+                            coleccion[i] = 'a';
+                            if (i < l)
+                                isNextInr = true;
+                            else
+                                coleccion.Add('a');
+                            break;
+                        default:
+                            coleccion[i] = char.Parse(alphaNum.Substring(alphaNum.IndexOf(coleccion[i]) + 1, 1));
+                            break;
+                    }
+                    i++;
+                }
+                coleccion.Reverse();
+                TextoRegresar = string.Join("", coleccion);
+            }
+
+            return TextoRegresar.ToUpper();
+
+        }
 
 
         protected override void Dispose(bool disposing)
