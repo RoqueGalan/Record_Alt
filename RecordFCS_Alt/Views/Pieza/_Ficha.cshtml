@@ -3,8 +3,7 @@
 @using RecordFCS_Alt.Helpers
 
 @{
-
-    bool principal = Model.TipoPieza.EsPrincipal;
+    bool esPrincipal = Model.TipoPieza.EsPrincipal;
     int Nuimagenes = Model.ImagenPiezas.Count;
     int Nuautores = Model.AutorPiezas.Count;
     int NuMedidas = Model.MedidaPiezas.Count;
@@ -28,7 +27,14 @@
     <div class="media-body clearfix">
         @if (!esCompleta)
         {
-            <h4 class="media-heading pull-right">@(Model.Obra.LetraFolio.Nombre + Model.Obra.NumeroFolio + "-" + subFolio)</h4>
+            <h4 class="media-heading pull-right">@(Model.Obra.LetraFolio.Nombre + Model.Obra.NumeroFolio)</h4>
+        }
+        else
+        {
+            if (!Model.TipoPieza.EsPrincipal)
+            {
+                <h4 class="media-heading pull-right">@(Model.ImprimirFolio())</h4>
+            }
         }
         <table class="table table-hover">
             <thead>
@@ -44,27 +50,43 @@
                         }
                         else
                         {
-                            if (Model.TipoPieza.TipoPiezasHijas.Count > 0)
+                            //boton eliminar
+                            if (Model.TipoPieza.EsPrincipal)
                             {
-                                string textoNueva = Model.TipoPieza.EsPrincipal ? "Agregar pieza en obra" : "Agregar pieza en " + Model.TipoPieza.Nombre;
+                                if (User.IsInRole("oDel"))
+                                {
+                                    @Html.NoEncodeActionLink("<span class='fa fa-trash'></span>", "Eliminar toda la Obra", "Eliminar", "Obra", routeValues: new { id = Model.ObraID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-danger btn-xs pull-right ModalObraEliminar" })
+                                }
+                            }
+                            else
+                            {
+                                if (User.IsInRole("pDel"))
+                                {
+                                    @Html.NoEncodeActionLink("<span class='fa fa-trash'></span>", "Eliminar " + Model.ImprimirFolio(), "Eliminar", "Pieza", routeValues: new { id = Model.PiezaID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-danger btn-xs pull-right CrearPieza" })
+                                }
+                            }
+                            
 
+                            if (Model.TipoPieza.TipoPiezasHijas.Count > 0 && User.IsInRole("pNew"))
+                            {
 
                                 <div class="btn-group pull-right">
                                     <button class="btn btn-success btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <span class='fa fa-plus'></span> @textoNueva <span class="caret"></span>
+                                        <span class='fa fa-plus'></span> <span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu">
-                                        <li><p>Selecciona el tipo de pieza</p></li>
+                                        <li class="dropdown-header">Selecciona el tipo de pieza que desea agregar</li>
                                         @foreach (var item in Model.TipoPieza.TipoPiezasHijas)
                                         {
-                                            <li><a href="#">@item.Nombre</a></li>
+                                            <li>
+                                                @Html.NoEncodeActionLink("<span class='fa fa-plus'><span/> " + item.Nombre, "Crear pieza del tipo " + item.Nombre, "Crear", "Pieza", new { id = Model.PiezaID, TipoPiezaID = item.TipoPiezaID }, new { data_modal = "", data_toggle = "tooltip", @class = "CrearPieza" })
+                                            </li>
 
                                         }
                                     </ul>
                                 </div>
-
-                                @*@Html.NoEncodeActionLink(" " + textoNueva, textoNueva, "Crear", "Pieza", new { id = Model.PiezaID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-success btn-xs pull-right openModal_NewPieza" })*@
                             }
+                            
                         }
                     </th>
                 </tr>
@@ -72,6 +94,20 @@
             </thead>
 
             <tbody>
+
+                     <tr>
+                            <td>
+                                <p>
+                                    <b>Tipo de @(esPrincipal ? "Obra": "Pieza")</b>
+                                </p>
+                            </td>
+
+                            <td>
+                                <p>@(esPrincipal? Model.Obra.TipoObra.Nombre : Model.TipoPieza.Nombre)</p>
+                            </td>
+                        </tr>
+
+
 
                 @foreach (var att in (List<Atributo>)ViewBag.listaAttributosFichaCompleta)
                 {
@@ -370,179 +406,299 @@
 
 </li>
 
+@if (esCompleta)
+{
+    foreach (var item in Model.PiezasHijas)
+    {
+        <hr class="col-lg-offset-0" />
+        <div class="col-lg-offset-05">
+            @{Html.RenderAction("Ficha", "Pieza", new { id = item.PiezaID, tipo = "Completa" });}
+        </div>
+
+    }
+}
 
 
-<script src="~/Scripts/add.toolTip.js"></script>
 
+@if (Model.TipoPieza.EsPrincipal)
+{
+    <script src="~/Scripts/add.toolTip.js"></script>
 
-<script type="text/javascript">
+    <script type="text/javascript">
 
-    $(function () {
-        $.ajaxSetup({ cache: false });
-        $("a[data-modal].EditarValor").on("click", function (e) {
+        $(function () {
+            $.ajaxSetup({ cache: false });
+            $("a[data-modal].EditarValor").on("click", function (e) {
 
-            $('#miModalContenido').load(this.href, function () {
-                $('#miModal').modal({
-                    backdrop: 'static',
-                    keyboard: true
-                }, 'show');
-                bindForm_EditarValor(this);
+                $('#miModalContenido').load(this.href, function () {
+                    $('#miModal').modal({
+                        backdrop: 'static',
+                        keyboard: true
+                    }, 'show');
+                    bindForm_EditarValor(this);
+                });
+                return false;
             });
-            return false;
         });
-    });
 
-    function bindForm_EditarValor(dialog) {
-        $('form', dialog).submit(function (e) {
-
-
-            var validarok = false;
+        function bindForm_EditarValor(dialog) {
+            $('form', dialog).submit(function (e) {
 
 
-            validarok = $(this).validate().valid();
+                var validarok = false;
 
-            if (validarok) {
-                $.ajax({
-                    url: this.action,
-                    type: this.method,
-                    data: $(this).serialize(),
-                    success: function (result) {
-                        if (result.success) {
-                            $('#miModal').modal('hide');
 
-                            /*
-                            renderid = el id de donde vamos a renderizar el valor
-                            valor
-                            */
-                            if (result.guardar) {
+                validarok = $(this).validate().valid();
 
-                                if ($('#' + result.renderID).length) {
+                if (validarok) {
+                    $.ajax({
+                        url: this.action,
+                        type: this.method,
+                        data: $(this).serialize(),
+                        success: function (result) {
+                            if (result.success) {
+                                $('#miModal').modal('hide');
 
-                                    switch (result.tipo) {
-                                        case "Autor":
-                                            window.location.reload();
-                                            break;
-                                        default:
-                                            $('#' + result.renderID).html(result.texto); //  Campo que actualizara
-                                            break;
+                                /*
+                                renderid = el id de donde vamos a renderizar el valor
+                                valor
+                                */
+                                if (result.guardar) {
+
+                                    if ($('#' + result.renderID).length) {
+
+                                        switch (result.tipo) {
+                                            case "Autor":
+                                                window.location.reload();
+                                                break;
+                                            default:
+                                                $('#' + result.renderID).html(result.texto); //  Campo que actualizara
+                                                break;
+
+                                        }
+
+
+                                        //$('<a>', {
+                                        //    text: "<span class='fa fa-pencil'><span/>",
+                                        //    href: result.url,
+                                        //    'data-modal': "",
+                                        //    'data-toggle': "tooltip",
+                                        //    'class': 'btn btn-default btn-xs  pull-right EditarValor'
+                                        //}).appendTo('#' + result.renderID);
+
+
 
                                     }
-
-
-                                    //$('<a>', {
-                                    //    text: "<span class='fa fa-pencil'><span/>",
-                                    //    href: result.url,
-                                    //    'data-modal': "",
-                                    //    'data-toggle': "tooltip",
-                                    //    'class': 'btn btn-default btn-xs  pull-right EditarValor'
-                                    //}).appendTo('#' + result.renderID);
-
-
-
+                                    else {
+                                        window.location.reload();
+                                    }
                                 }
-                                else {
-                                    window.location.reload();
-                                }
+
+
+                                //$('#alertasDiv').load('/base/_alertas');
+
+                            } else {
+                                $('#miModalContenido').html(result);
+                                bindForm_EditarValor(dialog);
                             }
-
-
-                            //$('#alertasDiv').load('/base/_alertas');
-
-                        } else {
-                            $('#miModalContenido').html(result);
-                            bindForm_EditarValor(dialog);
                         }
-                    }
-                });
-            }
-            return false;
-        });
-    }
-
-</script>
-
-
-
-
-
-<script type="text/javascript">
-
-    $(function () {
-        $.ajaxSetup({ cache: false });
-        $("a[data-modal].CrearValor").on("click", function (e) {
-
-            $('#miModalContenido').load(this.href, function () {
-                $('#miModal').modal({
-                    backdrop: 'static',
-                    keyboard: true
-                }, 'show');
-                bindForm_CrearValor(this);
+                    });
+                }
+                return false;
             });
-            return false;
+        }
+
+    </script>
+
+
+    <script type="text/javascript">
+
+        $(function () {
+            $.ajaxSetup({ cache: false });
+            $("a[data-modal].CrearValor").on("click", function (e) {
+
+                $('#miModalContenido').load(this.href, function () {
+                    $('#miModal').modal({
+                        backdrop: 'static',
+                        keyboard: true
+                    }, 'show');
+                    bindForm_CrearValor(this);
+                });
+                return false;
+            });
         });
-    });
 
-    function bindForm_CrearValor(dialog) {
-        $('form', dialog).submit(function (e) {
-
-
-            var validarok = false;
+        function bindForm_CrearValor(dialog) {
+            $('form', dialog).submit(function (e) {
 
 
-            validarok = $(this).validate().valid();
-
-            if (validarok) {
-                $.ajax({
-                    url: this.action,
-                    type: this.method,
-                    data: $(this).serialize(),
-                    success: function (result) {
-                        if (result.success) {
-
-                            /*
-                            renderid = el id de donde vamos a renderizar el valor
-                            valor
-                            */
-                            if (result.guardar) {
-
-                                if ($('#' + result.renderID).length) {
-                                    $('#' + result.renderID).html(result.texto); //  Campo que actualizara
-
-                                    //$('<a>', {
-                                    //    text: "<span class='fa fa-pencil'><span/>",
-                                    //    href: result.url,
-                                    //    'data-modal': "",
-                                    //    'data-toggle': "tooltip",
-                                    //    'class': 'btn btn-default btn-xs  pull-right EditarValor'
-                                    //}).appendTo('#' + result.renderID);
+                var validarok = false;
 
 
+                validarok = $(this).validate().valid();
 
+                if (validarok) {
+                    $.ajax({
+                        url: this.action,
+                        type: this.method,
+                        data: $(this).serialize(),
+                        success: function (result) {
+                            if (result.success) {
+
+                                /*
+                                renderid = el id de donde vamos a renderizar el valor
+                                valor
+                                */
+                                if (result.guardar) {
+
+                                    if ($('#' + result.renderID).length) {
+                                        $('#' + result.renderID).html(result.texto); //  Campo que actualizara
+
+                                        //$('<a>', {
+                                        //    text: "<span class='fa fa-pencil'><span/>",
+                                        //    href: result.url,
+                                        //    'data-modal': "",
+                                        //    'data-toggle': "tooltip",
+                                        //    'class': 'btn btn-default btn-xs  pull-right EditarValor'
+                                        //}).appendTo('#' + result.renderID);
+
+
+
+                                    }
+                                    else {
+                                        window.location.reload();
+                                        return false;
+                                    }
                                 }
-                                else {
-                                    window.location.reload();
-                                    return false;
-                                }
+
+                                $('#miModal').modal('hide');
+
+                                $('#alertasDiv').load('/base/_alertas');
+
+
+
+                            } else {
+                                $('#miModalContenido').html(result);
+                                bindForm_CrearValor(dialog);
                             }
-
-                            $('#miModal').modal('hide');
-
-                            $('#alertasDiv').load('/base/_alertas');
-
-
-
-                        } else {
-                            $('#miModalContenido').html(result);
-                            bindForm_CrearValor(dialog);
                         }
-                    }
+                    });
+                }
+                return false;
+            });
+        }
+
+    </script>
+
+    <script type="text/javascript">
+        $(function () {
+            $.ajaxSetup({ cache: false });
+            $("a[data-modal].CrearPieza").on("click", function (e) {
+
+                $('#miModalContenido2').load(this.href, function () {
+                    $('#miModal2').modal({
+                        backdrop: 'static',
+                        keyboard: true
+                    }, 'show');
+                    bindForm_CrearPieza(this);
+                });
+                return false;
+            });
+
+            function bindForm_CrearPieza(dialog) {
+                $('form', dialog).submit(function (e) {
+
+                    $.ajaxSetup({ cache: false });
+                    event.preventDefault();
+
+
+                    var formData = new FormData($(this)[0]);
+
+                    $.ajax({
+                        url: this.action,
+                        type: this.method,
+                        data: formData,
+                        async: false,
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        success: function (result) {
+                            if (result.success) {
+
+                                window.location.reload();
+
+                            } else {
+                                $('#miModal2').modal('hide');
+
+                            }
+                        },
+                        error: function () {
+                            alert("Ocurrio un error en el envio");
+                        }
+                    });
+
+                    formData = null;
+
+                    return false;
                 });
             }
-            return false;
         });
-    }
 
-</script>
+    </script>
 
-<script src="~/Scripts/jquery.validate.js"></script>
-<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+
+
+
+    //ModalObraEliminar
+    <script type="text/javascript">
+        $(function () {
+            $.ajaxSetup({ cache: false });
+            $("a[data-modal].ModalObraEliminar").on("click", function (e) {
+
+                $('#miModalContenido').load(this.href, function () {
+                    $('#miModal').modal({
+                        backdrop: 'static',
+                        keyboard: true
+                    }, 'show');
+                    bindForm_ObraEliminar(this);
+                });
+                return false;
+            });
+
+            function bindForm_ObraEliminar(dialog) {
+                $('form', dialog).submit(function (e) {
+
+                    $.ajaxSetup({ cache: false });
+                    event.preventDefault();
+
+                    $.ajax({
+                        url: this.action,
+                        type: this.method,
+                        data: $(this).serialize(),
+                        success: function (result) {
+                            if (result.success) {
+
+                                window.location.href = '@Url.Action("Index","Home",null)';
+
+                            } else {
+                                $('#miModal').modal('hide');
+                            }
+                        },
+                        error: function () {
+                            alert("Ocurrio un error en el envio");
+                        }
+                    });
+
+                    return false;
+                });
+            }
+        });
+
+    </script>
+
+
+    
+    
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+}

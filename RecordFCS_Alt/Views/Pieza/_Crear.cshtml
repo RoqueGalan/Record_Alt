@@ -1,0 +1,45 @@
+﻿@model RecordFCS_Alt.Models.Pieza
+
+@{
+    ViewBag.PagName = "Crear Pieza";
+    ViewBag.CtrlName = Model.TipoPieza.Nombre + " -- " + Model.ImprimirFolio();
+}
+
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" data-toggle="tooltip" title="Cerrar">&times;</button>
+    <h4 class="modal-title" id="myModalLabel">
+        <b>@ViewBag.PagName</b>
+        <i class="text-muted">@ViewBag.CtrlName</i>
+    </h4>
+</div>
+
+@using (Html.BeginForm("Crear", "Pieza", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="modal-body">
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.FechaRegistro)
+            @Html.HiddenFor(model => model.ObraID)
+            @Html.HiddenFor(model => model.PiezaPadreID)
+            @Html.HiddenFor(model => model.Status)
+            @Html.HiddenFor(model => model.SubFolio)
+            @Html.HiddenFor(model => model.Temp)
+            @Html.HiddenFor(model => model.TipoPiezaID)
+
+            @{Html.RenderAction("RegistroFormulario", "Atributo", new { id = Model.TipoPiezaID});}
+
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+        <button class="btn" type="button" data-dismiss="modal">Cancelar</button>
+    </div>
+
+}
+
+
+<script src="~/Scripts/add.toolTip.js"></script>

@@ -259,14 +259,27 @@
     <Content Include="Content\img\recordFCSLogo2.png" />
     <Content Include="Content\img\Site.css" />
     <Content Include="Content\list_Etiqueta.css" />
+    <Content Include="Content\magnificent\css\mag.css" />
+    <Content Include="Content\magnificent\js\dependencias\gajs.js" />
+    <Content Include="Content\magnificent\js\dependencias\hammer.js" />
+    <Content Include="Content\magnificent\js\dependencias\jquery.bridget.js" />
+    <Content Include="Content\magnificent\js\dependencias\jquery.event.drag.js" />
+    <Content Include="Content\magnificent\js\dependencias\jquery.mousewheel.js" />
+    <Content Include="Content\magnificent\js\dependencias\PreventGhostClick.js" />
+    <Content Include="Content\magnificent\js\dependencias\screenfull.js" />
+    <Content Include="Content\magnificent\js\mag-analytics.js" />
+    <Content Include="Content\magnificent\js\mag-control.js" />
+    <Content Include="Content\magnificent\js\mag-jquery.js" />
+    <Content Include="Content\magnificent\js\mag.js" />
+    <Content Include="Content\magnificent\theme\default.css" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\theme.css" />
-    <Content Include="Content\_bootstrap-switch.min.css" />
-    <Content Include="Content\_bootstrap-theme.min.css" />
+    <Content Include="Content\bootstrap-switch.min.css" />
+    <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\_bootstrap.min.css" />
     <Content Include="Content\_Site.css" />
-    <Content Include="Content\_theme.min.css" />
+    <Content Include="Content\theme.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -502,6 +515,10 @@
     <Content Include="Views\Movimiento\Index.cshtml" />
     <Content Include="Views\Movimiento\_Error.cshtml" />
     <Content Include="Views\Movimiento\_CrearLista.cshtml" />
+    <Content Include="Views\Pieza\_Crear.cshtml" />
+    <Content Include="Views\ImagenPieza\_Detalles.cshtml" />
+    <Content Include="Views\Pieza\_Eliminar.cshtml" />
+    <Content Include="Views\Obra\_Eliminar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

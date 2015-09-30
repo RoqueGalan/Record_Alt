@@ -111,15 +111,15 @@ namespace RecordFCS_Alt.Controllers
 
             List<Guid> listaImprimir = (List<Guid>)Session[nombreListaImprimir];
 
+            int LetraFolioID = Convert.ToInt32(Request["LetraFolioID"].ToString());
+            var letra = db.LetraFolios.Find(LetraFolioID);
 
-            IQueryable<Pieza> listaPiezas = db.Piezas;
+            IQueryable<Pieza> listaPiezas = db.Piezas.Where(a=> a.Obra.LetraFolioID == letra.LetraFolioID);
             IPagedList<Guid> paginaPiezasIDs;
 
             //campo de Claves
             if (!String.IsNullOrEmpty(Request["claves"]))
             {
-                int LetraFolioID = Convert.ToInt32(Request["LetraFolioID"].ToString());
-                var letra = db.LetraFolios.Find(LetraFolioID);
 
                 List<int> listaClaves = new List<int>();
                 string[] listaClavesFormTemp = Request["claves"].Split(',');
@@ -253,7 +253,7 @@ namespace RecordFCS_Alt.Controllers
 
             //var listaObras = listaPiezas.GroupBy(x => x.ObraID).Select(x => x.FirstOrDefault()).ToList();
 
-            listaPiezas = listaPiezas.OrderBy(a => a.Obra.LetraFolio.Nombre).ThenBy(a => a.Obra.NumeroFolio);
+            listaPiezas = listaPiezas.Where(a=> a.TipoPieza.EsPrincipal).OrderBy(a => a.Obra.LetraFolio.Nombre).ThenBy(a => a.Obra.NumeroFolio);
 
 
             paginaPiezasIDs = listaPiezas.Select(x => x.PiezaID).ToList().ToPagedList(pagIndex, pagTamano);

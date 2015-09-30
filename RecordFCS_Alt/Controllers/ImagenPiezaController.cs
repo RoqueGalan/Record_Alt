@@ -307,19 +307,19 @@ namespace RecordFCS_Alt.Controllers
 
 
         //// GET: ImagenPieza/Detalles/5
-        //public ActionResult Details(Guid? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    ImagenPieza imagenPieza = db.ImagenPiezas.Find(id);
-        //    if (imagenPieza == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(imagenPieza);
-        //}
+        public ActionResult Detalles(Guid? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            ImagenPieza imagenPieza = db.ImagenPiezas.Find(id);
+            if (imagenPieza == null)
+            {
+                return HttpNotFound();
+            }
+            return PartialView("_detalles",imagenPieza);
+        }
 
        
 

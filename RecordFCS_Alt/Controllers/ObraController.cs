@@ -49,6 +49,9 @@ namespace RecordFCS_Alt.Controllers
             Obratemp = db.Obras.FirstOrDefault(a => a.LetraFolioID == obra.LetraFolioID && a.NumeroFolio == obra.NumeroFolio + 1);
             ViewBag.ObraSiguiente = Obratemp == null ? Guid.Empty : Obratemp.ObraID;
 
+
+            obra.Piezas = obra.Piezas.Where(a => a.TipoPieza.EsPrincipal).OrderBy(a=> a.SubFolio).ToList();
+
             return View(obra);
         }
 
@@ -564,6 +567,60 @@ namespace RecordFCS_Alt.Controllers
             return Json(new { success = false });
         }
 
+
+        // GET: Pieza/Eliminar/5
+        [CustomAuthorize(permiso = "oDel")]
+        public ActionResult Eliminar(Guid? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Obra obra = db.Obras.Find(id);
+            if (obra == null)
+            {
+                return HttpNotFound();
+            }
+            return PartialView("_Eliminar", obra);
+        }
+
+        // POST: Pieza/Eliminar/5
+        [HttpPost, ActionName("Eliminar")]
+        [ValidateAntiForgeryToken]
+        [CustomAuthorize(permiso = "oDel")]
+        public ActionResult EliminarConfirmado(Guid id)
+        {
+            bool success = false;
+            string btnValue = Request.Form["accionx"];
+            Obra obra = db.Obras.Find(id);
+
+            string folioObra = obra.LetraFolio.Nombre + obra.NumeroFolio;
+            switch (btnValue)
+            {
+                case "deshabilitar":
+                    obra.Status = false;
+                    db.Entry(obra).State = EntityState.Modified;
+                    db.SaveChanges();
+                    AlertaDefault(string.Format("Se deshabilito <b>{0}</b>", folioObra), true);
+                    success = true;
+                    break;
+                case "eliminar":
+                    db.Piezas.RemoveRange(obra.Piezas);
+                    db.SaveChanges();
+                    db.Obras.Remove(obra);
+                    db.SaveChanges();
+                    AlertaDanger(string.Format("Se elimino <b>{0}</b>", folioObra), true);
+                    success = true;
+
+                    break;
+                default:
+                    AlertaDanger(string.Format("Ocurrio un error."), true);
+                    break;
+
+            }
+
+            return Json(new { success = success });
+        }
 
 
         protected override void Dispose(bool disposing)

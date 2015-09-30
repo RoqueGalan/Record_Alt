@@ -1,10 +1,15 @@
 ﻿
 /*img { -ms-interpolation-mode: bicubic; }*/
+
 .day.disabled,
 .month.disabled,
 .year.disabled,
 .decade.disabled {
     color: #e6e6e6 !important;
+}
+
+#zoomModalDiv{
+   height:28em;
 }
 
 body {
@@ -14,6 +19,12 @@ body {
     /*font-size: 1.8em !important;*/
 }
 
+  .col-lg-offset-05 {
+    
+    margin-left: 4.16666666%;
+
+    
+  }
 
 /* Set padding to keep content from hitting the edges */
 .body-content {
@@ -26,6 +37,10 @@ body {
 .imagenMini {
     min-width: 200px !important;
     max-width: 200px !important;
+}
+.imagenXMini {
+    min-width: 120px !important;
+    max-width: 120px !important;
 }
 
 @font-face {
@@ -311,8 +326,7 @@ table {
 }
 
 .carousel-indicators {
-    top: 5%;
-    bottom: 30%;
+    bottom:4.5em;
 }
 
 .thumbnail .img-thumbnail {
@@ -336,21 +350,28 @@ table {
 
     .carousel-control.left, .carousel-control.right {
         background-image: none !important;
+
     }
 
     .carousel-control.right {
         left: auto;
-        right: -25px;
+        right: -1.2em;
+        top: auto;
+        bottom:0.5em;
+
     }
 
     .carousel-control.left {
         right: auto;
-        left: -25px;
+        left: -1.2em;
+        top: auto;
+        bottom:0.5em;
     }
 
 
 .form-control.medidaTam {
     max-width: 109px;
+    color: #000
 }
 
 /* FONTS*/

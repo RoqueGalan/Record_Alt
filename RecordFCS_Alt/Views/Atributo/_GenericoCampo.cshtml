@@ -33,7 +33,6 @@ else
         @Html.ValidationMessage("id_" + AtributoID, new { @class = "text-danger" })
         <p>Lista de valores:</p>
         <ul id="listaValores_@AtributoID" class="media-list"></ul>
-
     </div>
 
 
@@ -70,8 +69,9 @@ else
                     var stringHTML = '' +
                         '<li class="media" id = "li_' + id_temp + '">' +
                         '   <div class="media-body">' +
-                                '<input type="hidden" ' + 'id="' + id_temp + '" name="' + id_temp +'" value = "' + input.val() + '"/>' +
-                        input.val() +
+                                '<input type="text" ' + 'id="' + id_temp + '" name="' + id_temp + '" value = "' + input.val() + '" class="form-control"/>' +
+                        //input.val() +
+                      //  '   <span id="editar' + id_temp + '" class="btn btn-xs btn-default pull-right" data-toggle="tooltip" title="Editar valor"><span class="fa fa-pencil"></span></span>' +
                         '   </div>' +
                         '   <span id="quitar_' + id_temp + '" class="btn btn-xs btn-danger media-right" data-toggle="tooltip" title="Quitar valor"><span class="fa fa-times"></span></span>' +
                         '</li>'
@@ -80,9 +80,14 @@ else
                     ul.append($(stringHTML));
 
                     var btnDel = $('#quitar_' + id_temp);
-
                     btnDel.addClass("quitarLiCampGen_" + attID);
                     btnDel.tooltip();
+
+                    var btnEdit = $('#editar' + id_temp);
+                    btnEdit.addClass('editarLiCampGen_' + attID);
+                    btnEdit.data("idTemp",id_temp);
+                    btnEdit.tooltip();
+
 
                     input.attr('required', false);
 
@@ -115,6 +120,36 @@ else
             else {
                 input.attr('required', false);
             }
+
+        });
+
+
+
+        $(document.body).on("click", '.editarLiCampGen_' + '@AtributoID', function (e) {
+
+            var attID = '@AtributoID';
+            var id_temp = $(this).data("idTemp");
+
+            var btnDel = $('#quitar_' + id_temp);
+            var input = $('#id_' + attID);
+            var inputLI = $('#'+id_temp);
+
+            input.val(inputLI.val());
+
+            btnDel.trigger("click");
+            
+
+            //var ul = $('#listaValores_' + attID);
+            //var input = $('#id_' + attID);
+
+            //$(this).parent().remove()
+
+            //if (ul.html() == "") {
+            //    input.attr('required', true);
+            //}
+            //else {
+            //    input.attr('required', false);
+            //}
 
         });
 

@@ -8,7 +8,7 @@ using System.Web;
 namespace RecordFCS_Alt.Models
 {
     [MetadataType(typeof(PiezaMetadata))]
-    public class Pieza
+    public partial class Pieza
     {
         [Key]
         public Guid PiezaID { get; set; }
@@ -52,7 +52,7 @@ namespace RecordFCS_Alt.Models
         public virtual ICollection<TecnicaPieza> TecnicaPiezas { get; set; }
         public virtual ICollection<MedidaPieza> MedidaPiezas { get; set; }
         public virtual ICollection<AtributoPieza> AtributoPiezas { get; set; }
-        
+
         //atributoPieza
 
         //  videos
@@ -61,6 +61,34 @@ namespace RecordFCS_Alt.Models
 
 
         public virtual ICollection<MovimientoPieza> MovimientoPiezas { get; set; }
+
+
+        public string ImprimirFolio()
+        {
+            string Fol = "";
+            List<string> lista = new List<string>();
+            // TIPOLETRA    /   OBRA.NOFOLIO    /   TIPOPIEZA.SUBFOLIO  /   TIPOPIEZA.SUBFOLIO  /   TIPOPIEZA.SUBFOLIO
+            //      A               587                 A                      H2                       K3                  
+            // A587AH2K3
+
+            var temp = this;
+            do
+            {
+                lista.Add(temp.SubFolio);
+                temp = temp.PiezaPadre;
+            }
+            while (temp != null);
+
+            lista.Add(Obra.LetraFolio.Nombre + Obra.NumeroFolio);
+            lista.Reverse();
+
+            foreach (var item in lista)
+            {
+                Fol += item;
+            }
+
+            return Fol;
+        }
 
     }
 
