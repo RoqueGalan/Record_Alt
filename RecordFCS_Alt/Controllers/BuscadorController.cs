@@ -153,8 +153,8 @@ namespace RecordFCS_Alt.Controllers
 
                     //listaPiezas = listaPiezas.Where(a => listaClaves.Any(b => b == a.Obra.Clave));
 
-                    listaPiezas = listaPiezas.Where(a => a.Obra.LetraFolioID == letra.LetraFolioID && listaClaves.Contains(a.Obra.NumeroFolio));
                 }
+                listaPiezas = listaPiezas.Where(a => a.Obra.LetraFolioID == letra.LetraFolioID && listaClaves.Contains(a.Obra.NumeroFolio));
 
             }
 
@@ -266,6 +266,7 @@ namespace RecordFCS_Alt.Controllers
             ViewBag.nombreListaImprimir = nombreListaImprimir;
 
             ViewBag.totalRegistros = listaImprimir.Count();
+
 
             return PartialView(rutaVista, paginaPiezasIDs);
         }

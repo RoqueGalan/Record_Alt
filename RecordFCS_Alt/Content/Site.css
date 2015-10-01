@@ -38,9 +38,9 @@ body {
     min-width: 200px !important;
     max-width: 200px !important;
 }
-.imagenXMini {
-    min-width: 120px !important;
-    max-width: 120px !important;
+.imagenExtraMini {
+    min-width: 100px !important;
+    max-width: 100px !important;
 }
 
 @font-face {

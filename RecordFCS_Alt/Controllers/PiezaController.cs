@@ -584,6 +584,8 @@ namespace RecordFCS_Alt.Controllers
         [CustomAuthorize(permiso = "")]
         public ActionResult Ficha(Guid? id, string tipo = "basica")
         {
+            string tipoCarusel = "thumb";
+            string vista = "_Ficha";
 
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -594,8 +596,25 @@ namespace RecordFCS_Alt.Controllers
                 return HttpNotFound();
 
             //extraer los campos del tipo de obra
-            tipo = tipo.ToLower();
-            tipo = tipo == "completa" ? "Ficha Completa" : tipo == "basica" ? "Ficha Básica" : "Ficha Básica";
+            
+            switch (tipo.ToLower())
+            {
+                case "completa":
+                    tipo = "Ficha Completa";
+                    vista = "_Ficha";
+                    break;
+                case "basica":
+                    tipo = "Ficha Básica";
+                    vista = "_Ficha";
+                    break;
+
+                case "guion":
+                    tipo = "Guion";
+                    tipoCarusel = "miniThumb";
+                    vista = "_FichaMini";
+                    break;
+            }
+
 
             var listaAttributosFichaCompleta = pieza.TipoPieza.Atributos.Where(a => a.Status && a.MostrarAtributos.Any(b => b.TipoMostrar.Nombre == tipo && b.Status) && a.TipoAtributo.Status).OrderBy(a => a.Orden).ToList();
 
@@ -605,13 +624,16 @@ namespace RecordFCS_Alt.Controllers
 
 
             ViewBag.TipoFicha = tipo;
+            ViewBag.tipoCarusel = tipoCarusel;
 
             ViewBag.esCompleta = tipo == "Ficha Completa" ? true : false;
 
 
             pieza.PiezasHijas = pieza.PiezasHijas.OrderBy(a => a.SubFolio).ToList();
 
-            return PartialView("_Ficha", pieza);
+
+
+            return PartialView(vista, pieza);
         }
 
 
@@ -711,7 +733,6 @@ namespace RecordFCS_Alt.Controllers
 
             return PartialView("_EditarUbicacion", pieza);
         }
-
 
 
         protected override void Dispose(bool disposing)

@@ -19,7 +19,7 @@ namespace RecordFCS_Alt.Controllers
         private RecordFCSContext db = new RecordFCSContext();
         
         [CustomAuthorize(permiso = "")]
-        public ActionResult Carrusel(Guid? id, bool status = false, string tipo = "original", bool esCompleta = true)
+        public ActionResult Carrusel(Guid? id, bool status = false, string tipo = "thumb", bool esCompleta = true)
         {
             if (id == null) { return new HttpStatusCodeResult(HttpStatusCode.BadRequest); }
 
@@ -38,14 +38,6 @@ namespace RecordFCS_Alt.Controllers
             }
 
 
-
-            var vista = "_Carrusel";
-
-            if (tipo == "thumb")
-            {
-                vista = "_CarruselThumb";
-            }
-
             ViewBag.PiezaID = id;
 
             ViewBag.NoImagenes = pieza.ImagenPiezas.Count;
@@ -54,7 +46,9 @@ namespace RecordFCS_Alt.Controllers
 
             ViewBag.esCompleta = esCompleta;
 
-            return PartialView(vista, pieza.ImagenPiezas);
+            ViewBag.tipoCarusel = tipo;
+
+            return PartialView("_CarruselThumb", pieza.ImagenPiezas);
         }
 
 

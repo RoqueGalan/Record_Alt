@@ -30,7 +30,7 @@ namespace RecordFCS_Alt.Helpers.Seguridad
                 permiso = permiso.Replace(" ", "");
                 string[] roles = permiso.Split(',');
 
-                if (User.ListaRoles.Any(r => roles.Any(rs => rs.Contains(r))))
+                if (User.ListaRoles.Any(r => roles.Any(rs => rs == r)))
                 {
                     return true;
                 }

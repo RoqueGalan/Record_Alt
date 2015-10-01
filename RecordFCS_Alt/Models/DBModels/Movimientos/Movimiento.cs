@@ -34,7 +34,7 @@ namespace RecordFCS_Alt.Models
         public EstadoMovimiento EstadoMovimiento { get; set; }
 
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm t}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy hh:mm tt}", ApplyFormatInEditMode = true)]
         public DateTime FechaRegistro { get; set; }
 
         public DateTime FechaRet { get; set; }
@@ -49,7 +49,7 @@ namespace RecordFCS_Alt.Models
 
         [Required(ErrorMessage = "Ingresa la fecha y hora del movimiento")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm t}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy hh:mm tt}", ApplyFormatInEditMode = true)]
         public DateTime FechaHoraMovimiento { get; set; }
 
         public string ColeccionTexto { get; set; }

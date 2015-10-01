@@ -10,6 +10,25 @@
     bool esCompleta = ViewBag.esCompleta;
     string classZoom = esCompleta ? "ImagenZoom" : "";
     string classModal = "ModalImagen_" + CarruselID;
+    
+    string   tipoCarusel= ViewBag.tipoCarusel;
+
+    string classTamano = "";
+    string textSinImagen = "";
+
+    switch (tipoCarusel)
+    {
+        case "miniThumb":
+            classTamano = "imagenExtraMini";
+            textSinImagen = "holder.js/100x80/text:404";
+            break;
+        default:
+            classTamano = "imagenMini";
+            textSinImagen = "holder.js/250x200/text:404";
+            break;
+    }
+    
+    
 }
 
 
@@ -21,7 +40,7 @@
         {
             <div id="imagen_0" class="item @active">
                 <div class="thumbnail img-thumbnail">
-                    <img src="holder.js/250x200/text:404" alt="Sin Imagen" class="media-object imagenMini">
+                    <img src="holder.js/@(textSinImagen)/text:404" alt="Sin Imagen" class="media-object @classTamano">
 
                     @if (User.IsInRole("imgNew") && esCompleta)
                     {
@@ -50,18 +69,22 @@
                         @*<img src="@(item.RutaMini)" alt="@item.Titulo" class="imagenMini @classZoom" data-zoom-image="@(rutaImagenGrande)">*@
 
                         <a href="@Url.Action("Detalles", "ImagenPieza", new { id = item.ImagenPiezaID})" data-modal="" class="LG@(classModal)">
-                            <img src="@(item.RutaMini)" alt="@item.Titulo" class="imagenMini">
+                            <img src="@(item.RutaMini)" alt="@item.Titulo" class="@classTamano">
                         </a>
                         
 
                         <div class=" caption text-center">
                             <span class="center-block"><b>@item.Titulo</b></span>
+                            @if (tipoCarusel != "miniThumb")
+                            {
+                                
+                            
                             <small class="text-muted">@item.Descripcion</small>
 
                             <span class="center-block">
                                 @Html.DisplayFor(modelItem => item.Status)
                             </span>
-
+                            }
 
                             <div>
 

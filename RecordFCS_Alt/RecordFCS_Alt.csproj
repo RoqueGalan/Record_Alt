@@ -136,6 +136,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ImagenPiezaController.cs" />
     <Compile Include="Controllers\LetraFolioController.cs" />
+    <Compile Include="Controllers\ListaPiezaController.cs" />
     <Compile Include="Controllers\ListaValorController.cs" />
     <Compile Include="Controllers\MedidaPiezaController.cs" />
     <Compile Include="Controllers\MigracionCEHMController.cs" />
@@ -212,7 +213,7 @@
     <Compile Include="Models\ViewModels\Item_Ficha.cs" />
     <Compile Include="Models\ViewModels\ItemObraReporte.cs" />
     <Compile Include="Models\ViewModels\OpcionesImprimir.cs" />
-    <Compile Include="Models\ViewModels\PiezaEnCarrito.cs" />
+    <Compile Include="Models\ViewModels\itemPiezaMini.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -519,9 +520,12 @@
     <Content Include="Views\ImagenPieza\_Detalles.cshtml" />
     <Content Include="Views\Pieza\_Eliminar.cshtml" />
     <Content Include="Views\Obra\_Eliminar.cshtml" />
+    <Content Include="Views\Movimiento\_ResultadosBusqueda.cshtml" />
+    <Content Include="Views\Movimiento\_FichaMini.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\ListaPieza\" />
     <Folder Include="Views\MigracionCEHM\" />
   </ItemGroup>
   <ItemGroup>
