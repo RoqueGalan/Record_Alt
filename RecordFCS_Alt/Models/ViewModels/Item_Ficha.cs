@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace RecordFCS_Alt.Models.ViewModels
+namespace RecordFCS_Alt.Models.ViewsModel
 {
     public class Item_Ficha
     {

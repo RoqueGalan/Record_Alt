@@ -19,54 +19,7 @@
 
 
 
-@*<div class="form-group">
 
-    @Html.LabelFor(model => model.FechaHoraMovimiento, htmlAttributes: new { @class = "control-label col-md-3" })
-    <div class="col-md-8">
-        <div class='input-group date' id='FechaHoraMovimientoDateTimePicker'>
-            @Html.EditorFor(model => model.FechaHoraMovimiento, new { htmlAttributes = new { @class = "form-control", @readOnly = "" } })
-            <span class="input-group-addon">
-                <span class="fa fa-calendar"></span>
-            </span>
-        </div>
-        @Html.ValidationMessageFor(model => model.FechaHoraMovimiento, "", new { @class = "text-danger" })
-    </div>
-</div>
-
-
-<br /><br />
-
-
-
-<script type="text/javascript">
-    $(function () {
-        var hoy = new Date();
-
-        var mes = hoy.getMonth() + 1;
-        var dia = hoy.getDate();
-
-        var fechaLimite = hoy.getFullYear() + '/' +
-            (mes < 10 ? '0' : '') + mes + '/' +
-            (dia < 10 ? '0' : '') + dia;
-
-        $('#FechaHoraMovimientoDateTimePicker').datetimepicker({
-            defaultDate: "@Model.FechaHoraMovimiento",
-            minDate: fechaLimite, //limitar que no se seleccione fechas pasadas a hoy
-            format: "DD/MM/YYYY hh:mm A", //formato: dia/mes/año hora:minuto AM/PM
-            //disabledDates: [
-            //    moment("12/25/2013"),
-            //    new Date(2013, 11 - 1, 21),
-            //    "11/22/2013 00:53"
-            //],
-            toolbarPlacement: 'top',
-            showTodayButton: true,
-            showClose: true,
-            ignoreReadonly: true,
-            useCurrent: false //Important! See issue #1075
-
-        });
-    });
-</script>*@
 
 
 <div id="renderMovimiento">
@@ -138,6 +91,12 @@
 </div>
 
 
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+}
+
 <script>
     $('form.formInicio').submit(function (e) {
         e.preventDefault();
@@ -158,20 +117,7 @@
     });
 </script>
 
-@section scripts {
-    @*<script type="text/javascript">
-            $(function () {
-                $('#FechaHoraMovimiento').datetimepicker({
-                    defaultDate: '@Model.FechaHoraMovimiento',
-                    format: 'L',
-                    showClose: true,
-                    showClear: true,
-                    toolbarPlacement: 'top'
-                });
 
-            });
-        </script>*@
-}
 
 
 

@@ -274,6 +274,7 @@
     <Content Include="Content\magnificent\js\mag.js" />
     <Content Include="Content\magnificent\theme\default.css" />
     <Content Include="Content\PagedList.css" />
+    <Content Include="Content\piezaMini.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\theme.css" />
     <Content Include="Content\bootstrap-switch.min.css" />

@@ -5,13 +5,13 @@
 @{
     string tipo  = ViewBag.tipo;
 }
-
+<link href="~/Content/piezaMini.css" rel="stylesheet" />
 <ul class="media-list">
 
     @foreach (var piezaID in Model)
     {
-        Html.RenderAction("FichaMini", "Movimineto", new { id = piezaID, tipo = "guion" });
-        
+        Html.RenderAction("FichaMini", "Movimiento", new { id = piezaID, tipo = "guion", listaNombre = "x" });
+
         @*<li class="media">
             <div class="media-body">
                 @piezaID.ToString()

@@ -4,51 +4,51 @@
 <h3 class="text-center">Registrar: <b>@ViewBag.Nombre</b></h3>
 
 
-    <ul class="media-list">
-        @foreach (var item in Model)
-        {
-            <li class="media">
-                <div class="media-body">
-                    <label class="media-heading" for="@item.AtributoID">@item.NombreAlterno</label>
-                    
-                        @{Html.RenderAction("GenerarCampoRegistro", "Atributo", new { id = item.TipoAtributoID, AtributoID = item.AtributoID });}
-                    
-                </div>
-            </li>
+<ul class="media-list">
+    @foreach (var item in Model)
+    {
+        <li class="media">
+            <div class="media-body">
+                <label class="media-heading" for="@item.AtributoID">@item.NombreAlterno</label>
 
-        }
-    </ul>
+                @{Html.RenderAction("GenerarCampoRegistro", "Atributo", new { id = item.TipoAtributoID, AtributoID = item.AtributoID });}
 
-    <div id="renderEspera"></div>
+            </div>
+        </li>
 
-    <div class="text-center">
-        <input class="btn btn-primary" type="submit" value="Registrar Obra" id="btnSubmit" />
+    }
+</ul>
 
-    </div>
+<div id="renderEspera"></div>
+
+<div class="text-center">
+
+    <button type="submit" id="btnSubmit" data-loading-text="Procesando..." class="btn btn-primary" autocomplete="off">
+        Registrar
+    </button>
+
+
+</div>
 
 
 
 
 <script type="text/javascript">
+    $(document).ready(function () {
+        var btn = $('#btnSubmit').button();
 
-    //$("#formObraRegistro").submit(function (e) {
-    //    e.preventDefault();
+        btn.click(function () {
 
-    //    $('#renderEspera').html('' +
-    //       '<div class="text-center">' +
-    //           '<p>' +
-    //               '<span class="text-muted">' +
-    //                   'Por favor espere' +
-    //               '</span>' +
-    //           '</p>' +
-    //           '<i class="fa fa-spinner fa-pulse fa-2x text-muted"></i>' +
-    //           '<p>' +
-    //           'Se esta procesando la Obra...' +
-    //       '</div>');
-    //});
+            btn.button('loading');
 
+            setTimeout(function () {
+                btn.button('reset');
+            }, 10000)
 
+        });
+    });
 </script>
+
 
 
 <script src="~/Scripts/jquery.validate.min.js"></script>

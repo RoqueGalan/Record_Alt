@@ -16,7 +16,7 @@ namespace RecordFCS_Alt.Controllers
     public class MovimientoController : Controller
     {
         private RecordFCSContext db = new RecordFCSContext();
-                [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "")]
         // GET: Movimiento
         public ActionResult Index()
         {
@@ -33,7 +33,7 @@ namespace RecordFCS_Alt.Controllers
 
 
         // GET: Movimiento/Crear
-                [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "")]
         public ActionResult Crear(Guid? TipoMovimientoID, bool? HaciaExposicion)
         {
             bool HaciaExposicionValor = HaciaExposicion == null || HaciaExposicion == false ? false : true;
@@ -68,7 +68,7 @@ namespace RecordFCS_Alt.Controllers
                 if (HaciaExposicionValor)
                 {
                     mov.MovimientoExposicion = new MovimientoExposicion();
-                    
+
                 }
 
                 switch (tipoMov.Nombre.ToLower())
@@ -93,7 +93,7 @@ namespace RecordFCS_Alt.Controllers
                         break;
                     case "traslado":
                         mov.MovimientoSolicitante = new MovimientoSolicitante();
-                         mov.MovimientoAutorizacion = new MovimientoAutorizacion();
+                        mov.MovimientoAutorizacion = new MovimientoAutorizacion();
                         mov.MovimientoTransporte = new MovimientoTransporte();
                         break;
 
@@ -117,7 +117,7 @@ namespace RecordFCS_Alt.Controllers
 
                     if (HaciaExposicionValor)
                         mov.MovimientoExposicion.FechaInicial = DateTime.Now;
-  
+
 
                     var listaUbicaciones = db.Ubicaciones.Where(a => a.Status).Select(a => new { a.Nombre, a.UbicacionID }).OrderBy(a => a.Nombre);
                     var listaUsuarios = db.Usuarios.Where(a => a.Status).Select(a => new { Nombre = a.Nombre + " " + a.Apellido, a.UsuarioID }).OrderBy(a => a.Nombre);
@@ -177,7 +177,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: Movimiento/Edit/5
-                [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "")]
         public ActionResult Edit(Guid? id)
         {
             if (id == null)
@@ -228,7 +228,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: Movimiento/Delete/5
-                [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "")]
         public ActionResult Delete(Guid? id)
         {
             if (id == null)
@@ -255,7 +255,7 @@ namespace RecordFCS_Alt.Controllers
             return RedirectToAction("Index");
         }
 
-                [CustomAuthorize(permiso = "")]
+        [CustomAuthorize(permiso = "")]
         public ActionResult BuscarPiezas(int LetraFolioID, Guid? GuionID, string tipo = "", int? pagina = null, string claves = "")
         {
             int pagTamano = 5;
@@ -320,7 +320,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         [CustomAuthorize(permiso = "")]
-                public ActionResult FichaMini(Guid? id, string tipo = "guion", string listaNombre = "listaTemp")
+        public ActionResult FichaMini(Guid? id, string tipo = "guion", string listaNombre = "listaTemp")
         {
             //var lista = Session[listaNombre] == null ? new List<itemPiezaMini>() : (List<itemPiezaMini>)Session[listaNombre];
 
@@ -335,6 +335,21 @@ namespace RecordFCS_Alt.Controllers
             if (pieza == null)
                 return HttpNotFound();
 
+            itemPiezaMini piezaMini = new itemPiezaMini()
+            {
+                ObraID = pieza.ObraID,
+                PiezaID = pieza.PiezaID,
+                FolioObra = pieza.Obra.LetraFolio.Nombre + pieza.Obra.NumeroFolio,
+                FolioPieza = pieza.ImprimirFolio(),
+                NombreObra = pieza.Obra.TipoObra.Nombre,
+                NombrePieza = pieza.TipoPieza.Nombre,
+                esPrincipal = pieza.TipoPieza.EsPrincipal,
+                ListaPiezasHijas = new List<Guid>(),
+                Atributos = new List<itemPiezaMiniAtt>()
+            };
+
+
+
             //extraer los campos del tipo de obra
 
             switch (tipo.ToLower())
@@ -347,27 +362,231 @@ namespace RecordFCS_Alt.Controllers
             }
 
 
-            var listaAttributosFichaCompleta = pieza.TipoPieza.Atributos.Where(a => a.Status && a.MostrarAtributos.Any(b => b.TipoMostrar.Nombre == tipo && b.Status) && a.TipoAtributo.Status).OrderBy(a => a.Orden).ToList();
+            var listaAttributosFicha = pieza.TipoPieza.Atributos.Where(a => a.Status && a.MostrarAtributos.Any(b => b.TipoMostrar.Nombre == tipo && b.Status) && a.TipoAtributo.Status).OrderBy(a => a.Orden).ToList();
 
-            pieza.TipoPieza.TipoPiezasHijas = pieza.TipoPieza.TipoPiezasHijas.Where(a => a.Status).OrderBy(a => a.Orden).ToList();
 
-            ViewBag.listaAttributosFichaCompleta = listaAttributosFichaCompleta;
+            //llenar los attFicha
+            foreach (var att in listaAttributosFicha)
+            {
+                var tipoAtt = att.TipoAtributo;
 
+                var attFicha = new itemPiezaMiniAtt()
+                {
+                    Nombre = att.NombreAlterno,
+                    Orden = att.Orden,
+                    PiezaID = piezaMini.PiezaID,
+                    AtributoID = att.AtributoID,
+                    Valores = new List<itemPiezaMiniAttValor>()
+                };
+
+                if (tipoAtt.EsGenerico)
+                {
+                    var lista_AttPieza = pieza.AtributoPiezas.Where(a => a.Atributo == att).ToList();
+
+                    if (lista_AttPieza.Count > 0)
+                    {
+                        foreach (var item in lista_AttPieza)
+                        {
+                            var attValor = new itemPiezaMiniAttValor()
+                            {
+                                AtributoPiezaID = item.AtributoPiezaID,
+                                Orden = attFicha.Valores.Count + 1
+                            };
+
+                            if (tipoAtt.EsLista)
+                            {
+                                attValor.Valor = item.ListaValor.Valor;
+                            }
+                            else
+                            {
+                                attValor.Valor = item.Valor;
+                            }
+
+                            if (!string.IsNullOrWhiteSpace(attValor.Valor))
+                            {
+                                attFicha.Valores.Add(attValor);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    switch (tipoAtt.TablaSQL)
+                    {
+                        case "Autor":
+                            var lista_AttAutor = pieza.AutorPiezas.Where(a => a.Status).OrderByDescending(a => a.esPrincipal).ThenBy(a => a.Prefijo).ThenBy(a => a.Autor.Nombre).ToList();
+                            if (lista_AttAutor.Count > 0)
+                            {
+                                foreach (var item in lista_AttAutor)
+                                {
+                                    var attValor = new itemPiezaMiniAttValor()
+                                    {
+                                        AtributoPiezaID = item.AutorID,
+                                        Orden = attFicha.Valores.Count + 1
+                                    };
+
+                                    attValor.Valor = string.IsNullOrWhiteSpace(item.Prefijo) ? "" : item.Prefijo + ": " + item.Autor.Nombre + " " + item.Autor.Apellido;
+
+                                    if (!string.IsNullOrWhiteSpace(item.Autor.Nombre + " " + item.Autor.Apellido))
+                                    {
+                                        attFicha.Valores.Add(attValor);
+                                    }
+                                }
+                            }
+                            break;
+
+                        case "Ubicacion":
+                            if (pieza.UbicacionID != null)
+                            {
+                                var attValor = new itemPiezaMiniAttValor()
+                                {
+                                    AtributoPiezaID = pieza.UbicacionID,
+                                    Orden = 1,
+                                    Valor = pieza.Ubicacion.Nombre
+                                };
+
+                                if (!string.IsNullOrWhiteSpace(attValor.Valor))
+                                {
+                                    attFicha.Valores.Add(attValor);
+                                }
+
+                            }
+                            break;
+
+                        case "TipoTecnica":
+                            var lista_Tecnicas = pieza.TecnicaPiezas.Where(a => a.Status).OrderBy(a => a.TipoTecnica.Nombre).ToList();
+
+                            if (lista_Tecnicas.Count > 0)
+                            {
+                                foreach (var item in lista_Tecnicas)
+                                {
+                                    var attValor = new itemPiezaMiniAttValor()
+                                    {
+                                        AtributoPiezaID = item.TecnicaID,
+                                        Orden = attFicha.Valores.Count + 1
+                                    };
+
+                                    attValor.Valor = item.TipoTecnica.Nombre + ": " + item.Tecnica.Descripcion;
+
+                                    if (!string.IsNullOrWhiteSpace(item.Tecnica.Descripcion))
+                                    {
+                                        attFicha.Valores.Add(attValor);
+                                    }
+                                }
+                            }
+                            break;
+
+                        case "TipoMedida":
+                            var lista_Medidas = pieza.MedidaPiezas.Where(a => a.Status).OrderBy(a => a.TipoMedida.Nombre).ToList();
+                            if (lista_Medidas.Count > 0)
+                            {
+                                foreach (var item in lista_Medidas)
+                                {
+                                    var attValor = new itemPiezaMiniAttValor()
+                                    {
+                                        AtributoPiezaID = item.TipoMedidaID,
+                                        Orden = attFicha.Valores.Count + 1
+                                    };
+
+                                    string medidaTexto = "";
+                                    bool existe0 = false;
+                                    bool existe1 = false;
+
+                                    //1x
+                                    existe0 = item.Altura.HasValue ? true : false;
+                                    existe1 = item.Anchura.HasValue ? true : false;
+
+                                    medidaTexto += existe0 ? item.Altura.ToString() : "";
+                                    medidaTexto += existe0 && existe1 ? "x" : "";
+                                    existe0 = existe1;
+                                    existe1 = item.Profundidad.HasValue ? true : false;
+
+                                    //2x
+                                    medidaTexto += medidaTexto.EndsWith("x") ? "" : medidaTexto.Length > 0 && existe0 ? "x" : "";
+                                    medidaTexto += existe0 ? item.Anchura.ToString() : "";
+                                    medidaTexto += existe0 && existe1 ? "x" : "";
+                                    existe0 = existe1;
+                                    existe1 = item.Diametro.HasValue ? true : false;
+
+                                    //3x
+                                    medidaTexto += medidaTexto.EndsWith("x") ? "" : medidaTexto.Length > 0 && existe0 ? "x" : "";
+                                    medidaTexto += existe0 ? item.Profundidad.ToString() : "";
+                                    medidaTexto += existe0 && existe1 ? "x" : "";
+                                    existe0 = existe1;
+                                    existe1 = item.Diametro2.HasValue ? true : false;
+
+                                    //4Øx
+                                    medidaTexto += medidaTexto.EndsWith("x") ? "" : medidaTexto.Length > 0 && existe0 ? "x" : "";
+                                    medidaTexto += existe0 ? item.Diametro.ToString() + "Ø" : "";
+                                    medidaTexto += existe0 && existe1 ? "x" : "";
+                                    existe0 = existe1;
+                                    existe1 = item.UMLongitud.HasValue ? true : false;
+
+                                    //cm
+                                    medidaTexto += medidaTexto.EndsWith("x") ? "" : medidaTexto.Length > 0 && existe0 ? "x" : "";
+                                    medidaTexto += existe0 ? item.Diametro2.ToString() + "Ø" : "";
+                                    medidaTexto += existe1 && medidaTexto.Length > 0 ? item.UMLongitud.ToString() + " " : " ";
+                                    existe0 = item.Peso.HasValue ? true : false;
+
+                                    //6
+                                    medidaTexto += medidaTexto.EndsWith(" ") && existe0 ? item.Peso.ToString() + item.UMMasa : "";
+                                    existe0 = item.Otra == null || item.Otra == "" ? false : true;
+
+                                    //otra
+                                    medidaTexto += existe0 ? medidaTexto.Length > 0 ? ", " + item.Otra : item.Otra : "";
+
+                                    attValor.Valor = medidaTexto;
+
+                                    if (!string.IsNullOrWhiteSpace(attValor.Valor))
+                                    {
+                                        attFicha.Valores.Add(attValor);
+                                    }
+                                }
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
+                if (attFicha.Valores.Count > 0)
+                {
+                    piezaMini.Atributos.Add(attFicha);
+                }
+            }
+
+            var imagen = pieza.ImagenPiezas.OrderBy(a => a.Orden).FirstOrDefault(a => a.Status && a.EsPrincipal);
+
+            string textSinImagen = pieza.TipoPieza.EsPrincipal ? "holder.js/100x80/text:404" : "holder.js/80x60/text:404" ;
+            string classTamano = pieza.TipoPieza.EsPrincipal ? "imagenExtraMini" : "imagenSExtraMini";
+
+            if (imagen != null)
+            {
+                piezaMini.ImagenID = imagen.ImagenPiezaID;
+                piezaMini.RutaImagenMini = imagen.RutaMini;
+            }
+
+
+            piezaMini.ListaPiezasHijas.AddRange(pieza.PiezasHijas.Where(a=> a.Status).OrderBy(a=> a.SubFolio).Select(a=> a.PiezaID));
+
+            //pieza.TipoPieza.TipoPiezasHijas = pieza.TipoPieza.TipoPiezasHijas.Where(a => a.Status).OrderBy(a => a.Orden).ToList();
+
+            //ViewBag.listaAttributosFichaCompleta = listaAttributosFicha;
+        
 
             ViewBag.TipoFicha = tipo;
             ViewBag.tipoCarusel = tipoCarusel;
             ViewBag.listaNombre = listaNombre;
+            ViewBag.esPrincipal = pieza.TipoPieza.EsPrincipal;
+            ViewBag.textSinImagen = textSinImagen;
+            ViewBag.classTamano = classTamano;
 
-
-            pieza.PiezasHijas = pieza.PiezasHijas.OrderBy(a => a.SubFolio).ToList();
-
-
-
-            return PartialView(vista, pieza);
+            //pieza.PiezasHijas = pieza.PiezasHijas.OrderBy(a => a.SubFolio).ToList();
+            return PartialView("~/Views/Movimiento/" + vista + ".cshtml", piezaMini);
         }
 
 
-        
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

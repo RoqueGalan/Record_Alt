@@ -1,588 +1,141 @@
-﻿@using RecordFCS_Alt.Models
-@model RecordFCS_Alt.Models.Pieza
+﻿@model RecordFCS_Alt.Models.ViewsModel.itemPiezaMini
 @using RecordFCS_Alt.Helpers
 
 @{
-    bool esPrincipal = Model.TipoPieza.EsPrincipal;
-    int Nuimagenes = Model.ImagenPiezas.Count;
-    int Nuautores = Model.AutorPiezas.Count;
-    int NuMedidas = Model.MedidaPiezas.Count;
-    int NuTecnicas = Model.TecnicaPiezas.Count;
-
-    bool esCompleta = ViewBag.esCompleta;
-    string subFolio = Model.SubFolio;
-
-    string tipoCarusel = ViewBag.tipoCarusel;
-
+    bool esPrincipal = Model.esPrincipal;
+    string classModal = "ModalImagen_" + Model.PiezaID;
+    string textSinImagen = ViewBag.textSinImagen;
+    string classTamano = ViewBag.classTamano;
+    string classContenedor = Model.esPrincipal ? "pm-contenedorObra" : "pm-contenedorPieza";
 }
 
 
-<li class="media">
+<li class="media @classContenedor">
 
-    <div class="media-left media-middle">
+    <div class="media-left">
 
-        <div id="renderCarrusel_@Model.PiezaID" class="text-center">
-            @{ Html.RenderAction("Carrusel", "ImagenPieza", new { id = Model.PiezaID, status = false, tipo = tipoCarusel, esCompleta = esCompleta }); }
+
+        @if (Model.esPrincipal && User.IsInRole("verFichComp"))
+        {
+            <a href="@Url.Action("Detalles", "Obra", new  {id = Model.ObraID })" class="btn btn-primary btn-xs" data-toggle="tooltip" title="Abrir Ficha Completa de Obra" target="_blank">@Model.FolioObra</a>
+        }
+        
+        <div class="text-center">
+            <h4>
+                @Model.FolioPieza
+            </h4>
         </div>
+
+        <div class="center-block">
+
+            @if (Model.ImagenID == null)
+            {
+
+                <img src="holder.js/@(textSinImagen)/text:404" alt="Sin Imagen" class="media-object @classTamano">
+            }
+            else
+            {
+                <a href="@Url.Action("Detalles", "ImagenPieza", new { id = Model.ImagenID})" data-modal="" class="LG@(classModal)">
+                    <img src="@(Model.RutaImagenMini)" alt="@Model.FolioPieza" class="media-object @classTamano">
+                </a>
+            }
+        </div>
+
+
+
     </div>
 
 
-    <div class="media-body clearfix">
-        @if (!esCompleta)
-        {
-            <h4 class="media-heading pull-right">@(Model.Obra.LetraFolio.Nombre + Model.Obra.NumeroFolio)</h4>
-        }
-        else
-        {
-            if (!Model.TipoPieza.EsPrincipal)
-            {
-                <h4 class="media-heading pull-right">@(Model.ImprimirFolio())</h4>
-            }
-        }
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th class="col-lg-3 col-md-5 col-sm-5"></th>
-                    <th>
-                        @if (!esCompleta)
-                        {
-                            if (User.IsInRole("verFichComp"))
-                            {
-                                <a href="@Url.Action("Detalles", "Obra", new  {id = Model.ObraID })" class="btn btn-primary btn-xs pull-right" data-toggle="tooltip" title="Abrir Ficha Completa" target="_blank"><span class='fa fa-pencil'></span></a>
-                            }
-                        }
-                    </th>
-                </tr>
-            </thead>
+    <div class="media-body media-middle clearfix">
 
-            <tbody>
+        <div>
+            <div class="pull-right">
+                @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Agregar Pieza", "AddPieza", "Movimiento", routeValues: new { id = Model.PiezaID, todas = false }, htmlAttributes: new { data_toggle = "tooltip", @class = "btn btn-primary btn-xs" })
 
-                <tr>
-                    <td>
-                        <p>
-                            <b>Tipo de @(esPrincipal ? "Obra" : "Pieza")</b>
-                        </p>
-                    </td>
-
-                    <td>
-                        <p>@(esPrincipal ? Model.Obra.TipoObra.Nombre : Model.TipoPieza.Nombre)</p>
-                    </td>
-                </tr>
-
-
-
-                @foreach (var att in (List<Atributo>)ViewBag.listaAttributosFichaCompleta)
+                @if (Model.ListaPiezasHijas.Count > 0)
                 {
-                    var tipoAtt = att.TipoAtributo;
-
-                    if (tipoAtt.EsGenerico)
-                    {
-                        var lista_AttPieza = Model.AtributoPiezas.Where(a => a.Atributo == att).ToList();
-                        var color = lista_AttPieza.Count > 0 ? "default" : "";
-
-                        <tr class="@color">
-                            <td>
-                                <p>
-                                    <b>@att.NombreAlterno</b>
-                                </p>
-                            </td>
-
-                            <td>
-                                @if (color == "default")
-                                {
-                                    foreach (var item in lista_AttPieza)
-                                    {
-                                        <p class="hover-dorado">
-                                           
-                                            <span id="valor_@item.AtributoPiezaID">
-                                                @if (tipoAtt.EsLista)
-                                                {
-                                                    @item.ListaValor.Valor
-                                                }
-                                                else
-                                                {
-                                                        @item.Valor
-                                                }
-                                            </span>
-                                        </p>
-                                    }
-                                }
-                            </td>
-                        </tr>
-
-                    }
-                    else
-                    {
-                        string color = "";
-                        switch (tipoAtt.TablaSQL)
-                        {
-                            case "Autor":
-                                {
-                                    //multiple
-                                    var lista_AttAutor = Model.AutorPiezas.Where(a => a.Status).OrderByDescending(a => a.esPrincipal).ThenBy(a => a.Prefijo).ThenBy(a => a.Autor.Nombre).ToList();
-                                    color = lista_AttAutor.Count > 0 ? "default" : "";
-                                    <tr class="@color">
-                                        <td>
-                                            <b>@att.NombreAlterno</b>
-                                           
-                                        </td>
-                                        <td>
-                                            @if (color == "default")
-                                            {
-                                                foreach (var item in lista_AttAutor)
-                                                {
-                                                    <p class="hover-dorado">
-                                                                                                               <span id="autor_@(item.PiezaID)_@(item.AutorID)">
-
-                                                            <span><b>@(item.Prefijo == "" || item.Prefijo == null ? "" : item.Prefijo + ": ")</b></span>
-                                                            @(item.Autor.Nombre + " " + item.Autor.Apellido)
-                                                        </span>
-                                                    </p>
-                                                }
-                                            }
-                                        </td>
-                                    </tr>
-                                }
-                                break;
-                            case "Ubicacion":
-                                {
-                                    color = Model.UbicacionID != null ? "default" : "";
-                                    <tr class="@color">
-                                        <td>
-                                            <b>@att.NombreAlterno</b>
-                                        </td>
-                                        <td>
-                                            @if (color == "default")
-                                            {
-                                                <p id="ubicacion_@(Model.PiezaID)_@(Model.UbicacionID)" class="hover-dorado">
-                                                   
-                                                    @Model.Ubicacion.Nombre
-                                                </p>
-                                            }
-                                        </td>
-                                    </tr>
-                                }
-
-                                break;
-                            case "TipoTecnica":
-                                //multiple
-                                var lista_Tecnicas = Model.TecnicaPiezas.Where(a => a.Status).OrderBy(a => a.TipoTecnica.Nombre).ToList();
-                                color = lista_Tecnicas.Count > 0 ? "default" : "";
-                                <tr class="@color">
-                                    <td>
-                                        <b>@att.NombreAlterno</b>
-                                                                         </td>
-                                    <td>
-                                        @if (color == "default")
-                                        {
-                                            foreach (var item in lista_Tecnicas)
-                                            {
-                                                <p class="hover-dorado">
-                                                                                                       <span id="tipoTecnica_@(item.PiezaID)_@(item.TipoTecnicaID)">
-                                                        <span><b>@(item.TipoTecnica.Nombre): </b></span>
-                                                        @item.Tecnica.Descripcion
-                                                    </span>
-                                                </p>
-                                            }
-                                        }
-                                    </td>
-                                </tr>
-                                        break;
-
-                            case "TipoMedida":
-                                        //multimple
-                                        var lista_Medidas = Model.MedidaPiezas.Where(a => a.Status).OrderBy(a => a.TipoMedida.Nombre).ToList();
-                                        color = lista_Medidas.Count > 0 ? "default" : "";
-                                        <tr class="@color">
-                                            <td>
-                                                <b>@att.NombreAlterno</b>
-                                                                                           </td>
-                                            <td>
-                                                @if (color == "default")
-                                                {
-                                                    foreach (var item in lista_Medidas)
-                                                    {
-
-                                                        string medidaTexto = "";
-                                                        bool existe0 = false;
-                                                        bool existe1 = false;
-
-                                                        //1x
-                                                        existe0 = item.Altura.HasValue ? true : false;
-                                                        existe1 = item.Anchura.HasValue ? true : false;
-
-                                                        medidaTexto += existe0 ? item.Altura.ToString() : "";
-                                                        medidaTexto += existe0 && existe1 ? "x" : "";
-                                                        existe0 = existe1;
-                                                        existe1 = item.Profundidad.HasValue ? true : false;
-
-                                                        //2x
-                                                        medidaTexto += medidaTexto.EndsWith("x") ? "" : medidaTexto.Length > 0 && existe0 ? "x" : "";
-                                                        medidaTexto += existe0 ? item.Anchura.ToString() : "";
-                                                        medidaTexto += existe0 && existe1 ? "x" : "";
-                                                        existe0 = existe1;
-                                                        existe1 = item.Diametro.HasValue ? true : false;
-
-                                                        //3x
-                                                        medidaTexto += medidaTexto.EndsWith("x") ? "" : medidaTexto.Length > 0 && existe0 ? "x" : "";
-                                                        medidaTexto += existe0 ? item.Profundidad.ToString() : "";
-                                                        medidaTexto += existe0 && existe1 ? "x" : "";
-                                                        existe0 = existe1;
-                                                        existe1 = item.Diametro2.HasValue ? true : false;
-
-                                                        //4Øx
-                                                        medidaTexto += medidaTexto.EndsWith("x") ? "" : medidaTexto.Length > 0 && existe0 ? "x" : "";
-                                                        medidaTexto += existe0 ? item.Diametro.ToString() + "Ø" : "";
-                                                        medidaTexto += existe0 && existe1 ? "x" : "";
-                                                        existe0 = existe1;
-                                                        existe1 = item.UMLongitud.HasValue ? true : false;
-
-                                                        //cm
-                                                        medidaTexto += medidaTexto.EndsWith("x") ? "" : medidaTexto.Length > 0 && existe0 ? "x" : "";
-                                                        medidaTexto += existe0 ? item.Diametro2.ToString() + "Ø" : "";
-                                                        medidaTexto += existe1 && medidaTexto.Length > 0 ? item.UMLongitud.ToString() + " " : " ";
-                                                        existe0 = item.Peso.HasValue ? true : false;
-
-                                                        //6
-                                                        medidaTexto += medidaTexto.EndsWith(" ") && existe0 ? item.Peso.ToString() + item.UMMasa : "";
-                                                        existe0 = item.Otra == null || item.Otra == "" ? false : true;
-
-                                                        //otra
-                                                        medidaTexto += existe0 ? medidaTexto.Length > 0 ? ", " + item.Otra : item.Otra : "";
-
-                                                        <p class="hover-dorado">
-                                                                                                                        <span id="tipoMedida_@(item.PiezaID)_@(item.TipoMedidaID)">
-                                                                <span><b>@(item.TipoMedida.Nombre): </b></span>
-                                                                @medidaTexto
-                                                            </span>
-                                                        </p>
-                                                    }
-                                                }
-                                            </td>
-                                        </tr>
-                                                break;
-                            case "ImagenPieza":
-                                                break;
-                            default:
-                            <tr>
-                                <td><b>@att.NombreAlterno</b></td>
-                                <td>
-                                    <span><b class="text-danger">Sin implementar</b> (Verificar con administrador)</span>
-                                </td>
-                            </tr>
-                                                break;
-                        }
-
-                    }
+                    @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Agregar Pieza", "AddPieza", "Movimiento", routeValues: new { id = Model.PiezaID, todas = true }, htmlAttributes: new { data_toggle = "tooltip", @class = "btn btn-primary btn-xs" })
                 }
 
+            </div>
 
+        </div>
 
+        <table class="table pm-table">
+            <tr class="pm-table">
+                <td class="col-lg-3 col-md-5 col-sm-5 pm-table">
+                    <b>Tipo de Pieza</b>
+                </td>
 
-            </tbody>
+                <td class="pm-table">
+                    @(Model.NombrePieza)
+                </td>
+            </tr>
+
+            @foreach (var att in Model.Atributos)
+            {
+                <tr class="pm-table">
+                    <td class="pm-table">
+                        <b>@att.Nombre</b>
+                    </td>
+
+                    <td class="pm-table">
+                        @foreach (var valor in att.Valores)
+                        {
+                            @valor.Valor
+                            @*<span class="center-block">
+                                    @valor.Valor
+                                </span>*@
+                        }
+                    </td>
+                </tr>
+            }
 
         </table>
 
+        @if (Model.ListaPiezasHijas.Count > 0)
+        {
+            <ul class="media-list">
+
+                @foreach (var piezaHijaID in Model.ListaPiezasHijas)
+                {
+                    Html.RenderAction("FichaMini", "Movimiento", new { id = piezaHijaID, tipo = "guion", listaNombre = "x" });
+                }
+
+            </ul>
+        }
     </div>
-
-
 
 
 </li>
 
-@if (esCompleta)
-{
-    foreach (var item in Model.PiezasHijas)
-    {
-        <hr class="col-lg-offset-0" />
-        <div class="col-lg-offset-05">
-            @{Html.RenderAction("Ficha", "Pieza", new { id = item.PiezaID, tipo = "Completa" });}
-        </div>
-
-    }
-}
 
 
 
-@if (Model.TipoPieza.EsPrincipal)
-{
-    <script src="~/Scripts/add.toolTip.js"></script>
+<script src="~/Scripts/holder.js"></script>
 
-    <script type="text/javascript">
+<script src="~/Scripts/add.toolTip.js"></script>
 
-        $(function () {
-            $.ajaxSetup({ cache: false });
-            $("a[data-modal].EditarValor").on("click", function (e) {
 
-                $('#miModalContenido').load(this.href, function () {
-                    $('#miModal').modal({
-                        backdrop: 'static',
-                        keyboard: true
-                    }, 'show');
-                    bindForm_EditarValor(this);
-                });
-                return false;
+<script type="text/javascript">
+
+    $(function () {
+        $.ajaxSetup({ cache: false });
+
+        // Abrir Modales en formulario PRE REGISTRO
+        $("a[data-modal].LG@(classModal)").on("click", function (e) {
+            $('#miModalContenidoLG').load(this.href, function () {
+                $('#miModalLG').modal({
+                    backdrop: 'static',
+                    keyboard: true
+                }, 'show');
             });
+            return false;
         });
+    });
 
-        function bindForm_EditarValor(dialog) {
-            $('form', dialog).submit(function (e) {
+</script>
 
 
-                var validarok = false;
-
-
-                validarok = $(this).validate().valid();
-
-                if (validarok) {
-                    $.ajax({
-                        url: this.action,
-                        type: this.method,
-                        data: $(this).serialize(),
-                        success: function (result) {
-                            if (result.success) {
-                                $('#miModal').modal('hide');
-
-                                /*
-                                renderid = el id de donde vamos a renderizar el valor
-                                valor
-                                */
-                                if (result.guardar) {
-
-                                    if ($('#' + result.renderID).length) {
-
-                                        switch (result.tipo) {
-                                            case "Autor":
-                                                window.location.reload();
-                                                break;
-                                            default:
-                                                $('#' + result.renderID).html(result.texto); //  Campo que actualizara
-                                                break;
-
-                                        }
-
-
-                                        //$('<a>', {
-                                        //    text: "<span class='fa fa-pencil'><span/>",
-                                        //    href: result.url,
-                                        //    'data-modal': "",
-                                        //    'data-toggle': "tooltip",
-                                        //    'class': 'btn btn-default btn-xs  pull-right EditarValor'
-                                        //}).appendTo('#' + result.renderID);
-
-
-
-                                    }
-                                    else {
-                                        window.location.reload();
-                                    }
-                                }
-
-
-                                //$('#alertasDiv').load('/base/_alertas');
-
-                            } else {
-                                $('#miModalContenido').html(result);
-                                bindForm_EditarValor(dialog);
-                            }
-                        }
-                    });
-                }
-                return false;
-            });
-        }
-
-    </script>
-
-
-    <script type="text/javascript">
-
-        $(function () {
-            $.ajaxSetup({ cache: false });
-            $("a[data-modal].CrearValor").on("click", function (e) {
-
-                $('#miModalContenido').load(this.href, function () {
-                    $('#miModal').modal({
-                        backdrop: 'static',
-                        keyboard: true
-                    }, 'show');
-                    bindForm_CrearValor(this);
-                });
-                return false;
-            });
-        });
-
-        function bindForm_CrearValor(dialog) {
-            $('form', dialog).submit(function (e) {
-
-
-                var validarok = false;
-
-
-                validarok = $(this).validate().valid();
-
-                if (validarok) {
-                    $.ajax({
-                        url: this.action,
-                        type: this.method,
-                        data: $(this).serialize(),
-                        success: function (result) {
-                            if (result.success) {
-
-                                /*
-                                renderid = el id de donde vamos a renderizar el valor
-                                valor
-                                */
-                                if (result.guardar) {
-
-                                    if ($('#' + result.renderID).length) {
-                                        $('#' + result.renderID).html(result.texto); //  Campo que actualizara
-
-                                        //$('<a>', {
-                                        //    text: "<span class='fa fa-pencil'><span/>",
-                                        //    href: result.url,
-                                        //    'data-modal': "",
-                                        //    'data-toggle': "tooltip",
-                                        //    'class': 'btn btn-default btn-xs  pull-right EditarValor'
-                                        //}).appendTo('#' + result.renderID);
-
-
-
-                                    }
-                                    else {
-                                        window.location.reload();
-                                        return false;
-                                    }
-                                }
-
-                                $('#miModal').modal('hide');
-
-                                $('#alertasDiv').load('/base/_alertas');
-
-
-
-                            } else {
-                                $('#miModalContenido').html(result);
-                                bindForm_CrearValor(dialog);
-                            }
-                        }
-                    });
-                }
-                return false;
-            });
-        }
-
-    </script>
-
-    <script type="text/javascript">
-        $(function () {
-            $.ajaxSetup({ cache: false });
-            $("a[data-modal].CrearPieza").on("click", function (e) {
-
-                $('#miModalContenido2').load(this.href, function () {
-                    $('#miModal2').modal({
-                        backdrop: 'static',
-                        keyboard: true
-                    }, 'show');
-                    bindForm_CrearPieza(this);
-                });
-                return false;
-            });
-
-            function bindForm_CrearPieza(dialog) {
-                $('form', dialog).submit(function (e) {
-
-                    $.ajaxSetup({ cache: false });
-                    event.preventDefault();
-
-
-                    var formData = new FormData($(this)[0]);
-
-                    $.ajax({
-                        url: this.action,
-                        type: this.method,
-                        data: formData,
-                        async: false,
-                        cache: false,
-                        contentType: false,
-                        processData: false,
-                        success: function (result) {
-                            if (result.success) {
-
-                                window.location.reload();
-
-                            } else {
-                                $('#miModal2').modal('hide');
-
-                            }
-                        },
-                        error: function () {
-                            alert("Ocurrio un error en el envio");
-                        }
-                    });
-
-                    formData = null;
-
-                    return false;
-                });
-            }
-        });
-
-    </script>
-
-
-
-
-    //ModalObraEliminar
-    <script type="text/javascript">
-        $(function () {
-            $.ajaxSetup({ cache: false });
-            $("a[data-modal].ModalObraEliminar").on("click", function (e) {
-
-                $('#miModalContenido').load(this.href, function () {
-                    $('#miModal').modal({
-                        backdrop: 'static',
-                        keyboard: true
-                    }, 'show');
-                    bindForm_ObraEliminar(this);
-                });
-                return false;
-            });
-
-            function bindForm_ObraEliminar(dialog) {
-                $('form', dialog).submit(function (e) {
-
-                    $.ajaxSetup({ cache: false });
-                    event.preventDefault();
-
-                    $.ajax({
-                        url: this.action,
-                        type: this.method,
-                        data: $(this).serialize(),
-                        success: function (result) {
-                            if (result.success) {
-
-                                window.location.href = '@Url.Action("Index","Home",null)';
-
-                            } else {
-                                $('#miModal').modal('hide');
-                            }
-                        },
-                        error: function () {
-                            alert("Ocurrio un error en el envio");
-                        }
-                    });
-
-                    return false;
-                });
-            }
-        });
-
-    </script>
-
-
-
-
-    <script src="~/Scripts/jquery.validate.js"></script>
-    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
-}
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>

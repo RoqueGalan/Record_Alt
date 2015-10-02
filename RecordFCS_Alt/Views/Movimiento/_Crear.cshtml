@@ -71,15 +71,18 @@
 
         <div id="origenDestinoDIV" class="tab-pane fade in active">
 
-            <h3>Origen/Destino</h3>
             <div class="row">
                 <div class="col-md-2">
+                    <h3 class="text-center">Origen/Destino</h3>
+
                     <div class="text-center">
                         <span class="fa fa-globe fa-10x"></span>
                     </div>
                 </div>
 
                 <div class="col-md-10">
+                    <br />
+
                     <div class="form-horizontal">
 
                         <div class="form-group">
@@ -360,10 +363,11 @@
         @if (Model.MovimientoSolicitante != null)
         {
             <div id="solicitanteDIV" class="tab-pane fade">
-                <h3>Solicitante</h3>
 
                 <div class="row">
                     <div class="col-md-2">
+                        <h3 class="text-center">Solicitante</h3>
+
                         <div class="text-center">
                             <span class="fa fa-file-text-o fa-10x"></span>
                         </div>
@@ -371,6 +375,8 @@
 
 
                     <div class="col-md-10">
+                        <br />
+
                         <div class="form-horizontal">
 
                             <div class="form-group">
@@ -567,15 +573,18 @@
         @if (Model.MovimientoExposicion != null)
         {
             <div id="exposicionDIV" class="tab-pane fade">
-                <h3>Exposición</h3>
 
                 <div class="row">
                     <div class="col-md-2">
+                        <h3 class="text-center">Exposición</h3>
+
                         <div class="text-center">
                             <span class="fa fa-object-group fa-10x"></span>
                         </div>
                     </div>
                     <div class="col-md-10">
+                        <br />
+
                         <div class="form-horizontal">
                             <div class="form-group">
                                 @Html.LabelFor(model => model.MovimientoExposicion.Titulo, "Titulo de exposición", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -704,17 +713,19 @@
         @if (Model.MovimientoResponsable != null)
         {
             <div id="responsableDIV" class="tab-pane fade">
-                <h3>Responsable</h3>
 
                 <div class="row">
 
                     <div class="col-md-2">
+                        <h3 class="text-center">Responsable</h3>
+
                         <div class="text-center">
                             <span class="fa fa-male fa-10x"></span>
                         </div>
                     </div>
 
                     <div class="col-md-10">
+                        <br />
 
                         <div class="form-horizontal">
 
@@ -798,16 +809,18 @@
         @if (Model.MovimientoAutorizacion != null)
         {
             <div id="autorizacionDIV" class="tab-pane fade">
-                <h3>Autorización</h3>
                 <div class="row">
 
                     <div class="col-md-2">
+                        <h3 class="text-center">Autorización</h3>
+
                         <div class="text-center">
                             <span class="fa fa-thumbs-up fa-10x"></span>
                         </div>
                     </div>
 
                     <div class="col-md-10">
+                        <br />
 
                         <div class="form-horizontal">
 
@@ -843,16 +856,18 @@
         @if (Model.MovimientoTransporte != null)
         {
             <div id="transporteDIV" class="tab-pane fade">
-                <h3>Transporte</h3>
                 <div class="row">
 
                     <div class="col-md-2">
+                        <h3 class="text-center">Transporte</h3>
+
                         <div class="text-center">
                             <span class="fa fa-truck fa-10x"></span>
                         </div>
                     </div>
 
                     <div class="col-md-10">
+                        <br />
 
                         <div class="form-horizontal">
 
@@ -897,17 +912,19 @@
         @if (Model.MovimientoSeguro != null)
         {
             <div id="seguroDIV" class="tab-pane fade">
-                <h3>Seguro</h3>
 
                 <div class="row">
 
                     <div class="col-md-2">
+                        <h3 class="text-center">Seguro</h3>
+
                         <div class="text-center">
                             <span class="fa fa-truck fa-10x"></span>
                         </div>
                     </div>
 
                     <div class="col-md-10">
+                        <br />
 
                         <div class="form-horizontal">
 
@@ -1026,11 +1043,10 @@
         }
 
         <div id="piezasDIV" class="tab-pane fade">
-            <h3>Lista de Piezas</h3>
-            <div class="row">
+                       <div class="row">
 
                 <div class="col-md-3">
-
+                    <h3 class="text-center">Lista de Piezas</h3>
 
                     @*<div id="renderMenuFiltros">
                             @{ Html.RenderAction("MenuFiltros", "Buscador", new { rutaVista = "_ResultadosBusqueda_MovCrear" }); }
@@ -1102,7 +1118,8 @@
                 </div>
 
                 <div class="col-md-5">
-                    <h4>Lista de resultados</h4>
+
+                    <h3 class="text-center">Resultados</h3>
 
                     <div id="renderResultadosBusqueda">
 
@@ -1110,7 +1127,7 @@
                 </div>
 
                 <div class="col-md-4">
-                    <h4>Lista de Piezas</h4>
+                    <h3 class="text-center">Lista</h3>
                 </div>
 
             </div>
@@ -1173,9 +1190,10 @@
         </div>
 
         <div id="guardarDIV" class="tab-pane fade">
-            <h3>Guardar</h3>
             <div class="row">
                 <div class="col-md-2">
+                    <h3 class="text-center">Guardar</h3>
+
                     <div class="text-center">
                         <span class="fa fa-save fa-10x"></span>
                     </div>
@@ -1183,6 +1201,7 @@
                 </div>
 
                 <div class="col-md-10">
+                    <br />
                     <div class="form-horizontal">
                         <p>Se guardaran las siguientes opciones</p>
 

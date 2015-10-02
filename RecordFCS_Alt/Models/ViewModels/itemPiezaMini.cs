@@ -11,11 +11,15 @@ namespace RecordFCS_Alt.Models.ViewsModel
         public Guid ObraID { get; set; }
         public string FolioPieza { get; set; }
         public string FolioObra { get; set; }
+        public string NombrePieza { get; set; }
+        public string NombreObra { get; set; }
+        public bool esPrincipal { get; set; }
 
-        public string RutaImagen { get; set; }
         public string RutaImagenMini { get; set; }
+        public Guid? ImagenID { get; set; }
 
-        public virtual List<itemPiezaMiniAtt> Atributo { get; set; }
+        public List<Guid> ListaPiezasHijas { get; set; }
+        public virtual List<itemPiezaMiniAtt> Atributos { get; set; }
     }
 
 
@@ -32,7 +36,7 @@ namespace RecordFCS_Alt.Models.ViewsModel
 
     public class itemPiezaMiniAttValor
     {
-        public Guid AtributoPiezaID { get; set; }
+        public Guid? AtributoPiezaID { get; set; }
         public int Orden { get; set; }
         public string Valor { get; set; }
     }

@@ -42,16 +42,16 @@ namespace RecordFCS_Alt.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AllowAnonymous]
-        public ActionResult IniciarSesion([Bind(Include = "UserName,Password")] Usuario usuario)
+        public ActionResult IniciarSesion([Bind(Include = "UserName,Password")] Usuario usuario, bool Recordarme)
         {
             //validar que usuario y contraseña existan
             usuario.Password = EncriptaPass(usuario.Password);
 
 
-            if (db.Usuarios.Where(a => a.UserName == usuario.UserName && a.Password == usuario.Password).Count() == 1)
+            if (db.Usuarios.FirstOrDefault(a => a.UserName == usuario.UserName && a.Password == usuario.Password) != null)
             {
                 //el usuario es correcto
-                var usuarioX = db.Usuarios.Where(u => u.UserName == usuario.UserName).First();
+                var usuarioX = db.Usuarios.FirstOrDefault(u => u.UserName == usuario.UserName);
                 //var tiempoActual = DateTime.Now;
                 //var tiempoFin = DateTime.Now.AddMinutes(2);
 
@@ -68,7 +68,14 @@ namespace RecordFCS_Alt.Controllers
 
 
 
-                FormsAuthenticationTicket authTicket = new FormsAuthenticationTicket(1, usuarioX.UserName,DateTime.Now, DateTime.Now.AddHours(8),true,userData);
+                FormsAuthenticationTicket authTicket = new FormsAuthenticationTicket(
+                    1, 
+                    usuarioX.UserName,
+                    DateTime.Now, 
+                    DateTime.Now.AddHours(5),
+                    Recordarme,
+                    userData,
+                    "/");
 
 
                 string encTicket = FormsAuthentication.Encrypt(authTicket);
