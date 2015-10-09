@@ -14,7 +14,11 @@ namespace RecordFCS_Alt.Models.ViewsModel
         public string NombrePieza { get; set; }
         public string NombreObra { get; set; }
         public bool esPrincipal { get; set; }
+        public bool enLista { get; set; }
+        public bool esBusqueda { get; set; }
+        public bool esValida { get; set; }
 
+        public Guid? UbicacionOrigenID { get; set; }
         public string RutaImagenMini { get; set; }
         public Guid? ImagenID { get; set; }
 

@@ -1,5 +1,4 @@
-﻿
-/*img { -ms-interpolation-mode: bicubic; }*/
+﻿/*img { -ms-interpolation-mode: bicubic; }*/
 
 .day.disabled,
 .month.disabled,
@@ -8,8 +7,14 @@
     color: #e6e6e6 !important;
 }
 
+
+.well-dark {
+    background-color: #aeaeae !important;
+}
+
 #zoomModalDiv {
-    height: 28em;
+    background-color: red;
+    min-height: 28em;
 }
 
 body {
@@ -95,7 +100,7 @@ input[type='submit'] {
 }
 
 .badge-success {
-    background-color: #bca57c;
+    background-color: #5cb85c !important;
 }
 
 .badge-info {
@@ -107,11 +112,11 @@ input[type='submit'] {
 }
 
 .badge-default {
-    background-color: #808080;
+    background-color: #bca57c;
 }
 
 .badge-muted {
-    background-color: #e6e5e5;
+    background-color: #e2e2e2 !important;
 }
 
 /* TEXTO STATUS*/

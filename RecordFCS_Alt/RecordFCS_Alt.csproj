@@ -523,6 +523,9 @@
     <Content Include="Views\Obra\_Eliminar.cshtml" />
     <Content Include="Views\Movimiento\_ResultadosBusqueda.cshtml" />
     <Content Include="Views\Movimiento\_FichaMini.cshtml" />
+    <Content Include="Views\Movimiento\_ListaPiezaTemporal.cshtml" />
+    <Content Include="Views\Home\_MensajeModal.cshtml" />
+    <Content Include="Views\Movimiento\_Lista.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

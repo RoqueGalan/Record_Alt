@@ -1,0 +1,121 @@
+﻿@model PagedList.IPagedList<RecordFCS_Alt.Models.Movimiento>
+@using PagedList.Mvc;
+@using RecordFCS_Alt.Helpers
+
+
+
+<div class="pull-right">
+    Total de Registros:
+    <span class="badge" data-toggle="tooltip" title="Total de registros">@Model.TotalItemCount</span>
+</div>
+
+<table class="table table-hover table-condensed">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().FolioMovimiento)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().TipoMovimiento.Nombre)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().FechaHoraMovimiento)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().UbicacionOrigen.Nombre)
+        </th>
+        
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().UbicacionDestino.Nombre)
+        </th>
+                       
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().EstadoMovimiento)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FolioMovimiento)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.TipoMovimiento.Nombre)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.FechaHoraMovimiento)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.UbicacionOrigen.Nombre)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.UbicacionDestino.Nombre)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.EstadoMovimiento)
+            </td>
+
+
+
+            <td>
+                @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar", "Editar", "Movimiento", routeValues: new { id = item.MovientoID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-default btn-xs MovimientoEditar" })
+            </td>
+        </tr>
+    }
+
+</table>
+
+<div id="contentPager" class="text-center center-block">
+    @Html.PagedListPager(Model, pagina => Url.Action("Lista", new { pagina = pagina}), new PagedListRenderOptions { LinkToFirstPageFormat = "<< Inicio", LinkToPreviousPageFormat = "< Anterior", LinkToNextPageFormat = "Siguiente >", LinkToLastPageFormat = "Final >>", UlElementClasses = new[] { "pagination", "pagination-sm" } })
+</div>
+
+
+
+<script src="~/Scripts/add.toolTip.js"></script>
+
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+
+<script type="text/javascript">
+
+    //Paginador cargar vista parcial en el div
+    $(function () {
+        $.ajaxSetup({ cache: false });
+
+        $("#contentPager a").on("click", function (e) {
+
+            if ($(this).attr("href")) {
+
+                var liga = $(this).attr("href").split('?');
+                var pag = liga[1].split('=');
+
+                $('#pag').val(pag[1]);
+
+                var form = $('form.formConsultar');
+
+                $.ajax({
+                    url: liga[0],
+                    type: 'GET',
+                    data: form.serialize(),
+                    success: function (result) {
+
+                        $('#renderlistaMovimientos').html(result);//  Campo que actualizara
+                        $('#renderMovimiento').html('');
+                        $('#alertasDiv').load('/Base/_Alertas');
+                    }
+                });
+            }
+            return false;
+        });
+    });
+</script>

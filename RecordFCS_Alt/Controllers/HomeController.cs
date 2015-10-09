@@ -14,7 +14,7 @@ namespace RecordFCS_Alt.Controllers
         private RecordFCSContext db = new RecordFCSContext();
 
 
-       
+
         public ActionResult Index(string mensaje = "")
         {
             //string FullName = User.Nombre + " " + User.Apellido;
@@ -35,6 +35,18 @@ namespace RecordFCS_Alt.Controllers
         public ActionResult RedirectToLogin()
         {
             return PartialView("_RedirectToLogin");
+        }
+
+
+        public ActionResult MensajeModal(string mensaje = "", bool esModal = true)
+        {
+            if (!esModal)
+            {
+                AlertaDefault(string.Format(mensaje), true);
+                return Json(new { success = true, esModal = esModal },JsonRequestBehavior.AllowGet);
+            }
+
+            return PartialView("_MensajeModal", mensaje);
         }
 
         //public ActionResult About()

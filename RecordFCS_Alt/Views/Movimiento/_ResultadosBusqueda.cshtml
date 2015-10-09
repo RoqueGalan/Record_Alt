@@ -3,27 +3,43 @@
 @using RecordFCS_Alt.Helpers
 
 @{
-    string tipo  = ViewBag.tipo;
+    string tipo = ViewBag.tipo;
+    string listaNombre = "listaMov";
+    Guid? UbicacionOrigenID = ViewBag.UbicacionOrigenID;
+    bool  recargarListaTemp = ViewBag.recargarListaTemp;
+
 }
+
 <link href="~/Content/piezaMini.css" rel="stylesheet" />
+
+
+<div>
+    <p class="text-center">
+        Selecciona las piezas a las cuales se aplicara el movimiento
+        <br />
+        <span id="AddPiezasAll" title="Agregar piezas seleccionadas" data-toggle="tooltip" class="btn btn-success btn-sm">Agregar piezas <span class='fa fa-chevron-right'></span></span>
+    </p>
+
+</div>
+
 <ul class="media-list">
 
     @foreach (var piezaID in Model)
     {
-        Html.RenderAction("FichaMini", "Movimiento", new { id = piezaID, tipo = "guion", listaNombre = "x" });
+        Html.RenderAction("FichaMini", "Movimiento", new { id = piezaID, UbicacionOrigenID = UbicacionOrigenID, tipoAttBuscar = "guion", listaNombre = listaNombre, esBusqueda = true });
 
         @*<li class="media">
-            <div class="media-body">
-                @piezaID.ToString()
-            </div>
-        </li>*@
+                <div class="media-body">
+                    @piezaID.ToString()
+                </div>
+            </li>*@
     }
 </ul>
 
 
 
 <div id="contentPager" class="text-center center-block">
-    @Html.PagedListPager(Model, pagina => Url.Action("BuscarPiezas", new { pagina = pagina, tipo = tipo }), new PagedListRenderOptions { LinkToFirstPageFormat = "<< Inicio", LinkToPreviousPageFormat = "< Anterior", LinkToNextPageFormat = "Siguiente >", LinkToLastPageFormat = "Final >>", UlElementClasses = new[] { "pagination", "pagination-sm" } })
+    @Html.PagedListPager(Model, pagina => Url.Action("BuscarPiezas", new { pagina = pagina, tipo = tipo, listaNombre = listaNombre }), new PagedListRenderOptions { LinkToFirstPageFormat = "<< Inicio", LinkToPreviousPageFormat = "< Anterior", LinkToNextPageFormat = "Siguiente >", LinkToLastPageFormat = "Final >>", UlElementClasses = new[] { "pagination", "pagination-sm" } })
     <p>Total de piezas encontradas: @Model.TotalItemCount</p>
 </div>
 
@@ -38,6 +54,7 @@
     //Paginador cargar vista parcial en el div
 
     $("#contentPager a").on("click", function (e) {
+        $.ajaxSetup({ cache: false });
 
         if ($(this).attr("href")) {
 
@@ -45,6 +62,13 @@
             var inputGuionID = $('#GuionID');
             var inputClaves = $('#claves');
 
+            var ubicacionOrigenID = "";
+
+            $("#UbicacionOrigenID option:selected").each(function () {
+                ubicacionOrigenID += $(this)[0].value;
+            });
+
+            //alert(ubicacionOrigenID);
             $('#renderResultadosBusqueda').html('' +
                 '<div class="text-center">' +
                     '<p>' +
@@ -71,7 +95,9 @@
                 data: {
                     LetraFolioID: inputLetraFolioID.val(),
                     GuionID: inputGuionID.val(),
-                    claves: inputClaves.val()
+                    claves: inputClaves.val(),
+                    UbicacionOrigenID: ubicacionOrigenID,
+                    listaNombre : '@listaNombre'
                 },
                 success: function (result) {
                     $('#renderResultadosBusqueda').html(result); //  Campo que actualizara
@@ -80,7 +106,7 @@
 
 
 
-           
+
         }
 
         return false;
@@ -88,6 +114,90 @@
 
 
 
+
+    $('#AddPiezasAll').on("click", function () {
+
+
+        var listaAdd = [];
+        $('.checkAdd:checkbox:checked').each(function () {
+            listaAdd.push($(this).data('myid'));
+        });
+
+        var esOk = false;
+
+        var myurl = '@Url.Action("AddPieza", "Movimiento")';
+
+        var id = "";
+        var ubicacionId = "";
+        var listaNombre = '@listaNombre';
+
+
+        $("#UbicacionOrigenID option:selected").each(function () {
+            ubicacionId += $(this)[0].value;
+        });
+
+        //alert(ubicacionId)
+        if (ubicacionId != "") {
+
+
+            //listaAdd.forEach(function (value, index) {
+            //    alert("i: " + index + ", val: " + value);
+            //})
+            $.ajaxSetup({ cache: false });
+
+            $.each(listaAdd, function (index, value) {
+
+                id = value;
+
+                $.ajax({
+                    url: myurl,
+                    type: 'GET',
+                    async: false,
+                    data: {
+                        id: id,
+                        UbicacionID: ubicacionId,
+                        listaNombre: listaNombre
+                    },
+                    success: function (result) {
+                        //$('#renderResultadosBusqueda').html(result); //  Campo que actualizara
+                        if (result.success) {
+                            esOk = true;
+                        }
+                        else {
+                            $('[data-myid="' + result.piezaID + '"]').prop("checked", false);
+                            $('[data-myid="' + result.piezaID + '"]').prop("disabled", true);
+                        }
+
+                    }
+                });
+            });
+
+            $('#alertasDiv').load('@Url.Action("_Alertas", "Base",null)');
+
+            if (esOk == true) {
+                $('#refrescarListaTemporal').trigger("click");
+            }
+            
+        }
+        else {
+
+            origenDestinoAlertaAdd();
+            ubicacionOrigenIDAdd();
+
+            //AlertaModal("Sin Ubicación: Por favor selecciona la ubicación origen.", true);
+            AlertaModal("Sin Ubicación: Por favor selecciona la ubicación origen.", false);
+        }
+    });
+
+
+
+    $(function () {
+        var recargarListaTemp = '@recargarListaTemp';
+        if (recargarListaTemp == 'True') {
+            $('#refrescarListaTemporal').trigger("click");
+        }
+    });
+    
 
 
 

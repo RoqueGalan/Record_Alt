@@ -20,7 +20,7 @@ namespace RecordFCS_Alt.Models
         public Guid PiezaID { get; set; }
 
         public string Comentario { get; set; }
-        public bool Status { get; set; }
+        public bool estaDisponible { get; set; }
 
         //Virtuales
         public virtual Pieza Pieza { get; set; }

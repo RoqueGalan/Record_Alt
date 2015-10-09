@@ -11,9 +11,20 @@
     <title>@ViewBag.Title - Record</title>
     @Styles.Render("~/Content/css")
     <link href="~/Content/animate.css" rel="stylesheet" />
-    @Scripts.Render("~/bundles/modernizr")
+    @*@Scripts.Render("~/bundles/modernizr")*@
     @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/datetime")
     @Scripts.Render("~/bundles/bootstrap")
+
+
+
+
+
+
+
+
+
+
 
 
 </head>
@@ -84,14 +95,20 @@
         </div>
     </div>
 
-  
+
+    
 
 
 
 
 
-
-
+    <div id='miModalAlerta' class='modal fade in'>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div id='miModalAlertaContenido'></div>
+            </div>
+        </div>
+    </div>
 
 
 
@@ -102,7 +119,7 @@
 
         @if (IsAuthenticated)
         {
-          
+
 
 
             <script type="text/javascript">
@@ -115,14 +132,14 @@
                     });
                 })
 
-  
+
                 $(document).ready(function () {
                     $("body").bind("mouse.active", function () {
-                        console.log("Mouse Active");
+                        //console.log("Mouse Active");
 
                     });
                     $("body").bind("mouse.inactive", function () {
-                        console.log("Mouse Inctive");
+                        //console.log("Mouse Inctive");
 
                         if (IsAuthenticated) {
                             CerrarSesion();
@@ -158,7 +175,7 @@
                     var horaActDecimal = horas + (minutos / 60) + ((segundos / 60) / 60);
 
                     if (horaActDecimal >= horaFinDecimal) {
-                        
+
                         CerrarSesion("Se terminó la sesión.");
 
                         var myUrl = '@Url.Action("CerrarSesion","Usuario",null)';
@@ -173,6 +190,46 @@
                     IsAuthenticated = false;
                     var myUrl = '@Url.Action("CerrarSesion","Usuario",null)';
                     window.location = myUrl;
+                }
+
+
+                function AlertaModal(mensaje, esModal) {
+
+                    $.ajaxSetup({ cache: false });
+                    var myurl = '@Url.Action("MensajeModal", "Home")';
+
+
+                        $.ajax({
+                            url: myurl,
+                            type: 'GET',
+                            data: { mensaje: mensaje, esModal: esModal },
+                            //async: false,
+                            success: function (result) {
+                                if (result.success) {
+
+                                    //alert("alerta");
+
+                                    $('#alertasDiv').load('/Base/_Alertas');
+
+
+                                }
+                                else
+                                {
+                                    //alert("modal");
+
+                                    $('#miModalAlertaContenido').html(result)
+                                    $('#miModalAlerta').modal({
+                                        backdrop: 'static',
+                                        keyboard: true
+                                    }, 'show');
+                                }
+                                    
+                            }
+                        });
+                 
+                       
+                    
+                    return false;
                 }
 
 
@@ -191,20 +248,19 @@
 
 
 
-    @Scripts.Render("~/bundles/datetime")
 
     @RenderSection("scripts", required: false)
 
-   
 
 
-    
+
+
 
 
     <script type="text/javascript">
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
-    })
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
     </script>
     <script src="~/Scripts/jquery-lazymouse.js"></script>
 

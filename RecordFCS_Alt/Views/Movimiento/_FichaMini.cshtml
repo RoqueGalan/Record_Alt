@@ -7,6 +7,7 @@
     string textSinImagen = ViewBag.textSinImagen;
     string classTamano = ViewBag.classTamano;
     string classContenedor = Model.esPrincipal ? "pm-contenedorObra" : "pm-contenedorPieza";
+    string idColapso = "adicionalPiezas_" + Model.esBusqueda + Model.PiezaID;
 }
 
 
@@ -14,15 +15,9 @@
 
     <div class="media-left">
 
-
-        @if (Model.esPrincipal && User.IsInRole("verFichComp"))
-        {
-            <a href="@Url.Action("Detalles", "Obra", new  {id = Model.ObraID })" class="btn btn-primary btn-xs" data-toggle="tooltip" title="Abrir Ficha Completa de Obra" target="_blank">@Model.FolioObra</a>
-        }
-        
         <div class="text-center">
             <h4>
-                @Model.FolioPieza
+                <label for="pieza_@(Model.PiezaID)">@Model.FolioPieza</label>
             </h4>
         </div>
 
@@ -39,6 +34,46 @@
                     <img src="@(Model.RutaImagenMini)" alt="@Model.FolioPieza" class="media-object @classTamano">
                 </a>
             }
+
+            <div class="text-center">
+                @*@if (Model.esPrincipal && User.IsInRole("verFichComp"))
+                    {
+                        <a href="@Url.Action("Detalles", "Obra", new  {id = Model.ObraID })" class="btn btn-default btn-xs" data-toggle="tooltip" title="Abrir Ficha Completa de Obra" target="_blank">@Model.FolioObra</a>
+                    }*@
+
+                @if (Model.ListaPiezasHijas.Count > 0)
+                {
+
+
+                    <span class="btn btn-info btn-xs conAnimacion_@Model.PiezaID"
+                          title="Cargar piezas adicionales"
+                          data-toggle="collapse"
+                          data-target="#@idColapso"
+                          aria-expanded="false"
+                          aria-controls="@idColapso">
+
+                        <span id="animado_@Model.PiezaID">
+                            <span class="fa fa-puzzle-piece"></span>
+                        </span>
+                        <span class="fa fa-caret-down"></span>
+
+                    </span>
+
+                    @*<script type="text/javascript">
+
+                            $('.conAnimacion_@Model.PiezaID').on("click", function (e) {
+                                e.preventDefault();
+
+                                $('#animado_@Model.PiezaID').toggleClass("animated flash infinite");
+
+
+                            });
+
+
+                        </script>*@
+                }
+            </div>
+
         </div>
 
 
@@ -46,18 +81,50 @@
     </div>
 
 
-    <div class="media-body media-middle clearfix">
+    <div class="media-body clearfix">
 
-        <div>
-            <div class="pull-right">
-                @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Agregar Pieza", "AddPieza", "Movimiento", routeValues: new { id = Model.PiezaID, todas = false }, htmlAttributes: new { data_toggle = "tooltip", @class = "btn btn-primary btn-xs" })
+        <div class="pull-right">
 
-                @if (Model.ListaPiezasHijas.Count > 0)
+            @if (Model.esBusqueda)
+            {
+                if (Model.esValida)
                 {
-                    @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Agregar Pieza", "AddPieza", "Movimiento", routeValues: new { id = Model.PiezaID, todas = true }, htmlAttributes: new { data_toggle = "tooltip", @class = "btn btn-primary btn-xs" })
+                    <label for="Model.PiezaID" class="label"> <span class="badge badge-success">Válida</span> </label>
+
+                    @Html.CheckBoxFor(model => model.enLista, new { @class = "checkAdd", data_myid = Model.PiezaID })
+
+
+
+
+
+                }
+                else
+                {
+                    <span class="badge badge-muted">Inválida</span>
+
+                    @Html.CheckBoxFor(model => model.enLista, new { @class = "checkAdd", data_myid = Model.PiezaID, disabled = "" })
                 }
 
-            </div>
+
+            }
+            else
+            {
+                if (Model.esValida)
+                {
+                    <span class="badge badge-success">Válida</span>
+
+                    <a href="@Url.Action("DelPieza", "Movimiento", new { id = Model.PiezaID, listaNombre = "listaMov"})" class="btn btn-danger btn-xs DelPieza" data-toggle="tooltip" title="Quitar Pieza @Model.FolioPieza"><i class="fa fa-times"></i></a>
+
+                    <input type="hidden" name="addPiezaID_@Model.PiezaID" value="@Model.PiezaID" />
+
+                }
+                else
+                {
+                    <span class="badge badge-muted">Inválida</span>
+                }
+
+            }
+
 
         </div>
 
@@ -93,17 +160,21 @@
 
         </table>
 
-        @if (Model.ListaPiezasHijas.Count > 0)
-        {
-            <ul class="media-list">
 
-                @foreach (var piezaHijaID in Model.ListaPiezasHijas)
-                {
-                    Html.RenderAction("FichaMini", "Movimiento", new { id = piezaHijaID, tipo = "guion", listaNombre = "x" });
-                }
+        <div class="collapse" id="@idColapso">
 
-            </ul>
-        }
+            @if (Model.ListaPiezasHijas.Count > 0)
+            {
+                <ul class="media-list">
+                    @foreach (var piezaHijaID in Model.ListaPiezasHijas)
+                    {
+                        Html.RenderAction("FichaMini", "Movimiento", new { id = piezaHijaID, UbicacionOrigenID = Model.UbicacionOrigenID, tipo = "guion", listaNombre = "listaMov", esBusqueda = Model.esBusqueda });
+                    }
+                </ul>
+            }
+
+        </div>
+
     </div>
 
 
@@ -120,6 +191,8 @@
 <script type="text/javascript">
 
     $(function () {
+        $('[data-toggle="collapse"]').tooltip();
+
         $.ajaxSetup({ cache: false });
 
         // Abrir Modales en formulario PRE REGISTRO

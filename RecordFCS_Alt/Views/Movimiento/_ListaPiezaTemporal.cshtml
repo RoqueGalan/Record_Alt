@@ -1,0 +1,52 @@
+﻿@model List<Guid>
+
+@{
+    Guid? UbicacionOrigenID = ViewBag.UbicacionOrigenID;
+}
+@*<span>Fecha: @ViewBag.Fecha</span>*@
+
+
+<ul class="media-list">
+
+    @foreach (var piezaID in Model)
+    {
+        Html.RenderAction("FichaMini", "Movimiento", new { id = piezaID, UbicacionOrigenID = UbicacionOrigenID, tipoAttBuscar = "guion", listaNombre = "listaMov", esBusqueda = false });
+
+        @*<li class="media">
+                <div class="media-body">
+                    @piezaID.ToString()
+                </div>
+            </li>*@
+    }
+</ul>
+
+
+
+<script type="text/javascript">
+
+    $('.DelPieza').on("click", function () {
+
+
+        $.ajax({
+            url: this.href,
+            type: 'GET',
+            //data: {
+            //    LetraFolioID: inputLetraFolioID.val(),
+            //    GuionID: inputGuionID.val(),
+            //    claves: inputClaves.val(),
+            //    UbicacionOrigenID: ubicacionOrigenID
+            //},
+            //success: function (result) {
+            //    $('#renderResultadosBusqueda').html(result); //  Campo que actualizara
+            //}
+        });
+
+
+        $('#alertasDiv').load('/Base/_Alertas');
+
+        $('#refrescarListaTemporal').trigger("click");
+
+        return false;
+
+    });
+</script>

@@ -1707,9 +1707,37 @@
             var parsedDate = parseInputDate(defaultDate);
             if (!parsedDate.isValid()) {
                 throw new TypeError('defaultDate() Could not parse date parameter: ' + defaultDate);
+
+                //try {
+                //    throw new TypeError('defaultDate() Could not parse date parameter: ' + defaultDate);
+                //} catch (e) {
+                //    console.log('(1) defaultDate() Could not parse date parameter: ' + defaultDate);
+                //    console.log(e instanceof TypeError); // true
+                //    console.log(e.message);              // "Hello"
+                //    console.log(e.name);                 // "TypeError"
+                //    console.log(e.fileName);             // "someFile.js"
+                //    console.log(e.lineNumber);           // 10
+                //    console.log(e.columnNumber);         // 0
+                //    console.log(e.stack);                // "@Scratchpad/2:2:9\n"
+                //}
+
+
             }
             if (!isValid(parsedDate)) {
                 throw new TypeError('defaultDate() date passed is invalid according to component setup validations');
+
+                //try {
+                //    throw new TypeError('defaultDate() date passed is invalid according to component setup validations');
+                //} catch (e) {
+                //    console.log('(2) defaultDate() date passed is invalid according to component setup validations: ' + defaultDate);
+                //    console.log(e instanceof TypeError); // true
+                //    console.log(e.message);              // "Hello"
+                //    console.log(e.name);                 // "TypeError"
+                //    console.log(e.fileName);             // "someFile.js"
+                //    console.log(e.lineNumber);           // 10
+                //    console.log(e.columnNumber);         // 0
+                //    console.log(e.stack);                // "@Scratchpad/2:2:9\n"
+                //}
             }
 
             options.defaultDate = parsedDate;
