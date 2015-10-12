@@ -22,7 +22,7 @@
 
     var fechaLimiteHoy = moment().format('DD/MM/YYYY hh:mm a');
     var dia = moment().format('DD');
-    var mes =  moment().format('MM');
+    var mes = moment().format('MM');
     var anio = moment().format('YYYY');
     //alert("fecha moment: dia[" + dia + "] " +
     //    "mes[" +mes +"]" +
@@ -34,182 +34,211 @@
 <div id="renderMovimiento">
 
     <h4><b>Selecciona la opción que deseas realizar:</b></h4>
+    <h3 class="text-center">Nuevo Movimiento</h3>
 
-    @using (Html.BeginForm("Crear", "Movimiento", FormMethod.Get, new { @Class = "formInicio form-center" }))
-    {
-        @Html.AntiForgeryToken()
-
-        <h3 class="text-center">Nuevo Movimiento</h3>
-
-        <div class="form-horizontal">
-
-            <div class="form-group">
-
-                @Html.Label("TipoMovimientoID", "Tipo de Movimiento", htmlAttributes: new { @class = "control-label col-md-2" })
-
-                <div class="col-md-8">
-                    <div class="input-group">
-                        @*<span class="input-group-addon"><i class="fa fa-exchange"></i></span>*@
-                        @Html.DropDownList("TipoMovimientoID", null, htmlAttributes: new { @class = "form-control" })
-
-                        <span class="input-group-addon">
-                            @*<input type="checkbox" id="HaciaExposicionInput" name="HaciaExposicionInput" data-toggle="tooltip" data-title="Hacia Exposición">*@
-                            @Html.CheckBoxFor(model => model.HaciaExposicion, new { data_toggle = "tooltip", data_title = "Hacia Exposición" })
-                        </span>
+    <div class="col-md-offset-1">
 
 
-                        <button type="submit" class="input-group-addon btn btn-primary" data-toggle="tooltip" data-original-title="Nuevo Movimiento"><i class="fa fa-plus"></i> Generar </button>
+        @using (Html.BeginForm("Crear", "Movimiento", FormMethod.Get, new { @Class = "formInicio form-center" }))
+        {
+            @Html.AntiForgeryToken()
 
+
+            <div class="form-horizontal">
+
+                <div class="form-group">
+
+                    @Html.Label("TipoMovimientoID", "Tipo de Movimiento", htmlAttributes: new { @class = "control-label col-md-2" })
+
+                    <div class="col-md-7">
+                        <div class="input-group">
+                            @Html.DropDownList("TipoMovimientoID", null, htmlAttributes: new { @class = "form-control" })
+                            <div class="input-group-addon">
+                                @Html.CheckBoxFor(model => model.HaciaExposicion, new { data_toggle = "tooltip", data_title = "Hacia Exposición" })
+                            </div>
+                        </div>
                     </div>
                 </div>
+
+                <div class="form-group">
+                    <div class="col-md-11 text-center">
+                        <button type="submit" class="btn btn-primary" data-toggle="tooltip" data-original-title="Nuevo Movimiento"><i class="fa fa-plus"></i> Generar Movimiento </button>
+                    </div>
+                </div>
+
             </div>
-
-
-        </div>
-    }
-
+        }
+    </div>
     <hr />
 </div>
 
-<div class="renderMenuBuscarMovimiento">
-    @using (Html.BeginForm("BuscarMovimiento", "Movimiento", FormMethod.Get, new { @Class = "formConsultar form-center" }))
-    {
-        @Html.AntiForgeryToken()
+<div id="renderMenuBuscarMovimiento">
 
-        <h3 class="text-center">Consultar Movimiento</h3>
+    <h3 class="text-center">Consultar Movimiento por:</h3>
 
+    <div class="col-md-offset-1">
+        @using (Html.BeginForm("BuscarMovimiento", "Movimiento", FormMethod.Get, new { @Class = "formConsultar form-center" }))
+        {
+            @Html.AntiForgeryToken()
 
-        <div class="form-horizontal">
+            <div class="form-horizontal">
+                    <div class="form-group">
+                        @Html.Label("FolioMovimiento", "Folio", htmlAttributes: new { @class = "control-label col-md-2 " })
+                        <div class="col-md-7">
+                            @Html.TextBox("FolioMovimiento", null, new { @Class = "form-control", type = "number" })
+                        </div>
+                    </div>
 
-            <div class="form-group">
-                @Html.Label("FolioMovimiento", "Folio", htmlAttributes: new { @class = "control-label col-md-2 " })
-                <div class="col-md-8">
-                    @Html.TextBox("FolioMovimiento", null, new { @Class = "form-control", type = "number" })
-                </div>
-            </div>
+                    <span class="col-md-11 text-center"><b>Rango de fechas:</b></span>
+                    <div class="row">
 
-            <div class="form-group">
-                @Html.Label("FechaInicial", "Fecha Inicial", htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-8">
-                    <div class="input-group date" id="FechaInicialDTP">
-                        @Html.TextBox("FechaInicial", "", new { @class = "form-control", readOnly = "" })
+                        <div class="col-md-4 col-md-offset-1">
+                            <div class="form-group">
+                                @Html.Label("FechaInicial", "Inicial", htmlAttributes: new { @class = "control-label col-md-3" })
+                                <div class="col-md-9">
+                                    <div class="input-group date" id="FechaInicialDTP">
+                                        @Html.TextBox("FechaInicial", "", new { @class = "form-control", readOnly = "" })
 
-                        <div class="btn btn-primary input-group-addon" data-toggle="tooltip" title="Abrir calendario">
-                            <span class="fa fa-calendar"></span>
+                                        <div class="btn btn-primary input-group-addon" data-toggle="tooltip" title="Abrir calendario">
+                                            <span class="fa fa-calendar"></span>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <script type="text/javascript">
+
+                                    $(function () {
+
+                                        $('#FechaInicialDTP').datetimepicker({
+                                            //defaultDate: '@Html.DisplayFor(model => model.MovimientoExposicion.FechaInicial)',
+                                            //minDate: fechaMin, //limitar que no se seleccione fechas pasadas a hoy
+                                            format: "DD/MM/YYYY hh:mm A", //formato: dia/mes/año hora:minuto AM/PM
+                                            //disabledDates: [
+                                            //    moment("12/25/2013"),
+                                            //    new Date(2013, 11 - 1, 21),
+                                            //    "11/22/2013 00:53"
+                                            //],
+                                            toolbarPlacement: 'top',
+                                            showTodayButton: true,
+                                            showClose: true,
+                                            showClear: true,
+                                            ignoreReadonly: true,
+                                            useCurrent: false //Important! See issue #1075
+                                        });
+
+                                        $('#FechaInicialDTP').on("dp.change", function (e) {
+                                            $('#FechaInicial').trigger("input");
+                                        });
+
+                                        $('#FechaInicialDTP').on("dp.update", function (e) {
+                                            $('#FechaInicial').trigger("input");
+                                        });
+
+                                    });
+                                </script>
+
+                            </div>
                         </div>
 
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                @Html.Label("FechaFinal", "Final", htmlAttributes: new { @class = "control-label col-md-3" })
+                                <div class="col-md-9">
+                                    <div class="input-group date" id="FechaFinalDTP">
+                                        @Html.TextBox("FechaFinal", "", new { @class = "form-control", readOnly = "" })
+
+                                        <div class="btn btn-primary input-group-addon" data-toggle="tooltip" title="Abrir calendario">
+                                            <span class="fa fa-calendar"></span>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <script type="text/javascript">
+                                    $(function () {
+
+                                        $('#FechaFinalDTP').datetimepicker({
+                                            format: "DD/MM/YYYY hh:mm A", //formato: dia/mes/año hora:minuto AM/PM
+                                            toolbarPlacement: 'top',
+                                            showClose: true,
+                                            showClear: true,
+                                            ignoreReadonly: true,
+                                            useCurrent: false //Important! See issue #1075
+                                        });
+
+                                        $('#FechaFinalDTP').on("dp.change", function (e) {
+                                            $('#FechaFinal').trigger("input");
+                                        });
+
+                                        $('#FechaFinalDTP').on("dp.update", function (e) {
+                                            $('#FechaFinal').trigger("input");
+                                        });
+
+
+                                        $("#FechaInicialDTP").on("dp.change", function (e) {
+                                            $('#FechaFinalDTP').data("DateTimePicker").minDate(e.date);
+                                        });
+
+                                        $("#FechaFinalDTP").on("dp.change", function (e) {
+                                            $('#FechaInicialDTP').data("DateTimePicker").maxDate(e.date);
+                                        });
+
+                                    });
+                                </script>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                <span class="col-md-11 text-center"><b>Ubicaciones:</b></span>
+
+                    <div class="row">
+
+                        <div class="col-md-4 col-md-offset-1">
+                            <div class="form-group">
+                                @Html.Label("UbicacionOrigenID", "Origen", htmlAttributes: new { @class = "control-label col-md-3 " })
+                                <div class="col-md-9">
+                                    @Html.DropDownList("UbicacionOrigenID", null, "- Origen -", htmlAttributes: new { @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                @Html.Label("UbicacionDestinoID", "Destino", htmlAttributes: new { @class = "control-label col-md-3 " })
+                                <div class="col-md-9">
+                                    @Html.DropDownList("UbicacionDestinoID", null, "- Destino -", htmlAttributes: new { @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.EstadoMovimiento, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-7">
+                        @Html.EnumDropDownListFor(model => model.EstadoMovimiento, htmlAttributes: new { @class = "form-control" })
                     </div>
                 </div>
 
-                <script type="text/javascript">
 
-                    $(function () {
-
-                        $('#FechaInicialDTP').datetimepicker({
-                            //defaultDate: '@Html.DisplayFor(model => model.MovimientoExposicion.FechaInicial)',
-                            //minDate: fechaMin, //limitar que no se seleccione fechas pasadas a hoy
-                            format: "DD/MM/YYYY hh:mm A", //formato: dia/mes/año hora:minuto AM/PM
-                            //disabledDates: [
-                            //    moment("12/25/2013"),
-                            //    new Date(2013, 11 - 1, 21),
-                            //    "11/22/2013 00:53"
-                            //],
-                            toolbarPlacement: 'top',
-                            showTodayButton: true,
-                            showClose: true,
-                            ignoreReadonly: true,
-                            useCurrent: false //Important! See issue #1075
-                        });
-
-                        $('#FechaInicialDTP').on("dp.change", function (e) {
-                            $('#FechaInicial').trigger("input");
-                        });
-
-                        $('#FechaInicialDTP').on("dp.update", function (e) {
-                            $('#FechaInicial').trigger("input");
-                        });
-
-                    });
-                </script>
-
-            </div>
-
-
-
-            <div class="form-group">
-                @Html.Label("FechaFinal", "Fecha Final", htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-8">
-                    <div class="input-group date" id="FechaFinalDTP">
-                        @Html.TextBox("FechaFinal", "", new { @class = "form-control", readOnly = "" })
-
-                        <div class="btn btn-primary input-group-addon" data-toggle="tooltip" title="Abrir calendario">
-                            <span class="fa fa-calendar"></span>
-                        </div>
-
+                <div class="form-group">
+                    <div class="col-md-11 text-center">
+                        <button type="submit" class="btn btn-primary" data-toggle="tooltip" data-original-title="Buscar Movimiento"><i class="fa fa-search"></i> Buscar Movimiento</button>
                     </div>
                 </div>
 
-                <script type="text/javascript">
-                    $(function () {
-
-                        $('#FechaFinalDTP').datetimepicker({
-                            format: "DD/MM/YYYY hh:mm A", //formato: dia/mes/año hora:minuto AM/PM
-                            toolbarPlacement: 'top',
-                            showClose: true,
-                            ignoreReadonly: true,
-                            useCurrent: false //Important! See issue #1075
-                        });
-
-                        $('#FechaFinalDTP').on("dp.change", function (e) {
-                            $('#FechaFinal').trigger("input");
-                        });
-
-                        $('#FechaFinalDTP').on("dp.update", function (e) {
-                            $('#FechaFinal').trigger("input");
-                        });
-
-
-                        $("#FechaInicialDTP").on("dp.change", function (e) {
-                            $('#FechaFinalDTP').data("DateTimePicker").minDate(e.date);
-                        });
-
-                        $("#FechaFinalDTP").on("dp.change", function (e) {
-                            $('#FechaInicialDTP').data("DateTimePicker").maxDate(e.date);
-                        });
-
-                    });
-                </script>
 
             </div>
 
-            <br />
-
-            <div class="form-group">
-                @Html.Label("UbicacionOrigenID", "Ubicación de Origen", htmlAttributes: new { @class = "control-label col-md-2 " })
-                <div class="col-md-8">
-                    @Html.DropDownList("UbicacionOrigenID", null, "- Origen -", htmlAttributes: new { @class = "form-control"})
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.Label("UbicacionDestinoID", "Ubicación Destino", htmlAttributes: new { @class = "control-label col-md-2 " })
-                <div class="col-md-8">
-                    @Html.DropDownList("UbicacionDestinoID", null, "- Destino -", htmlAttributes: new { @class = "form-control" })
-                </div>
-            </div>
-
-            <br />
-
-            <button type="submit" class="btn btn-primary" data-toggle="tooltip" data-original-title="Buscar Movimiento">
-                <i class="fa fa-search"></i> Buscar
-            </button>
-
-        </div>
-    }
-
+        }
+    </div>
 </div>
 
-<div id="renderlistaMovimientos">xD xD</div>
+<div id="renderlistaMovimientos"></div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
@@ -225,16 +254,17 @@
             type: this.method,
             data: $(this).serialize(),
             success: function (result) {
-
+                                
                 $('#renderMovimiento').html(result); //  Campo que actualizara
                 $('#renderlistaMovimientos').html('');
                 $('#renderMenuBuscarMovimiento').html('');
                 $('#alertasDiv').load('/Base/_Alertas');
+                
             }
         });
         return false;
     });
-    
+
 
 </script>
 
@@ -250,7 +280,7 @@
             success: function (result) {
 
                 $('#renderlistaMovimientos').html(result);//  Campo que actualizara
-                $('#renderMovimiento').html(''); 
+                $('#renderMovimiento').html('');
                 $('#alertasDiv').load('/Base/_Alertas');
             }
         });

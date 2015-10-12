@@ -526,6 +526,7 @@
     <Content Include="Views\Movimiento\_ListaPiezaTemporal.cshtml" />
     <Content Include="Views\Home\_MensajeModal.cshtml" />
     <Content Include="Views\Movimiento\_Lista.cshtml" />
+    <Content Include="Views\Movimiento\Detalles.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

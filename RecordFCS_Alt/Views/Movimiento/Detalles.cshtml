@@ -1,0 +1,195 @@
+﻿@model RecordFCS_Alt.Models.Movimiento
+
+@{
+    
+    Guid MovSig = ViewBag.MovSiguiente;
+    Guid MovAnt = ViewBag.MovAnterior;
+    
+    ViewBag.PaginaTitulo = "Det. Movimiento";
+    ViewBag.PaginaSubtitulo = Model.FolioMovimiento;
+
+    ViewBag.Title = ViewBag.PaginaTitulo + " - " + ViewBag.PaginaSubtitulo;
+
+}
+<h1>
+    @ViewBag.PaginaTitulo
+
+    <span class="text-primary pull-right">
+
+        @if (MovAnt == Guid.Empty)
+        {
+            <span class="btn btn-default btn-xs disabled" data-toggle="tooltip" title="Movimiento Anterior"><span class='fa fa-chevron-left'></span></span>
+        }
+        else
+        {
+            <a href="@Url.Action("Detalles", "Movimiento", new  {id = MovAnt })" class="btn btn-default btn-xs " data-toggle="tooltip" title="Movimiento Anterior"><span class='fa fa-chevron-left'></span></a>
+        }
+
+        <b>@ViewBag.PaginaSubtitulo</b>
+
+        @if (MovSig == Guid.Empty)
+        {
+            <span class="btn btn-default btn-xs disabled" data-toggle="tooltip" title="Siguiente Movimiento"><span class='fa fa-chevron-right'></span></span>
+        }
+        else
+        {
+            <a href="@Url.Action("Detalles", "Movimiento", new { id = MovSig })" class="btn btn-default btn-xs " data-toggle="tooltip" title="Siguiente Movimiento"><span class='fa fa-chevron-right'></span></a>
+        }
+
+    </span>
+
+</h1>
+
+<ol class="breadcrumb">
+    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+    <li>Obra</li>
+    <li>Movimiento</li>
+    <li class="active">@ViewBag.PaginaSubtitulo</li>
+</ol>
+
+<div>
+    <h4>Movimiento</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.MovimientoAutorizacion.MovimientoAutorizacionID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MovimientoAutorizacion.MovimientoAutorizacionID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MovimientoExposicion.Titulo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MovimientoExposicion.Titulo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MovimientoResponsable.Nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MovimientoResponsable.Nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MovimientoSeguro.AseguradorNombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MovimientoSeguro.AseguradorNombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MovimientoSolicitante.NombreSolicitante)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MovimientoSolicitante.NombreSolicitante)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MovimientoTransporte.EmpresaNombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MovimientoTransporte.EmpresaNombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TipoMovimiento.Nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TipoMovimiento.Nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UbicacionDestino.Nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UbicacionDestino.Nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UbicacionOrigen.Nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UbicacionOrigen.Nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FolioMovimiento)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FolioMovimiento)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.HaciaExposicion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.HaciaExposicion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EstadoMovimiento)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EstadoMovimiento)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FechaRegistro)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FechaRegistro)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FechaRet)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FechaRet)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FechaHoraMovimiento)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FechaHoraMovimiento)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ColeccionTexto)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ColeccionTexto)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Observaciones)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Observaciones)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.MovientoID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -31,7 +31,7 @@ namespace RecordFCS_Alt.Models
         [ForeignKey("TipoMovimiento")]
         public Guid TipoMovimientoID { get; set; }
 
-        public EstadoMovimiento EstadoMovimiento { get; set; }
+        public EstadoMovimiento? EstadoMovimiento { get; set; }
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy hh:mm tt}", ApplyFormatInEditMode = true)]

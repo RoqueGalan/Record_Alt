@@ -144,42 +144,42 @@
                             </div>
 
                             <script type="text/javascript">
-    $(function () {
+                                $(function () {
 
 
-        //alert('mo: ' + fechaLimite + '\n' +
-        //    'c#: ' + '@Html.DisplayFor(model => model.FechaHoraMovimiento)'
-        //    );
+                                    //alert('mo: ' + fechaLimite + '\n' +
+                                    //    'c#: ' + '@Html.DisplayFor(model => model.FechaHoraMovimiento)'
+                                    //    );
 
-        @*alert("fecha simple: @Model.FechaHoraMovimiento");
+                                    @*alert("fecha simple: @Model.FechaHoraMovimiento");
         alert("fecha mod: @Html.DisplayFor(model => model.FechaHoraMovimiento)");*@
 
-        $('#FechaHoraMovimientoDTP').datetimepicker({
-            //defaultDate: '@Html.DisplayFor(model => model.FechaHoraMovimiento)',
-            minDate: new Date(anio, mes - 1, dia), //limitar que no se seleccione fechas pasadas a hoy
-            format: "DD/MM/YYYY hh:mm A", //formato: dia/mes/año hora:minuto AM/PM
-            //locale: 'es',
-            //disabledDates: [
-            //    moment("12/25/2013"),
-            //    new Date(2013, 11 - 1, 21),
-            //    "11/22/2013 00:53"
-            //],
-            toolbarPlacement: 'top',
-            showTodayButton: true,
-            showClose: true,
-            ignoreReadonly: true,
-            useCurrent: false //Important! See issue #1075
-        });
+                                    $('#FechaHoraMovimientoDTP').datetimepicker({
+                                        //defaultDate: '@Html.DisplayFor(model => model.FechaHoraMovimiento)',
+                                        minDate: new Date(anio, mes - 1, dia), //limitar que no se seleccione fechas pasadas a hoy
+                                        format: "DD/MM/YYYY hh:mm A", //formato: dia/mes/año hora:minuto AM/PM
+                                        //locale: 'es',
+                                        //disabledDates: [
+                                        //    moment("12/25/2013"),
+                                        //    new Date(2013, 11 - 1, 21),
+                                        //    "11/22/2013 00:53"
+                                        //],
+                                        toolbarPlacement: 'top',
+                                        showTodayButton: true,
+                                        showClose: true,
+                                        ignoreReadonly: true,
+                                        useCurrent: false //Important! See issue #1075
+                                    });
 
-        $('#FechaHoraMovimientoDTP').on("dp.change", function (e) {
-            $('#FechaHoraMovimiento').trigger("input");
-        });
+                                    $('#FechaHoraMovimientoDTP').on("dp.change", function (e) {
+                                        $('#FechaHoraMovimiento').trigger("input");
+                                    });
 
-        $('#FechaHoraMovimientoDTP').on("dp.update", function (e) {
-            $('#FechaHoraMovimiento').trigger("input");
-        });
+                                    $('#FechaHoraMovimientoDTP').on("dp.update", function (e) {
+                                        $('#FechaHoraMovimiento').trigger("input");
+                                    });
 
-    });
+                                });
                             </script>
 
                             <script type="text/javascript">
@@ -764,9 +764,9 @@
                                                 $('#MovimientoExposicion_FechaInicial').trigger("input");
                                             });
 
-                                            
+
                                         });
-</script>
+                                    </script>
 
                                 </div>
                             }
@@ -1092,7 +1092,7 @@
                                     </div>
                                 </div>
                             }
-                            
+
                             @if (listaCampos.Any(a => a == "segPoliza"))
                             {
                                 <div class="form-group">
@@ -1103,7 +1103,7 @@
                                     </div>
                                 </div>
                             }
-                            
+
 
                             @if (listaCampos.Any(a => a == "segFechaIni"))
                             {
@@ -1151,7 +1151,7 @@
 
                                 </div>
                             }
-                            
+
                             @if (listaCampos.Any(a => a == "segFechaFin"))
                             {
                                 <div class="form-group">
@@ -1201,7 +1201,7 @@
 
                                 </div>
                             }
-                            
+
 
                         </div>
                     </div>
@@ -1566,7 +1566,7 @@
 
 
 
-   
+
 
     $('#FormMovCrear').submit(function (e) {
         e.preventDefault();
@@ -1582,7 +1582,9 @@
                         //$('#renderListaUbicacion').load(result.url); //  Campo que actualizara
                         //window.location.reload();
 
-                        $('#alertasDiv').load('/Base/_Alertas');
+                        window.location.href = result.url;
+
+                        //$('#alertasDiv').load('/Base/_Alertas');
 
                     } else {
                         $('#renderMovimiento').html(''); //  Campo que actualizara
@@ -1594,7 +1596,7 @@
 
         return false;
     });
-  
+
 </script>
 
 

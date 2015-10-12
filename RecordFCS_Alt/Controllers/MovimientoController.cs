@@ -371,7 +371,7 @@ namespace RecordFCS_Alt.Controllers
                 int UltimoFolioMov = db.Movimientos.Select(a => a.FolioMovimiento).OrderByDescending(a => a).FirstOrDefault();
                 mov.FolioMovimiento = UltimoFolioMov + 1;
                 mov.MovientoID = Guid.NewGuid();
-
+                mov.EstadoMovimiento = EstadoMovimiento.EnAutorizacion1;
                 db.Movimientos.Add(mov);
                 db.SaveChanges();
 
@@ -386,7 +386,11 @@ namespace RecordFCS_Alt.Controllers
                 db.MovimientoPiezas.AddRange(listaMovimientoPiezas);
                 db.SaveChanges();
 
-                return RedirectToAction("Index");
+                //return RedirectToAction("Index");
+
+                var url = Url.Action("Detalles", "Movimiento", new { id = mov.MovientoID });
+
+                return Json(new { success = true, url = url });
             }
 
 
@@ -510,85 +514,85 @@ namespace RecordFCS_Alt.Controllers
 
         }
 
-        // GET: Movimiento/Edit/5
-        [CustomAuthorize(permiso = "")]
-        public ActionResult Edit(Guid? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Movimiento movimiento = db.Movimientos.Find(id);
-            if (movimiento == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.MovimientoAutorizacionID = new SelectList(db.MovimientoAutorizaciones, "MovimientoAutorizacionID", "FechaAutorizacion1", movimiento.MovimientoAutorizacionID);
-            ViewBag.MovimientoExposicionID = new SelectList(db.MovimientoExposiciones, "MovimientoExposicionID", "Titulo", movimiento.MovimientoExposicionID);
-            ViewBag.MovimientoResponsableID = new SelectList(db.MovimientoResponsables, "MovimientoResponsableID", "Nombre", movimiento.MovimientoResponsableID);
-            ViewBag.MovimientoSeguroID = new SelectList(db.MovimientoSeguros, "MovimientoSeguroID", "AseguradorNombre", movimiento.MovimientoSeguroID);
-            ViewBag.MovimientoSolicitanteID = new SelectList(db.MovimientoSolicitante, "MovimientoSolicitanteID", "Nombre", movimiento.MovimientoSolicitanteID);
-            ViewBag.TipoMovimientoID = new SelectList(db.TipoMovimientos, "TipoMovimientoID", "Nombre", movimiento.TipoMovimientoID);
-            ViewBag.MovimientoTransporteID = new SelectList(db.MovimientoTransporte, "MovimientoTransporteID", "EmpresaNombre", movimiento.MovimientoTransporteID);
-            ViewBag.UbicacionDestinoID = new SelectList(db.Ubicaciones, "UbicacionID", "Nombre", movimiento.UbicacionDestinoID);
-            ViewBag.UbicacionOrigenID = new SelectList(db.Ubicaciones, "UbicacionID", "Nombre", movimiento.UbicacionOrigenID);
-            return View(movimiento);
-        }
+        //// GET: Movimiento/Edit/5
+        //[CustomAuthorize(permiso = "")]
+        //public ActionResult Edit(Guid? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    Movimiento movimiento = db.Movimientos.Find(id);
+        //    if (movimiento == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    ViewBag.MovimientoAutorizacionID = new SelectList(db.MovimientoAutorizaciones, "MovimientoAutorizacionID", "FechaAutorizacion1", movimiento.MovimientoAutorizacionID);
+        //    ViewBag.MovimientoExposicionID = new SelectList(db.MovimientoExposiciones, "MovimientoExposicionID", "Titulo", movimiento.MovimientoExposicionID);
+        //    ViewBag.MovimientoResponsableID = new SelectList(db.MovimientoResponsables, "MovimientoResponsableID", "Nombre", movimiento.MovimientoResponsableID);
+        //    ViewBag.MovimientoSeguroID = new SelectList(db.MovimientoSeguros, "MovimientoSeguroID", "AseguradorNombre", movimiento.MovimientoSeguroID);
+        //    ViewBag.MovimientoSolicitanteID = new SelectList(db.MovimientoSolicitante, "MovimientoSolicitanteID", "Nombre", movimiento.MovimientoSolicitanteID);
+        //    ViewBag.TipoMovimientoID = new SelectList(db.TipoMovimientos, "TipoMovimientoID", "Nombre", movimiento.TipoMovimientoID);
+        //    ViewBag.MovimientoTransporteID = new SelectList(db.MovimientoTransporte, "MovimientoTransporteID", "EmpresaNombre", movimiento.MovimientoTransporteID);
+        //    ViewBag.UbicacionDestinoID = new SelectList(db.Ubicaciones, "UbicacionID", "Nombre", movimiento.UbicacionDestinoID);
+        //    ViewBag.UbicacionOrigenID = new SelectList(db.Ubicaciones, "UbicacionID", "Nombre", movimiento.UbicacionOrigenID);
+        //    return View(movimiento);
+        //}
 
         // POST: Movimiento/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [CustomAuthorize(permiso = "")]
-        public ActionResult Edit([Bind(Include = "MovientoID,FolioMovimiento,TipoMovimientoID,EstadoMovimiento,FechaRegistro,FechaSalida,FechaRet,UbicacionOrigenID,UbicacionDestinoID,FechaMovimiento,HoraMovimiento,MinutoMovimiento,ColeccionTexto,Observaciones,MovimientoSolicitanteID,MovimientoResponsableID,MovimientoExposicionID,MovimientoAutorizacionID,MovimientoTransporteID,MovimientoSeguroID")] Movimiento movimiento)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(movimiento).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            ViewBag.MovimientoAutorizacionID = new SelectList(db.MovimientoAutorizaciones, "MovimientoAutorizacionID", "FechaAutorizacion1", movimiento.MovimientoAutorizacionID);
-            ViewBag.MovimientoExposicionID = new SelectList(db.MovimientoExposiciones, "MovimientoExposicionID", "Titulo", movimiento.MovimientoExposicionID);
-            ViewBag.MovimientoResponsableID = new SelectList(db.MovimientoResponsables, "MovimientoResponsableID", "Nombre", movimiento.MovimientoResponsableID);
-            ViewBag.MovimientoSeguroID = new SelectList(db.MovimientoSeguros, "MovimientoSeguroID", "AseguradorNombre", movimiento.MovimientoSeguroID);
-            ViewBag.MovimientoSolicitanteID = new SelectList(db.MovimientoSolicitante, "MovimientoSolicitanteID", "Nombre", movimiento.MovimientoSolicitanteID);
-            ViewBag.TipoMovimientoID = new SelectList(db.TipoMovimientos, "TipoMovimientoID", "Nombre", movimiento.TipoMovimientoID);
-            ViewBag.MovimientoTransporteID = new SelectList(db.MovimientoTransporte, "MovimientoTransporteID", "EmpresaNombre", movimiento.MovimientoTransporteID);
-            ViewBag.UbicacionDestinoID = new SelectList(db.Ubicaciones, "UbicacionID", "Nombre", movimiento.UbicacionDestinoID);
-            ViewBag.UbicacionOrigenID = new SelectList(db.Ubicaciones, "UbicacionID", "Nombre", movimiento.UbicacionOrigenID);
-            return View(movimiento);
-        }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //[CustomAuthorize(permiso = "")]
+        //public ActionResult Edit([Bind(Include = "MovientoID,FolioMovimiento,TipoMovimientoID,EstadoMovimiento,FechaRegistro,FechaSalida,FechaRet,UbicacionOrigenID,UbicacionDestinoID,FechaMovimiento,HoraMovimiento,MinutoMovimiento,ColeccionTexto,Observaciones,MovimientoSolicitanteID,MovimientoResponsableID,MovimientoExposicionID,MovimientoAutorizacionID,MovimientoTransporteID,MovimientoSeguroID")] Movimiento movimiento)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        db.Entry(movimiento).State = EntityState.Modified;
+        //        db.SaveChanges();
+        //        return RedirectToAction("Index");
+        //    }
+        //    ViewBag.MovimientoAutorizacionID = new SelectList(db.MovimientoAutorizaciones, "MovimientoAutorizacionID", "FechaAutorizacion1", movimiento.MovimientoAutorizacionID);
+        //    ViewBag.MovimientoExposicionID = new SelectList(db.MovimientoExposiciones, "MovimientoExposicionID", "Titulo", movimiento.MovimientoExposicionID);
+        //    ViewBag.MovimientoResponsableID = new SelectList(db.MovimientoResponsables, "MovimientoResponsableID", "Nombre", movimiento.MovimientoResponsableID);
+        //    ViewBag.MovimientoSeguroID = new SelectList(db.MovimientoSeguros, "MovimientoSeguroID", "AseguradorNombre", movimiento.MovimientoSeguroID);
+        //    ViewBag.MovimientoSolicitanteID = new SelectList(db.MovimientoSolicitante, "MovimientoSolicitanteID", "Nombre", movimiento.MovimientoSolicitanteID);
+        //    ViewBag.TipoMovimientoID = new SelectList(db.TipoMovimientos, "TipoMovimientoID", "Nombre", movimiento.TipoMovimientoID);
+        //    ViewBag.MovimientoTransporteID = new SelectList(db.MovimientoTransporte, "MovimientoTransporteID", "EmpresaNombre", movimiento.MovimientoTransporteID);
+        //    ViewBag.UbicacionDestinoID = new SelectList(db.Ubicaciones, "UbicacionID", "Nombre", movimiento.UbicacionDestinoID);
+        //    ViewBag.UbicacionOrigenID = new SelectList(db.Ubicaciones, "UbicacionID", "Nombre", movimiento.UbicacionOrigenID);
+        //    return View(movimiento);
+        //}
 
-        // GET: Movimiento/Delete/5
-        [CustomAuthorize(permiso = "")]
-        public ActionResult Delete(Guid? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Movimiento movimiento = db.Movimientos.Find(id);
-            if (movimiento == null)
-            {
-                return HttpNotFound();
-            }
-            return View(movimiento);
-        }
+        //// GET: Movimiento/Delete/5
+        //[CustomAuthorize(permiso = "")]
+        //public ActionResult Delete(Guid? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    Movimiento movimiento = db.Movimientos.Find(id);
+        //    if (movimiento == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    return View(movimiento);
+        //}
 
-        // POST: Movimiento/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        [CustomAuthorize(permiso = "")]
-        public ActionResult DeleteConfirmed(Guid id)
-        {
-            Movimiento movimiento = db.Movimientos.Find(id);
-            db.Movimientos.Remove(movimiento);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
+        //// POST: Movimiento/Delete/5
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //[CustomAuthorize(permiso = "")]
+        //public ActionResult DeleteConfirmed(Guid id)
+        //{
+        //    Movimiento movimiento = db.Movimientos.Find(id);
+        //    db.Movimientos.Remove(movimiento);
+        //    db.SaveChanges();
+        //    return RedirectToAction("Index");
+        //}
 
         [CustomAuthorize(permiso = "")]
-        public ActionResult BuscarMovimiento(int? FolioMovimiento, string FechaInicial, string FechaFinal, Guid? UbicacionOrigenID, Guid? UbicacionDestinoID, int? pagina = null)
+        public ActionResult BuscarMovimiento(int? FolioMovimiento, string FechaInicial, string FechaFinal, Guid? UbicacionOrigenID, Guid? UbicacionDestinoID, EstadoMovimiento? EstadoMovimiento, int? pagina = null)
         {
             int pagTamano = 5;
             int pagIndex = 1;
@@ -608,9 +612,9 @@ namespace RecordFCS_Alt.Controllers
             {
                 if (!string.IsNullOrWhiteSpace(FechaInicial))
                 {
-                    DateTime Fecha = DateTime.ParseExact(FechaInicial,"dd/MM/yyyy hh:mm tt",CultureInfo.InvariantCulture);
+                    DateTime Fecha = DateTime.ParseExact(FechaInicial, "dd/MM/yyyy hh:mm tt", CultureInfo.InvariantCulture);
 
-                   listaMovimientos = listaMovimientos.Where(a => DateTime.Compare(a.FechaHoraMovimiento.Value, Fecha) > 0);
+                    listaMovimientos = listaMovimientos.Where(a => DateTime.Compare(a.FechaHoraMovimiento.Value, Fecha) > 0);
 
                 }
 
@@ -631,9 +635,12 @@ namespace RecordFCS_Alt.Controllers
                 if (UbicacionDestinoID != null)
                     listaMovimientos = listaMovimientos.Where(a => a.UbicacionDestinoID == UbicacionDestinoID);
 
+                if (EstadoMovimiento != null)
+                    listaMovimientos = listaMovimientos.Where(a => a.EstadoMovimiento == EstadoMovimiento);
+
             }
 
-            listaMovimientosEnPagina = listaMovimientos.OrderBy(a=> a.FechaHoraMovimiento).Select(x => x).ToList().ToPagedList(pagIndex, pagTamano);
+            listaMovimientosEnPagina = listaMovimientos.OrderBy(a => a.FechaHoraMovimiento).Select(x => x).ToList().ToPagedList(pagIndex, pagTamano);
 
             return PartialView("_Lista", listaMovimientosEnPagina);
         }
@@ -1180,9 +1187,6 @@ namespace RecordFCS_Alt.Controllers
         }
 
 
-
-
-
         public void EliminarLista(string listaNombre = "listaTemp")
         {
             Session.Remove(listaNombre);
@@ -1194,6 +1198,53 @@ namespace RecordFCS_Alt.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+
+
+        //Detalles
+        public ActionResult Detalles(Guid? id)
+        {
+            if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            Movimiento mov = db.Movimientos.Find(id);
+
+            if (mov == null) return HttpNotFound();
+
+            var listaCampos = getListaCamposMostrar(mov.TipoMovimiento.Nombre, mov.EstadoMovimiento.Value);
+            string nombreLista = "lista_Det";// + mov.MovientoID;
+
+
+
+            //cargar las piezas principales para irlas recorriendo en la vista
+
+            Session[nombreLista] = mov.MovimientoPiezas.Select(a => a.PiezaID).ToList();
+
+            ViewBag.listaCampos = listaCampos;
+
+            ViewBag.nombreLista = nombreLista;
+
+
+            // 1 2 3 4 [5] 6 7 8 9 10
+            // [1] 2 3 4 5 6 7 8 9 10
+            // 1 2 3 4 5 6 7 8 9 9 [10]
+
+            Movimiento movTemp = null;
+
+            movTemp = db.Movimientos.FirstOrDefault(a => a.FolioMovimiento == mov.FolioMovimiento - 1);
+            ViewBag.MovAnterior = movTemp == null ? Guid.Empty : movTemp.MovientoID;
+
+
+
+            movTemp = db.Movimientos.FirstOrDefault(a => a.FolioMovimiento == mov.FolioMovimiento + 1);
+            ViewBag.MovSiguiente = movTemp == null ? Guid.Empty : movTemp.MovientoID;
+
+
+
+
+
+
+            return View("Detalles", mov);
         }
     }
 }
