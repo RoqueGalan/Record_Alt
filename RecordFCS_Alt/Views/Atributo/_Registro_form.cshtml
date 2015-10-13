@@ -9,7 +9,7 @@
     {
         <li class="media">
             <div class="media-body">
-                <label class="media-heading" for="@item.AtributoID">@item.NombreAlterno</label>
+                <label class="media-heading" for="@item.AtributoID"><b>@item.NombreAlterno</b></label>
 
                 @{Html.RenderAction("GenerarCampoRegistro", "Atributo", new { id = item.TipoAtributoID, AtributoID = item.AtributoID });}
 

@@ -53,22 +53,27 @@ namespace RecordFCS_Alt.Controllers
             //                "resNombre","resInstitu","resFechaSal", //responsable
             //                "autUsuario1","autUsuario2","autFecha1","autFecha2", //autorizacion
             //                "transNombre","transRecorr","transHorario","transNota", //transporte
-            //                "segNombre","segPoliza","segFechaIni","segFechaFin" //seguro
+            //                "segNombre","segPoliza","segFechaIni","segFechaFin", //seguro
+            //                "pestSol", "pestRes", "pestAut", "pestTran", "pestSeg" //pestañas
             //            };
 
+            //lista.Add("");
             switch (tipoMovimiento.ToLower())
             {
                 case "ingreso":
                     if (estado == EstadoMovimiento.EnRegistro)
                         lista = new List<string>() { 
-                            "movhaciaExpo","movFolio","movTipo","movStatus", "observa", //movimiento 1"odOrigen","odDestino","odFecha","odColeccion", //movimiento 2
+                            "movhaciaExpo","movFolio","movTipo","movStatus", "observa", //movimiento 1
+                            "odOrigen","odDestino","odFecha","odColeccion", //movimiento 2
                             "solNombreSol","solCargoSol","solInstitucion","solNombreRepre","solCargoRepre","solSede","SolPaisEdo","solPeticionRec","solDicCondEspa","solCartaAcep","solContratoCom","solRevGuion","solCondicConserv","solFacilReport","solDictSegu","solListAval","solTramFianza","solPoliSeg","solPoliCartas", //solicitante
                             "expoTitulo","espoCurador","expoFechaIni","expoFechaFIn",//exposicion
                             "resNombre","resInstitu", //responsable
-                            //"autUsuario1","autUsuario2","autFecha1","autFecha2", //autorizacion
+                            "autUsuario1","autUsuario2","autFecha1","autFecha2", //autorizacion
                             "transNombre","transRecorr","transHorario","transNota", //transporte
-                            "segNombre","segPoliza","segFechaIni","segFechaFin" //seguro
+                            "segNombre","segPoliza","segFechaIni","segFechaFin", //seguro
+                            "pestSol", "pestRes", "pestAut", "pestTran", "pestSeg" //pestañas
                         };
+
 
                     break;
                 case "externo":
@@ -79,9 +84,10 @@ namespace RecordFCS_Alt.Controllers
                             "solNombreSol","solCargoSol", //solicitante
                             "expoTitulo","espoCurador","expoFechaIni","expoFechaFIn",//exposicion
                             //"resNombre","resInstitu","resFechaSal", //responsable
-                            //"autUsuario1","autUsuario2","autFecha1","autFecha2", //autorizacion
+                            "autUsuario1","autUsuario2","autFecha1","autFecha2", //autorizacion
                             //"transNombre","transRecorr","transHorario","transNota", //transporte
                             //"segNombre","segPoliza","segFechaIni","segFechaFin" //seguro
+                            "pestSol", "pestAut" //pestañas
                         };
 
                     break;
@@ -94,9 +100,11 @@ namespace RecordFCS_Alt.Controllers
                             "solNombreSol","solCargoSol","solInstitucion","solNombreRepre","solCargoRepre","solSede","SolPaisEdo","solPeticionRec","solDicCondEspa","solCartaAcep","solContratoCom","solRevGuion","solCondicConserv","solFacilReport","solDictSegu","solListAval","solTramFianza","solPoliSeg","solPoliCartas", //solicitante
                             "expoTitulo","espoCurador","expoFechaIni","expoFechaFIn",//exposicion
                             "resNombre","resInstitu", //responsable
-                            //"autUsuario1","autUsuario2","autFecha1","autFecha2", //autorizacion
+                            "autUsuario1","autUsuario2","autFecha1","autFecha2", //autorizacion
                             "transNombre","transRecorr","transHorario","transNota", //transporte
-                            "segNombre","segPoliza","segFechaIni","segFechaFin" //seguro
+                            "segNombre","segPoliza","segFechaIni","segFechaFin", //seguro
+                            "pestSol", "pestRes", "pestAut", "pestTran", "pestSeg" //pestañas
+
                         };
 
                     break;
@@ -109,9 +117,10 @@ namespace RecordFCS_Alt.Controllers
                             "solNombreSol","solCargoSol","solInstitucion","solNombreRepre","solCargoRepre","solSede","solRevGuion","solCondicConserv","solPoliSeg","solPoliCartas", //solicitante
                             "expoTitulo","espoCurador","expoFechaIni","expoFechaFIn",//exposicion
                             //"resNombre","resInstitu","resFechaSal", //responsable
-                            //"autUsuario1","autUsuario2","autFecha1","autFecha2", //autorizacion
+                            "autUsuario1","autUsuario2","autFecha1","autFecha2", //autorizacion
                             "transNombre","transRecorr","transHorario","transNota", //transporte
                             //"segNombre","segPoliza","segFechaIni","segFechaFin" //seguro
+                            "pestSol", "pestAut", "pestTran" //pestañas
                         };
 
                     break;
@@ -158,13 +167,13 @@ namespace RecordFCS_Alt.Controllers
                     ColeccionTexto = "Museo Soumaya"
                 };
 
+                listaCampos = getListaCamposMostrar(tipoMov.Nombre, EstadoMovimiento.EnRegistro);
+                
                 if (HaciaExposicionValor)
                 {
                     mov.MovimientoExposicion = new MovimientoExposicion();
-
+                    listaCampos.Add("pestExpo");
                 }
-
-                listaCampos = getListaCamposMostrar(tipoMov.Nombre, EstadoMovimiento.EnRegistro);
 
                 switch (tipoMov.Nombre.ToLower())
                 {
@@ -1212,6 +1221,10 @@ namespace RecordFCS_Alt.Controllers
             if (mov == null) return HttpNotFound();
 
             var listaCampos = getListaCamposMostrar(mov.TipoMovimiento.Nombre, mov.EstadoMovimiento.Value);
+            
+            if (mov.HaciaExposicion)
+                listaCampos.Add("pestExpo");
+
             string nombreLista = "lista_Det";// + mov.MovientoID;
 
 
@@ -1238,10 +1251,6 @@ namespace RecordFCS_Alt.Controllers
 
             movTemp = db.Movimientos.FirstOrDefault(a => a.FolioMovimiento == mov.FolioMovimiento + 1);
             ViewBag.MovSiguiente = movTemp == null ? Guid.Empty : movTemp.MovientoID;
-
-
-
-
 
 
             return View("Detalles", mov);

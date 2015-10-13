@@ -1,14 +1,16 @@
 ﻿@model RecordFCS_Alt.Models.Movimiento
 
 @{
-    
+
     Guid MovSig = ViewBag.MovSiguiente;
     Guid MovAnt = ViewBag.MovAnterior;
-    
-    ViewBag.PaginaTitulo = "Det. Movimiento";
+
+    ViewBag.PaginaTitulo = "Detetalle Movimiento";
     ViewBag.PaginaSubtitulo = Model.FolioMovimiento;
 
     ViewBag.Title = ViewBag.PaginaTitulo + " - " + ViewBag.PaginaSubtitulo;
+
+    List<string> listaCampos = ViewBag.listaCampos;
 
 }
 <h1>
@@ -43,153 +45,719 @@
 <ol class="breadcrumb">
     <li>@Html.ActionLink("Home", "Index", "Home")</li>
     <li>Obra</li>
-    <li>Movimiento</li>
+    <li>@Html.ActionLink("Manejar", "Index", "Movimiento")</li>
+    <li class="active">Detalles</li>
     <li class="active">@ViewBag.PaginaSubtitulo</li>
 </ol>
 
-<div>
-    <h4>Movimiento</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.MovimientoAutorizacion.MovimientoAutorizacionID)
-        </dt>
+@*<div>
+        <h4>Movimiento</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.MovimientoAutorizacion.MovimientoAutorizacionID)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.MovimientoAutorizacion.MovimientoAutorizacionID)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.MovimientoAutorizacion.MovimientoAutorizacionID)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.MovimientoExposicion.Titulo)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.MovimientoExposicion.Titulo)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.MovimientoExposicion.Titulo)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.MovimientoExposicion.Titulo)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.MovimientoResponsable.Nombre)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.MovimientoResponsable.Nombre)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.MovimientoResponsable.Nombre)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.MovimientoResponsable.Nombre)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.MovimientoSeguro.AseguradorNombre)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.MovimientoSeguro.AseguradorNombre)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.MovimientoSeguro.AseguradorNombre)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.MovimientoSeguro.AseguradorNombre)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.MovimientoSolicitante.NombreSolicitante)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.MovimientoSolicitante.NombreSolicitante)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.MovimientoSolicitante.NombreSolicitante)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.MovimientoSolicitante.NombreSolicitante)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.MovimientoTransporte.EmpresaNombre)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.MovimientoTransporte.EmpresaNombre)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.MovimientoTransporte.EmpresaNombre)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.MovimientoTransporte.EmpresaNombre)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.TipoMovimiento.Nombre)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.TipoMovimiento.Nombre)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.TipoMovimiento.Nombre)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.TipoMovimiento.Nombre)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.UbicacionDestino.Nombre)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.UbicacionDestino.Nombre)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.UbicacionDestino.Nombre)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.UbicacionDestino.Nombre)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.UbicacionOrigen.Nombre)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.UbicacionOrigen.Nombre)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.UbicacionOrigen.Nombre)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.UbicacionOrigen.Nombre)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.FolioMovimiento)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.FolioMovimiento)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.FolioMovimiento)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.FolioMovimiento)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.HaciaExposicion)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.HaciaExposicion)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.HaciaExposicion)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.HaciaExposicion)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.EstadoMovimiento)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.EstadoMovimiento)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.EstadoMovimiento)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.EstadoMovimiento)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.FechaRegistro)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.FechaRegistro)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.FechaRegistro)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.FechaRegistro)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.FechaRet)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.FechaRet)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.FechaRet)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.FechaRet)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.FechaHoraMovimiento)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.FechaHoraMovimiento)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.FechaHoraMovimiento)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.FechaHoraMovimiento)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.ColeccionTexto)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.ColeccionTexto)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.ColeccionTexto)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.ColeccionTexto)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Observaciones)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.Observaciones)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Observaciones)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.Observaciones)
+            </dd>
 
-    </dl>
+        </dl>
+    </div>*@
+
+
+<ul class="nav nav-tabs">
+
+    <li class="active" id="pes_origenDestino"><a data-toggle="tab" href="#origenDestinoDIV"><i class="fa fa-globe"></i> Origen/Destino</a></li>
+
+    @{
+
+        if (listaCampos.Any(a => a == "pestSol"))
+        {
+            <li><a data-toggle="tab" href="#solicitanteDIV"><i class="fa fa-file-text-o"></i> Solicitante</a></li>
+        }
+
+        if (listaCampos.Any(a => a == "pestExpo"))
+        {
+            <li><a data-toggle="tab" href="#exposicionDIV"><i class="fa fa-object-group"></i> Exposición</a></li>
+        }
+
+        if (listaCampos.Any(a => a == "pestRes"))
+        {
+            <li><a data-toggle="tab" href="#responsableDIV"><i class="fa fa-male"></i> Responsable</a></li>
+        }
+
+        if (listaCampos.Any(a => a == "pestAut") && Model.MovimientoAutorizacionID != null)
+        {
+            <li><a data-toggle="tab" href="#autorizacionDIV"><i class="fa fa-thumbs-up"></i> Autorización</a></li>
+
+        }
+        if (listaCampos.Any(a => a == "pestTran"))
+        {
+            <li><a data-toggle="tab" href="#transporteDIV"><i class="fa fa-truck"></i> Transporte</a></li>
+
+        }
+        if (listaCampos.Any(a => a == "pestSeg"))
+        {
+            <li><a data-toggle="tab" href="#seguroDIV"><i class="fa fa-shield"></i> Seguro</a></li>
+
+        }
+
+        <li><a data-toggle="tab" href="#piezasDIV"><i class="fa fa-list-ol"></i> Piezas</a></li>
+    }
+
+</ul>
+
+
+
+<div class="tab-content">
+
+
+    <div id="origenDestinoDIV" class="tab-pane fade in active">
+
+        <div class="row">
+            <div class="col-md-2 col-md-offset-1">
+                <h3 class="text-center">Origen/Destino</h3>
+
+                <div class="text-center">
+                    <span class="fa fa-globe fa-10x"></span>
+                </div>
+
+            </div>
+
+            <div class="col-md-9">
+                <br />
+                <br />
+                <br />
+                <table class="table table-hover">
+                    @*<tr>
+                            <td><b></b></td>
+                            <td></td>
+                        </tr>*@
+
+                    <tr>
+                        <td class="col-lg-2 col-md-3 col-sm-4"><b>@Html.DisplayNameFor(model => model.UbicacionOrigen.Nombre)</b></td>
+                        <td>@Html.DisplayFor(model => model.UbicacionOrigen.Nombre)</td>
+                    </tr>
+
+                    <tr>
+                        <td><b>@Html.DisplayNameFor(model => model.UbicacionDestino.Nombre)</b></td>
+                        <td>@Html.DisplayFor(model => model.UbicacionDestino.Nombre)</td>
+                    </tr>
+
+                    <tr>
+                        <td><b>@Html.DisplayNameFor(model => model.FechaHoraMovimiento)</b></td>
+                        <td>@Html.DisplayFor(model => model.FechaHoraMovimiento)</td>
+                    </tr>
+
+                    <tr>
+                        <td><b>@Html.DisplayNameFor(model => model.ColeccionTexto)</b></td>
+                        <td>@Html.DisplayFor(model => model.ColeccionTexto)</td>
+                    </tr>
+
+                    <tr>
+                        <td><b>@Html.DisplayNameFor(model => model.EstadoMovimiento)</b></td>
+                        <td>@Html.DisplayFor(model => model.EstadoMovimiento)</td>
+                    </tr>
+
+                    <tr>
+                        <td><b>@Html.DisplayNameFor(model => model.FechaRegistro)</b></td>
+                        <td>@Html.DisplayFor(model => model.FechaRegistro)</td>
+                    </tr>
+
+                    <tr>
+                        <td><b>@Html.DisplayNameFor(model => model.FolioMovimiento)</b></td>
+                        <td>@Html.DisplayFor(model => model.FolioMovimiento)</td>
+                    </tr>
+
+                    <tr>
+                        <td><b>@Html.DisplayNameFor(model => model.HaciaExposicion)</b></td>
+                        <td>@Html.DisplayFor(model => model.HaciaExposicion)</td>
+                    </tr>
+
+
+                    <tr>
+                        <td><b>@Html.DisplayNameFor(model => model.Observaciones)</b></td>
+                        <td>@Html.DisplayFor(model => model.Observaciones)</td>
+                    </tr>
+
+                    <tr>
+                        <td><b>@Html.DisplayNameFor(model => model.TipoMovimiento.Nombre)</b></td>
+                        <td>@Html.DisplayFor(model => model.TipoMovimiento.Nombre)</td>
+                    </tr>
+
+
+
+
+                </table>
+
+
+            </div>
+        </div>
+    </div>
+
+    @if (listaCampos.Any(a => a == "pestSol"))
+    {
+        <div id="solicitanteDIV" class="tab-pane fade">
+
+            <div class="row">
+                <div class="col-md-2">
+                    <h3 class="text-center">Solicitante</h3>
+
+                    <div class="text-center">
+                        <span class="fa fa-file-text-o fa-10x"></span>
+                    </div>
+                </div>
+
+
+                <div class="col-md-9">
+                    <br />
+                    <br />
+                    <br />
+                    <table class="table table-hover">
+                        @*<tr>
+                                <td><b></b></td>
+                                <td></td>
+                            </tr>*@
+
+
+                        @if (listaCampos.Any(a => a == "solNombreSol"))
+                        {
+                            <tr>
+                                <td class="col-lg-2 col-md-3 col-sm-4"><b>@Html.DisplayNameFor(model => model.MovimientoSolicitante.NombreSolicitante)</b></td>
+                                <td>@Html.DisplayFor(model => model.MovimientoSolicitante.NombreSolicitante)</td>
+                            </tr>
+                        }
+                        
+@if (listaCampos.Any(a => a == "solCargoSol"))
+{
+
+
+    <tr>
+        <td><b>@Html.DisplayNameFor(model => model.MovimientoSolicitante.CargoSolicitante)</b></td>
+        <td>@Html.DisplayFor(model => model.MovimientoSolicitante.CargoSolicitante)</td>
+    </tr>
+}
+
+
+
+                      
+
+                    </table>
+
+
+
+                    
+
+                    @if (listaCampos.Any(a => a == "solInstitucion"))
+                    {
+                        <div class="">
+                            MovimientoSolicitante.ParaInstitucion
+                        </div>
+                    }
+
+                    @if (listaCampos.Any(a => a == "solNombreRepre"))
+                    {
+                        <div class="">
+                            MovimientoSolicitante.NombreRepresentante
+                        </div>
+                    }
+
+                    @if (listaCampos.Any(a => a == "solCargoRepre"))
+                    {
+                        <div class="">
+                            MovimientoSolicitante.CargoRepresentante
+                        </div>
+                    }
+
+                    @if (listaCampos.Any(a => a == "solSede"))
+                    {
+                        <div class="">
+                            MovimientoSolicitante.Sede
+                        </div>
+                    }
+
+                    @if (listaCampos.Any(a => a == "SolPaisEdo"))
+                    {
+                        <div class="">
+                            MovimientoSolicitante.PaisEstado
+                        </div>
+                    }
+
+                    @if (listaCampos.Any(a => a == "solPeticionRec"))
+                    {
+                        <div class="col-md-6">
+                            MovimientoSolicitante.PeticionRecibida
+                        </div>
+                    }
+
+
+                    @if (listaCampos.Any(a => a == "solDicCondEspa"))
+                    {
+                        <div class="col-md-6">
+                            MovimientoSolicitante.DictCondEspacio
+                        </div>
+                    }
+
+
+
+                    @if (listaCampos.Any(a => a == "solCartaAcep"))
+                    {
+                        <div class="col-md-6">
+                            MovimientoSolicitante.CartaAceptacion
+                        </div>
+                    }
+
+                    @if (listaCampos.Any(a => a == "solContratoCom"))
+                    {
+                        <div class="col-md-6">
+                            MovimientoSolicitante.ContratoComodato
+                        </div>
+                    }
+
+
+                    @if (listaCampos.Any(a => a == "solRevGuion"))
+                    {
+                        <div class="col-md-6">
+                            MovimientoSolicitante.RevisionGuion
+                        </div>
+                    }
+
+                    @if (listaCampos.Any(a => a == "solCondicConserv"))
+                    {
+                        <div class="col-md-6">
+                            MovimientoSolicitante.CondicionConservacion
+                        </div>
+                    }
+
+                    @if (listaCampos.Any(a => a == "solFacilReport"))
+                    {
+                        <div class="col-md-6">
+                            MovimientoSolicitante.FacilityReport
+                        </div>
+                    }
+
+                    @if (listaCampos.Any(a => a == "solDictSegu"))
+                    {
+                        <div class="col-md-6">
+                            MovimientoSolicitante.DicSeguridad
+                        </div>
+
+                    }
+
+                    @if (listaCampos.Any(a => a == "solListAval"))
+                    {
+                        <div class="col-md-6">
+                            MovimientoSolicitante.ListaAvaluo
+                        </div>
+                    }
+
+
+                    @if (listaCampos.Any(a => a == "solTramFianza"))
+                    {
+                        <div class="col-md-6">
+                            MovimientoSolicitante.TramiteFianza
+                        </div>
+                    }
+
+                    @if (listaCampos.Any(a => a == "solPoliSeg"))
+                    {
+                        <div class="col-md-6">
+                            MovimientoSolicitante.PolizaSeguro
+                        </div>
+                    }
+
+                    @if (listaCampos.Any(a => a == "solPoliCartas"))
+                    {
+                        <div class="col-md-6">
+                            MovimientoSolicitante.CartasEntradaSalida
+                        </div>
+                    }
+
+
+                </div>
+            </div>
+
+        </div>
+    }
+
+    @if (listaCampos.Any(a => a == "pestExpo"))
+    {
+        <div id="exposicionDIV" class="tab-pane fade">
+
+            <div class="row">
+                <div class="col-md-2">
+                    <h3 class="text-center">Exposición</h3>
+
+                    <div class="text-center">
+                        <span class="fa fa-object-group fa-10x"></span>
+                    </div>
+                </div>
+
+                <div class="col-md-10">
+                    @if (listaCampos.Any(a => a == "expoTitulo"))
+                    {
+                        <div class="">
+                            MovimientoExposicion.Titulo
+                        </div>
+                    }
+
+                    @if (listaCampos.Any(a => a == "espoCurador"))
+                    {
+                        <div class="">
+                            MovimientoExposicion.Curador
+                        </div>
+                    }
+
+                    @if (listaCampos.Any(a => a == "expoFechaIni"))
+                    {
+                        <div class="">
+                            MovimientoExposicion.FechaInicial
+                        </div>
+                    }
+
+                    @if (listaCampos.Any(a => a == "expoFechaFIn"))
+                    {
+                        <div class="">
+                            MovimientoExposicion.FechaFinal
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+    }
+
+    @if (listaCampos.Any(a => a == "pestRes"))
+    {
+        <div id="responsableDIV" class="tab-pane fade">
+
+            <div class="row">
+
+                <div class="col-md-2">
+                    <h3 class="text-center">Responsable</h3>
+
+                    <div class="text-center">
+                        <span class="fa fa-male fa-10x"></span>
+                    </div>
+                </div>
+
+                <div class="col-md-10">
+
+                    @if (listaCampos.Any(a => a == "resNombre"))
+                    {
+                        <div class="">
+                            MovimientoResponsable.Nombre
+                        </div>
+                    }
+
+                    @if (listaCampos.Any(a => a == "resInstitu"))
+                    {
+                        <div class="">
+                            MovimientoResponsable.Institucion
+                        </div>
+                    }
+
+                    @if (listaCampos.Any(a => a == "resFechaSal"))
+                    {
+                        <div class="">
+                            MovimientoResponsable.FechaSalida
+                        </div>
+                    }
+
+
+
+
+
+
+                </div>
+            </div>
+
+        </div>
+    }
+
+    @if (listaCampos.Any(a => a == "pestAut") && Model.MovimientoAutorizacionID != null)
+    {
+        <div id="autorizacionDIV" class="tab-pane fade">
+            <div class="row">
+
+                <div class="col-md-2">
+                    <h3 class="text-center">Autorización</h3>
+
+                    <div class="text-center">
+                        <span class="fa fa-thumbs-up fa-10x"></span>
+                    </div>
+                </div>
+
+                <div class="col-md-10">
+
+                    @if (listaCampos.Any(a => a == "autUsuario1"))
+                    {
+                        <div class="">
+                            MovimientoAutorizacion.Usuario1ID
+                        </div>
+                    }
+
+                    @if (listaCampos.Any(a => a == "autUsuario2"))
+                    {
+                        <div class="">
+                            MovimientoAutorizacion.Usuario2ID
+                        </div>
+                    }
+
+
+
+                </div>
+            </div>
+        </div>
+
+    }
+
+    @if (listaCampos.Any(a => a == "pestTran"))
+    {
+        <div id="transporteDIV" class="tab-pane fade">
+            <div class="row">
+
+                <div class="col-md-2">
+                    <h3 class="text-center">Transporte</h3>
+
+                    <div class="text-center">
+                        <span class="fa fa-truck fa-10x"></span>
+                    </div>
+                </div>
+
+                <div class="col-md-10">
+                    @if (listaCampos.Any(a => a == "transNombre"))
+                    {
+                        <div class="">
+                            MovimientoTransporte.EmpresaNombre
+                        </div>
+                    }
+
+                    @if (listaCampos.Any(a => a == "transRecorr"))
+                    {
+                        <div class="">
+                            MovimientoTransporte.Recorrido
+                        </div>
+                    }
+
+                    @if (listaCampos.Any(a => a == "transHorario"))
+                    {
+                        <div class="">
+                            MovimientoTransporte.Horario
+                        </div>
+                    }
+
+                    @if (listaCampos.Any(a => a == "transNota"))
+                    {
+                        <div class="">
+                            MovimientoTransporte.Nota
+                        </div>
+                    }
+
+
+                </div>
+            </div>
+        </div>
+
+    }
+
+    @if (listaCampos.Any(a => a == "pestSeg"))
+    {
+        <div id="seguroDIV" class="tab-pane fade">
+
+            <div class="row">
+
+                <div class="col-md-2">
+                    <h3 class="text-center">Seguro</h3>
+
+                    <div class="text-center">
+                        <span class="fa fa-shield fa-10x"></span>
+                    </div>
+                </div>
+
+                <div class="col-md-10">
+
+                    @if (listaCampos.Any(a => a == "segNombre"))
+                        {
+                    <div class="">
+                        MovimientoSeguro.AseguradorNombre
+                    </div>
+                        }
+
+                    @if (listaCampos.Any(a => a == "segPoliza"))
+                        {
+                    <div class="">
+                        MovimientoSeguro.NoPoliza
+                    </div>
+                        }
+
+
+                    @if (listaCampos.Any(a => a == "segFechaIni"))
+                        {
+                    <div class="">
+                        MovimientoSeguro.FechaInicial
+                    </div>
+                        }
+
+                    @if (listaCampos.Any(a => a == "segFechaFin"))
+                        {
+                    <div class="">
+                        MovimientoSeguro.FechaFinal
+
+                    </div>
+                        }
+
+
+                </div>
+            </div>
+        </div>
+
+    }
+
+    <div id="piezasDIV" class="tab-pane fade">
+        <div class="row">
+
+
+            <div class="col-md-6">
+
+                Lista
+            </div>
+
+            <div class="col-md-6">
+                Lista
+            </div>
+
+        </div>
+
+    </div>
+
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.MovientoID }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
